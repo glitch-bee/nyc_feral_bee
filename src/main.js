@@ -5,18 +5,21 @@ import { supabase } from './supabase.js'
 
 // Initialize application once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', async () => {
-  createMap()
-  createMarkerForm()
+  let markers = []
 
-  // Fetch all markers from Supabase and log them
+  // Fetch all markers from Supabase
   try {
     const { data, error } = await supabase.from('markers').select('*')
     if (error) {
       console.error('Error fetching markers:', error)
     } else {
+      markers = data
       console.log('Fetched markers:', data)
     }
   } catch (err) {
     console.error('Unexpected error fetching markers:', err)
   }
+
+  createMap('map', markers)
+  createMarkerForm()
 })
