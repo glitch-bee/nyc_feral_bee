@@ -1,5 +1,6 @@
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import './map.css' // Import the CSS file for the map container
 
 export function addMarkerToMap(map, { lat, lng, type, notes }) {
   if (!map) return
@@ -33,3 +34,4 @@ export function createMap(containerId = 'map', markers = [], onMapClick) {
 
   return map
 }
+
