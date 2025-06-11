@@ -3,7 +3,9 @@
 There are currently no automated bots or workflows running in this repository. All builds and deployments are performed manually by the maintainers.
 
 ## Adding or Updating Automation
+
 If you introduce a GitHub Action, bot, or other automated process, document it here with:
+
 - The name of the agent or workflow
 - Its purpose and main tasks
 - When it runs (e.g., on pull request, on push, scheduled)
