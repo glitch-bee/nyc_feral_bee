@@ -3,19 +3,35 @@ import { createMap } from './map.js'
 import { createMarkerForm } from './markerform.js'
 import { supabase } from './supabase.js'
 
-// Initialize application once the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', async () => {
-  const formHelpers = createMarkerForm()
+let map
+let currentMarkers = []
+let formHelpers
 
+async function fetchAndDisplayMarkers() {
   try {
     const { data, error } = await supabase.from('markers').select('*')
-    const markers = error ? [] : data
-    const map = createMap('map', markers, formHelpers.handleMapClick)
+    if (error) {
+      console.error('Error fetching markers:', error)
+      return
+    }
+    const markers = data || []
+    if (JSON.stringify(markers) === JSON.stringify(currentMarkers)) return
+    currentMarkers = markers
+    if (map) map.remove()
+    map = createMap('map', markers, formHelpers.handleMapClick)
     formHelpers.setMap(map)
-    if (error) console.error('Error fetching markers:', error)
   } catch (err) {
     console.error('Unexpected error fetching markers:', err)
-    const map = createMap('map', [], formHelpers.handleMapClick)
-    formHelpers.setMap(map)
+    if (!map) {
+      map = createMap('map', [], formHelpers.handleMapClick)
+      formHelpers.setMap(map)
+    }
   }
+}
+
+// Initialize application once the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', async () => {
+  formHelpers = createMarkerForm()
+  await fetchAndDisplayMarkers()
+  setInterval(fetchAndDisplayMarkers, 10000)
 })
