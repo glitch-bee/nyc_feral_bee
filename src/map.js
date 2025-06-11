@@ -18,7 +18,7 @@ export function createMap(containerId = 'map', markers = [], onMapClick) {
 
   const map = new maplibregl.Map({
     container: mapContainer,
-    style: 'https://demotiles.maplibre.org/style.json',
+    style: 'https://api.maptiler.com/maps/3d/style.json?key=mbriicWDtoa7yG1tmDK0',
     center: [-74.006, 40.7128],
     zoom: 11
   })
