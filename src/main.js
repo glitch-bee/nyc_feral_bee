@@ -2,6 +2,8 @@ import './style.css'
 import { createMap, addMarkerToMap } from './map.js'
 import { createMarkerForm } from './markerform.js'
 import { supabase } from './supabase.js'
+import 'maplibre-gl/dist/maplibre-gl.css'
+import './map.css'
 
 let map
 let currentMarkers = []
