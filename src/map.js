@@ -43,17 +43,17 @@ export function createMap(containerId = 'map', markers = [], onMapClick) {
 }
 
 /* CSS in JS - This is usually not recommended, but for the sake of the example, we're doing it */
-const style = document.createElement('style')
-style.textContent = `
-#map {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  border: 3px solid red !important;
-  background: #222 !important;
-}
-`
-document.head.append(style)
+// const style = document.createElement('style')
+// style.textContent = `
+// #map {
+//   position: absolute;
+//   top: 0; left: 0; right: 0; bottom: 0;
+//   width: 100vw;
+//   height: 100vh;
+//   z-index: 0;
+//   border: 3px solid red !important;
+//   background: #222 !important;
+// }
+// `
+// document.head.append(style)
 
