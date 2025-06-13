@@ -1,18 +1,60 @@
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import './map.css' // Import the CSS file for the map container
+import './map.css'
 
 console.log('map.js loaded, maplibregl:', maplibregl)
 
-export function addMarkerToMap(map, { lat, lng, type, notes }) {
+// Store marker references for management
+let markerInstances = new Map()
+
+export function addMarkerToMap(map, { id, lat, lng, type, notes }) {
   if (!map) return
+
+  // Remove existing marker if it exists
+  if (markerInstances.has(id)) {
+    markerInstances.get(id).remove()
+  }
+
   const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
-    `<strong>${type}</strong><p>${notes}</p>`
+    `<strong>${type}</strong><p>${notes}</p><small>ID: ${id}</small><br><button onclick="window.deleteMarker('${id}')" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">Delete</button>`
   )
-  new maplibregl.Marker().setLngLat([lng, lat]).setPopup(popup).addTo(map)
+  
+  const marker = new maplibregl.Marker({
+    color: getMarkerColor(type)
+  })
+    .setLngLat([lng, lat])
+    .setPopup(popup)
+    .addTo(map)
+
+  // Store marker reference
+  markerInstances.set(id, marker)
+  
+  return marker
 }
 
-export function createMap(containerId = 'map', markers = [], onMapClick) {
+export function removeMarkerFromMap(id) {
+  if (markerInstances.has(id)) {
+    markerInstances.get(id).remove()
+    markerInstances.delete(id)
+  }
+}
+
+export function clearAllMarkers() {
+  markerInstances.forEach(marker => marker.remove())
+  markerInstances.clear()
+}
+
+function getMarkerColor(type) {
+  const colors = {
+    'Hive': '#ffaa00',
+    'Swarm': '#ff6600', 
+    'Structure': '#666666',
+    'Tree': '#00aa00'
+  }
+  return colors[type] || '#333333'
+}
+
+export function createMap(containerId = 'map', onMapClick) {
   console.log('createMap called with containerId:', containerId)
   const mapContainer = document.getElementById(containerId)
   console.log('mapContainer found:', mapContainer)
@@ -23,11 +65,10 @@ export function createMap(containerId = 'map', markers = [], onMapClick) {
 
   // Remove any placeholder text
   mapContainer.textContent = ''
-
   try {
     const map = new maplibregl.Map({
       container: mapContainer,
-      style: 'https://demotiles.maplibre.org/style.json',
+      style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=mbriicWDtoa7yG1tmDK0',
       center: [-74.006, 40.7128],
       zoom: 11
     })
@@ -41,9 +82,6 @@ export function createMap(containerId = 'map', markers = [], onMapClick) {
     map.on('error', (e) => {
       console.error('Map error:', e)
     })
-
-    // Add markers to the map
-    markers.forEach((m) => addMarkerToMap(map, m))
 
     if (onMapClick) {
       map.on('click', (e) => {

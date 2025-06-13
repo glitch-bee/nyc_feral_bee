@@ -1,4 +1,4 @@
-import { addMarker } from './supabase.js'
+import { supabase } from './supabase.js'
 import { addMarkerToMap } from './map.js'
 
 export function createMarkerForm() {
@@ -35,6 +35,7 @@ export function createMarkerForm() {
   const errorDiv = form.querySelector('#formError')
 
   let mapRef
+
   async function submitForm(e) {
     e.preventDefault()
     errorDiv.textContent = ''
@@ -44,29 +45,20 @@ export function createMarkerForm() {
       errorDiv.textContent = 'Please select a location on the map.'
       return
     }
-    
-    const markerData = { 
-      type: typeSelect.value, 
-      notes: notesInput.value, 
-      lat, 
-      lng 
-    }
-    
+    const marker = { type: typeSelect.value, notes: notesInput.value, lat, lng }
     try {
-      // Use the new addMarker function
-      const newMarker = await addMarker(markerData)
-      
-      if (mapRef) {
-        addMarkerToMap(mapRef, newMarker)
-      }
-      
+      const { data, error } = await supabase
+        .from('markers')
+        .insert(marker)
+        .select()
+        .single()
+      if (error) throw error
+      if (mapRef) addMarkerToMap(mapRef, data)
       form.reset()
       latInput.value = ''
       lngInput.value = ''
       locationPrompt.textContent = 'Click the map to select location'
       locationPrompt.classList.remove('picked')
-      
-      console.log('Marker added successfully:', newMarker)
     } catch (err) {
       errorDiv.textContent = err.message || 'Error adding marker'
     }
