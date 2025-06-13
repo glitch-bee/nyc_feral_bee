@@ -1,118 +1,248 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* CityHive Brand Colors */
+  --primary-purple: #8B5CF6;
+  --primary-teal: #06B6D4;
+  --gradient-start: #8B5CF6;
+  --gradient-end: #06B6D4;
+  
+  /* UI Colors */
+  --white: #FFFFFF;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-600: #4B5563;
+  --gray-900: #111827;
+  
+  /* Semantic Colors */
+  --success: #10B981;
+  --error: #EF4444;
+  --warning: #F59E0B;
+  
+  /* Marker Colors (keeping your existing ones) */
+  --marker-hive: #ffaa00;
+  --marker-swarm: #ff6600; 
+  --marker-structure: #666666;
+  --marker-tree: #00aa00;
 }
 
-#marker-form {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  z-index: 10;
-  background: rgba(20, 20, 20, 0.85);
-  border-radius: 12px;
-  padding: 20px 24px;
-  color: #fff;
-  min-width: 320px;
-  box-shadow: 0 4px 24px 0 #000a;
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--gray-50);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* App Header with logo */
+.app-header {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 12px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.app-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+.app-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
 }
 
-.card {
-  padding: 2em;
+/* Form container */
+#marker-form {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.read-the-docs {
-  color: #888;
+/* Form elements */
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--gray-100);
+  border-radius: 12px;
+  font-size: 14px;
+  background: var(--white);
+  transition: all 0.2s ease;
   font-family: inherit;
-  background-color: #1a1a1a;
+}
+
+.form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-teal);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Location prompt */
+.location-prompt {
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+  border: 2px dashed var(--primary-teal);
+  border-radius: 12px;
+  text-align: center;
+  color: var(--gray-600);
+  font-size: 14px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.location-prompt.picked {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  color: white;
+  border-color: var(--primary-purple);
+  border-style: solid;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
-.picked {
-  color: #4caf50;
-  font-weight: bold;
+.btn-primary {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  color: white;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-danger {
+  background: var(--error);
+  color: white;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.btn-danger:hover {
+  background: #DC2626;
+}
+
+/* Error messages */
 .error {
-  color: #ff5555;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--error);
+  color: var(--error);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* Popup styling */
+.maplibregl-popup-content {
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  padding: 16px !important;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: white !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .app-header {
+    top: 10px;
+    left: 10px;
+    padding: 8px 16px;
   }
-  a:hover {
-    color: #747bff;
+  
+  #marker-form {
+    top: 70px;
+    right: 10px;
+    left: 10px;
+    width: auto;
   }
-  button {
-    background-color: #f9f9f9;
+    .app-logo {
+    width: 28px;
+    height: 28px;
   }
+  
+  .app-title {
+    font-size: 16px;
+  }
+}
+
+/* Add some bee-inspired touches */
+.form-group::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.form-group:focus-within::before {
+  opacity: 1;
 }

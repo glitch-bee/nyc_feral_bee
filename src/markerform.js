@@ -4,25 +4,32 @@ import { addMarkerToMap } from './map.js'
 export function createMarkerForm() {
   const formContainer = document.getElementById('marker-form')
   if (!formContainer) return {}
-
   formContainer.innerHTML = `
     <form id="markerForm">
-      <label>Marker Type
-        <select name="type">
-          <option value="Hive">Hive</option>
-          <option value="Swarm">Swarm</option>
-          <option value="Structure">Structure</option>
-          <option value="Tree">Tree</option>
+      <div class="form-group">
+        <label class="form-label" for="typeSelect">Marker Type</label>
+        <select name="type" id="typeSelect" class="form-select">
+          <option value="Hive">🍯 Hive</option>
+          <option value="Swarm">🐝 Swarm</option>
+          <option value="Structure">🏢 Structure</option>
+          <option value="Tree">🌳 Tree</option>
         </select>
-      </label>
-      <label>Notes
-        <textarea name="notes" rows="3"></textarea>
-      </label>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="notesInput">Notes</label>
+        <textarea name="notes" id="notesInput" class="form-textarea" rows="3" placeholder="Add details about this sighting..."></textarea>
+      </div>
+      
       <input type="hidden" name="lat">
       <input type="hidden" name="lng">
-      <p id="locationPrompt">Click the map to select location</p>
-      <button type="submit">Add Marker</button>
-      <div id="formError" class="error"></div>
+      
+      <div id="locationPrompt" class="location-prompt">
+        📍 Click the map to select location
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Add Marker</button>
+      <div id="formError" class="error" style="display: none;"></div>
     </form>
   `
 
@@ -35,13 +42,17 @@ export function createMarkerForm() {
   const errorDiv = form.querySelector('#formError')
 
   let mapRef
+  
   async function submitForm(e) {
     e.preventDefault()
     errorDiv.textContent = ''
+    errorDiv.style.display = 'none'
+    
     const lat = parseFloat(latInput.value)
     const lng = parseFloat(lngInput.value)
     if (isNaN(lat) || isNaN(lng)) {
       errorDiv.textContent = 'Please select a location on the map.'
+      errorDiv.style.display = 'block'
       return
     }
     
@@ -63,12 +74,13 @@ export function createMarkerForm() {
       form.reset()
       latInput.value = ''
       lngInput.value = ''
-      locationPrompt.textContent = 'Click the map to select location'
+      locationPrompt.textContent = '📍 Click the map to select location'
       locationPrompt.classList.remove('picked')
       
       console.log('Marker added successfully:', newMarker)
     } catch (err) {
       errorDiv.textContent = err.message || 'Error adding marker'
+      errorDiv.style.display = 'block'
     }
   }
 

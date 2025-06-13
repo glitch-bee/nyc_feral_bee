@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Map pin background -->
+  <path d="M256 32C167.67 32 96 103.67 96 192c0 88.33 71.67 160 160 160s160-71.67 160-160C416 103.67 344.33 32 256 32z" fill="url(#logoGradient)"/>
+  <path d="M256 352l-96-128c0-53.02 42.98-96 96-96s96 42.98 96 96L256 352z" fill="url(#logoGradient)"/>
+  
+  <!-- Bee icon -->
+  <g transform="translate(256,220) scale(1.5)">
+    <!-- Bee body -->
+    <ellipse cx="0" cy="0" rx="25" ry="40" fill="white"/>
+    
+    <!-- Bee stripes -->
+    <rect x="-25" y="-15" width="50" height="8" fill="url(#logoGradient)" opacity="0.3"/>
+    <rect x="-25" y="-3" width="50" height="8" fill="url(#logoGradient)" opacity="0.3"/>
+    <rect x="-25" y="9" width="50" height="8" fill="url(#logoGradient)" opacity="0.3"/>
+    
+    <!-- Bee wings -->
+    <ellipse cx="-18" cy="-25" rx="12" ry="18" fill="white" opacity="0.8"/>
+    <ellipse cx="18" cy="-25" rx="12" ry="18" fill="white" opacity="0.8"/>
+    
+    <!-- Bee antennae -->
+    <line x1="-8" y1="-35" x2="-12" y2="-45" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <line x1="8" y1="-35" x2="12" y2="-45" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="-12" cy="-45" r="3" fill="white"/>
+    <circle cx="12" cy="-45" r="3" fill="white"/>
+  </g>
+</svg>
