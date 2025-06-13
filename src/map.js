@@ -16,34 +16,46 @@ export function createMap(containerId = 'map', markers = [], onMapClick) {
   console.log('createMap called with containerId:', containerId)
   const mapContainer = document.getElementById(containerId)
   console.log('mapContainer found:', mapContainer)
-  if (!mapContainer) return
+  if (!mapContainer) {
+    console.error('Map container not found!')
+    return null
+  }
+
   // Remove any placeholder text
   mapContainer.textContent = ''
 
-  const map = new maplibregl.Map({
-    container: mapContainer,
-    style: 'https://demotiles.maplibre.org/style.json',
-    center: [-74.006, 40.7128],
-    zoom: 11
-  })
-
-  console.log('MapLibre map object:', map)
-
-  setTimeout(() => {
-    map.resize()
-    console.log('MapLibre map resized')
-  }, 500)
-
-  // Add markers to the map
-  markers.forEach((m) => addMarkerToMap(map, m))
-
-  if (onMapClick) {
-    map.on('click', (e) => {
-      onMapClick({ lng: e.lngLat.lng, lat: e.lngLat.lat })
+  try {
+    const map = new maplibregl.Map({
+      container: mapContainer,
+      style: 'https://demotiles.maplibre.org/style.json',
+      center: [-74.006, 40.7128],
+      zoom: 11
     })
-  }
 
-  return map
+    console.log('MapLibre map object created:', map)
+
+    map.on('load', () => {
+      console.log('Map loaded successfully!')
+    })
+
+    map.on('error', (e) => {
+      console.error('Map error:', e)
+    })
+
+    // Add markers to the map
+    markers.forEach((m) => addMarkerToMap(map, m))
+
+    if (onMapClick) {
+      map.on('click', (e) => {
+        onMapClick({ lng: e.lngLat.lng, lat: e.lngLat.lat })
+      })
+    }
+
+    return map
+  } catch (error) {
+    console.error('Error creating map:', error)
+    return null
+  }
 }
 
 /* CSS in JS - This is usually not recommended, but for the sake of the example, we're doing it */

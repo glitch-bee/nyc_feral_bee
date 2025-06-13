@@ -54,8 +54,19 @@ async function fetchAndDisplayMarkers() {
 // Initialize application once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('DOM loaded, initializing app...')
+  
+  // Initialize form first
   formHelpers = createMarkerForm()
   console.log('Form helpers created:', formHelpers)
+  
+  // Try to create map immediately as fallback
+  if (!map) {
+    console.log('Creating immediate fallback map...')
+    map = createMap('map', [], formHelpers?.handleMapClick)
+    if (formHelpers && map) formHelpers.setMap(map)
+  }
+  
+  // Then fetch markers
   await fetchAndDisplayMarkers()
   console.log('Initial markers fetched')
   setInterval(fetchAndDisplayMarkers, 10000)
