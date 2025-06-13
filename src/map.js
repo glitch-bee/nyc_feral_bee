@@ -2,6 +2,8 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map.css' // Import the CSS file for the map container
 
+console.log('map.js loaded, maplibregl:', maplibregl)
+
 export function addMarkerToMap(map, { lat, lng, type, notes }) {
   if (!map) return
   const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
@@ -11,7 +13,9 @@ export function addMarkerToMap(map, { lat, lng, type, notes }) {
 }
 
 export function createMap(containerId = 'map', markers = [], onMapClick) {
+  console.log('createMap called with containerId:', containerId)
   const mapContainer = document.getElementById(containerId)
+  console.log('mapContainer found:', mapContainer)
   if (!mapContainer) return
   // Remove any placeholder text
   mapContainer.textContent = ''

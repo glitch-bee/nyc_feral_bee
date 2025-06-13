@@ -5,6 +5,8 @@ import { supabase } from './supabase.js'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map.css'
 
+console.log('main.js loaded')
+
 let map
 let currentMarkers = []
 let formHelpers
@@ -18,6 +20,7 @@ function updateMapMarkers(map, markers) {
 }
 
 async function fetchAndDisplayMarkers() {
+  console.log('fetchAndDisplayMarkers called')
   try {
     const { data, error } = await supabase.from('markers').select('*')
     if (error) {
@@ -25,11 +28,14 @@ async function fetchAndDisplayMarkers() {
       return
     }
     const markers = data || []
+    console.log('Fetched markers:', markers)
     if (JSON.stringify(markers) === JSON.stringify(currentMarkers)) return
     currentMarkers = markers
     if (!map) {
-      map = createMap('map', markers, formHelpers.handleMapClick)
-      formHelpers.setMap(map)
+      console.log('Creating map...')
+      map = createMap('map', markers, formHelpers?.handleMapClick)
+      console.log('Map created:', map)
+      if (formHelpers) formHelpers.setMap(map)
     } else {
       // Just update markers
       updateMapMarkers(map, markers)
@@ -37,16 +43,21 @@ async function fetchAndDisplayMarkers() {
   } catch (err) {
     console.error('Unexpected error fetching markers:', err)
     if (!map) {
-      map = createMap('map', [], formHelpers.handleMapClick)
-      formHelpers.setMap(map)
+      console.log('Creating fallback map...')
+      map = createMap('map', [], formHelpers?.handleMapClick)
+      console.log('Fallback map created:', map)
+      if (formHelpers) formHelpers.setMap(map)
     }
   }
 }
 
 // Initialize application once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log('DOM loaded, initializing app...')
   formHelpers = createMarkerForm()
+  console.log('Form helpers created:', formHelpers)
   await fetchAndDisplayMarkers()
+  console.log('Initial markers fetched')
   setInterval(fetchAndDisplayMarkers, 10000)
 })
 
