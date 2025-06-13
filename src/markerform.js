@@ -4,34 +4,49 @@ import { addMarkerToMap } from './map.js'
 export function createMarkerForm() {
   const formContainer = document.getElementById('marker-form')
   if (!formContainer) return {}
+
   formContainer.innerHTML = `
-    <form id="markerForm">
-      <div class="form-group">
-        <label class="form-label" for="typeSelect">Marker Type</label>
-        <select name="type" id="typeSelect" class="form-select">
-          <option value="Hive">🍯 Hive</option>
-          <option value="Swarm">🐝 Swarm</option>
-          <option value="Structure">🏢 Structure</option>
-          <option value="Tree">🌳 Tree</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label" for="notesInput">Notes</label>
-        <textarea name="notes" id="notesInput" class="form-textarea" rows="3" placeholder="Add details about this sighting..."></textarea>
-      </div>
-      
-      <input type="hidden" name="lat">
-      <input type="hidden" name="lng">
-      
-      <div id="locationPrompt" class="location-prompt">
-        📍 Click the map to select location
-      </div>
-      
-      <button type="submit" class="btn btn-primary">Add Marker</button>
-      <div id="formError" class="error" style="display: none;"></div>
-    </form>
+    <!-- Mobile form header (only visible on mobile) -->
+    <div class="mobile-form-header" onclick="toggleMobileForm()">
+      <h3 class="mobile-form-title">Add Bee Sighting</h3>
+      <span class="mobile-form-toggle">🔽</span>
+    </div>
+    
+    <!-- Form content -->
+    <div class="mobile-form-content">
+      <form id="markerForm">
+        <div class="form-group">
+          <label class="form-label" for="typeSelect">Marker Type</label>
+          <select name="type" id="typeSelect" class="form-select">
+            <option value="Hive">🍯 Hive</option>
+            <option value="Swarm">🐝 Swarm</option>
+            <option value="Structure">🏢 Structure</option>
+            <option value="Tree">🌳 Tree</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="notesInput">Notes</label>
+          <textarea name="notes" id="notesInput" class="form-textarea" rows="3" placeholder="Add details about this sighting..."></textarea>
+        </div>
+        
+        <input type="hidden" name="lat">
+        <input type="hidden" name="lng">
+        
+        <div id="locationPrompt" class="location-prompt">
+          📍 Click the map to select location
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Add Marker</button>
+        <div id="formError" class="error" style="display: none;"></div>
+      </form>
+    </div>
   `
+
+  // Add mobile toggle functionality to global scope
+  window.toggleMobileForm = function() {
+    formContainer.classList.toggle('expanded')
+  }
 
   const form = formContainer.querySelector('#markerForm')
   const typeSelect = form.querySelector('select[name="type"]')
@@ -70,12 +85,16 @@ export function createMarkerForm() {
       if (mapRef) {
         addMarkerToMap(mapRef, newMarker)
       }
-      
-      form.reset()
+        form.reset()
       latInput.value = ''
       lngInput.value = ''
       locationPrompt.textContent = '📍 Click the map to select location'
       locationPrompt.classList.remove('picked')
+      
+      // Auto-collapse form on mobile after successful submission
+      if (window.innerWidth <= 768) {
+        formContainer.classList.remove('expanded')
+      }
       
       console.log('Marker added successfully:', newMarker)
     } catch (err) {
@@ -85,12 +104,16 @@ export function createMarkerForm() {
   }
 
   form.addEventListener('submit', submitForm)
-
   function handleMapClick({ lng, lat }) {
     lngInput.value = lng
     latInput.value = lat
     locationPrompt.textContent = `Selected: ${lat.toFixed(4)}, ${lng.toFixed(4)}`
     locationPrompt.classList.add('picked')
+    
+    // Auto-expand form on mobile when location is selected
+    if (window.innerWidth <= 768) {
+      formContainer.classList.add('expanded')
+    }
   }
 
   function setMap(m) {

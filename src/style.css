@@ -71,6 +71,11 @@ html, body {
   margin: 0;
 }
 
+/* Hide mobile form header on desktop */
+.mobile-form-header {
+  display: none;
+}
+
 /* Form container */
 #marker-form {
   position: fixed;
@@ -85,6 +90,12 @@ html, body {
   padding: 24px;
   box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Hide mobile form header on desktop */
+.mobile-form-header {
+  display: none;
 }
 
 /* Form elements */
@@ -212,19 +223,129 @@ html, body {
     padding: 8px 16px;
   }
   
-  #marker-form {
-    top: 70px;
-    right: 10px;
-    left: 10px;
-    width: auto;
-  }
-    .app-logo {
+  .app-logo {
     width: 28px;
     height: 28px;
   }
   
   .app-title {
     font-size: 16px;
+  }
+  
+  /* Show mobile form header */
+  .mobile-form-header {
+    display: flex;
+  }
+  
+  /* Mobile form as bottom drawer */
+  #marker-form {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    border-radius: 20px 20px 0 0;
+    padding: 0;
+    transform: translateY(calc(100% - 60px));
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+  
+  #marker-form.expanded {
+    transform: translateY(0);
+  }
+  
+  /* Mobile form header/handle */
+  #marker-form::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--gray-600);
+    border-radius: 2px;
+    opacity: 0.5;
+  }
+  
+  /* Mobile form content */
+  .mobile-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    background: rgba(255, 255, 255, 0.98);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    min-height: 48px; /* Minimum touch target size */
+  }
+  
+  .mobile-form-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+  }
+  
+  .mobile-form-toggle {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  #marker-form.expanded .mobile-form-toggle {
+    transform: rotate(180deg);
+  }
+  
+  .mobile-form-content {
+    padding: 0 20px 20px;
+    max-height: calc(60vh - 80px);
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.98);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    transition: opacity 0.3s ease;
+  }
+  
+  #marker-form:not(.expanded) .mobile-form-content {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  #marker-form.expanded .mobile-form-content {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  /* Adjust form elements for mobile */
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  .form-select, .form-textarea {
+    padding: 14px 16px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    border-radius: 12px;
+  }
+  
+  .btn {
+    padding: 16px 24px;
+    font-size: 16px;
+    width: 100%;
+    border-radius: 12px;
+  }
+  
+  .location-prompt {
+    padding: 16px;
+    font-size: 15px;
+    margin-bottom: 16px;
   }
 }
 
