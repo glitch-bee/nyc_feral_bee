@@ -62,15 +62,25 @@ export function createMap(containerId = 'map', onMapClick) {
     console.error('Map container not found!')
     return null
   }
-
   // Remove any placeholder text
   mapContainer.textContent = ''
+  // NYC + 5 Boroughs bounds with some cushion
+  // Covers: Manhattan, Brooklyn, Queens, Bronx, Staten Island
+  // Plus parts of NJ, Westchester, and Long Island for context
+  const nycBounds = [
+    [-74.5, 40.4], // Southwest corner (longitude, latitude)
+    [-73.4, 41.0]  // Northeast corner (longitude, latitude)
+  ]
+
   try {
     const map = new maplibregl.Map({
       container: mapContainer,
       style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=mbriicWDtoa7yG1tmDK0',
-      center: [-74.006, 40.7128],
-      zoom: 11
+      center: [-73.935242, 40.730610], // Manhattan center
+      zoom: 11,
+      minZoom: 9,  // Prevent zooming out too far
+      maxZoom: 18, // Prevent zooming in beyond street level
+      maxBounds: nycBounds // Restrict panning to NYC area
     })
 
     console.log('MapLibre map object created:', map)
