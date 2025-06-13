@@ -16,7 +16,7 @@ export function addMarkerToMap(map, { id, lat, lng, type, notes }) {
   }
 
   const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
-    `<strong>${type}</strong><p>${notes}</p><small>ID: ${id}</small><br><button onclick="window.deleteMarker('${id}')" style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">Delete</button>`
+    `<strong>${type}</strong><p>${notes}</p><small>ID: ${id}</small><br><button onclick="window.deleteMarker('${id}')" class="btn-primary">Delete</button>`
   )
   
   const marker = new maplibregl.Marker({
@@ -120,4 +120,25 @@ export function createMap(containerId = 'map', onMapClick) {
 // }
 // `
 // document.head.append(style)
+
+const style = document.createElement('style')
+style.textContent = `
+.btn-primary {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.marker-form {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+`
+document.head.append(style)
 
