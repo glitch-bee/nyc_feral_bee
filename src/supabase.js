@@ -49,7 +49,7 @@ export async function deleteMarker(markerId) {
   const { error } = await supabase
     .from('markers')
     .delete()
-    .eq('id', markerId)
+    .eq('id', parseInt(markerId)) // Ensure markerId is an integer
 
   if (error) {
     console.error('Error deleting marker:', error)
@@ -63,7 +63,7 @@ export async function updateMarker(markerId, updates) {
   const { data, error } = await supabase
     .from('markers')
     .update(updates)
-    .eq('id', markerId)
+    .eq('id', parseInt(markerId)) // Ensure markerId is an integer
     .select()
     .single()
 
@@ -77,7 +77,7 @@ export async function updateMarker(markerId, updates) {
 
 // Update marker status specifically
 export async function updateMarkerStatus(markerId, status) {
-  return updateMarker(markerId, { 
+  return updateMarker(parseInt(markerId), { // Ensure markerId is an integer
     status: status,
     timestamp: new Date().toISOString() // Update timestamp when status changes
   })
@@ -88,7 +88,7 @@ export async function addComment(markerId, commentText, authorName = 'Anonymous'
   const { data, error } = await supabase
     .from('comments')
     .insert([{
-      marker_id: markerId,
+      marker_id: parseInt(markerId), // Ensure markerId is an integer
       comment_text: commentText,
       author_name: authorName,
       timestamp: new Date().toISOString()
@@ -108,6 +108,8 @@ export async function getComments(markerId) {
   const { data, error } = await supabase
     .from('comments')
     .select('*')
+    .eq('marker_id', parseInt(markerId)) // Ensure markerId is an integer
+    .order('timestamp', { ascending: true })
     .eq('marker_id', markerId)
     .order('timestamp', { ascending: true })
 

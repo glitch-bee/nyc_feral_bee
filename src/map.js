@@ -473,34 +473,32 @@ window.updateMarkerStatus = async (markerId) => {
     alert('Please select a status')
     return
   }
-  
-  try {
-    await updateMarkerStatus(markerId, newStatus)
+    try {
+    const result = await updateMarkerStatus(markerId, newStatus)
+    console.log('Status update result:', result)
     
-    // Refresh the marker and update UI
+    // If we get here, the update was successful
     const marker = markerInstances.get(markerId)
     if (marker) {
-      // Update marker color
-      marker.remove()
-      marker.setColor(getMarkerColor(marker._element.dataset.type || 'Hive', newStatus))
-      marker.addTo(marker._map)
+      // Update marker color immediately
+      marker.setColor(getMarkerColor('Hive', newStatus)) // Default to Hive for color
       
-      // Close mobile modal and show success
+      // Show success feedback
       if (window.innerWidth <= 768) {
         closeMobileMarkerInfo()
-        // Briefly show success message
         const successMsg = document.createElement('div')
         successMsg.textContent = 'Status updated successfully!'
         successMsg.style.cssText = `
           position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-          background: var(--success); color: white; padding: 12px 20px;
+          background: #10B981; color: white; padding: 12px 20px;
           border-radius: 8px; z-index: 3000; font-weight: 600;
         `
         document.body.appendChild(successMsg)
         setTimeout(() => successMsg.remove(), 2000)
       } else {
-        // Desktop: refresh popup content
-        location.reload() // Simple approach for now
+        // Desktop: refresh popup content (simplified for now)
+        alert('Status updated successfully!')
+        location.reload()
       }
     }
     
@@ -552,10 +550,12 @@ window.uploadMarkerPhoto = async (markerId) => {
     const { uploadPhoto, updateMarker } = await import('./supabase.js')
     
     // Upload photo
-    const photoUrl = await uploadPhoto(file, markerId)
+    const photoResult = await uploadPhoto(file)
+    console.log('Photo upload result:', photoResult)
     
     // Update marker with photo URL
-    await updateMarker(markerId, { photo_url: photoUrl })
+    const updateResult = await updateMarker(parseInt(markerId), { photo_url: photoResult.url })
+    console.log('Marker update result:', updateResult)
     
     // Show success and refresh
     if (window.innerWidth <= 768) {
@@ -564,12 +564,13 @@ window.uploadMarkerPhoto = async (markerId) => {
       successMsg.textContent = 'Photo uploaded successfully!'
       successMsg.style.cssText = `
         position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-        background: var(--success); color: white; padding: 12px 20px;
+        background: #10B981; color: white; padding: 12px 20px;
         border-radius: 8px; z-index: 3000; font-weight: 600;
       `
       document.body.appendChild(successMsg)
       setTimeout(() => successMsg.remove(), 2000)
     } else {
+      alert('Photo uploaded successfully!')
       location.reload()
     }
     
