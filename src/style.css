@@ -112,26 +112,31 @@ html, body {
   margin-bottom: 8px;
 }
 
-.form-select, .form-textarea {
+.form-select, .form-textarea, .form-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 14px 16px;
   border: 2px solid var(--gray-100);
   border-radius: 12px;
   font-size: 14px;
   background: var(--white);
   transition: all 0.2s ease;
   font-family: inherit;
-}
-
-.form-select:focus, .form-textarea:focus {
-  outline: none;
-  border-color: var(--primary-teal);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+  height: 48px; /* Uniform height for form elements */
+  display: flex;
+  align-items: center;
 }
 
 .form-textarea {
+  height: auto;
+  min-height: 96px; /* 2x button height */
   resize: vertical;
-  min-height: 80px;
+  display: block;
+}
+
+.form-select:focus, .form-textarea:focus, .form-input:focus {
+  outline: none;
+  border-color: var(--primary-teal);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
 }
 
 /* Location prompt */
@@ -166,22 +171,24 @@ html, body {
   background: linear-gradient(135deg, var(--primary-teal), #059669);
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
+  border-radius: 12px;
+  padding: 14px 20px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
-  gap: 6px;
-  min-width: 120px;
   justify-content: center;
+  gap: 8px;
+  height: 48px; /* Match form element height */
+  width: 100%; /* Full width to match primary button */
+  max-width: 200px; /* Same max width as primary button */
 }
 
 .btn-locate:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
 }
 
 .btn-locate:disabled {
@@ -192,7 +199,7 @@ html, body {
 
 /* Buttons */
 .btn {
-  padding: 12px 24px;
+  padding: 14px 24px;
   border: none;
   border-radius: 12px;
   font-size: 14px;
@@ -200,17 +207,26 @@ html, body {
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
+  height: 48px; /* Uniform button height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
+  margin: 0 auto; /* Center buttons by default */
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
   color: white;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+  width: 100%; /* Full width to match locate button alignment */
+  max-width: 200px; /* But constrain max width */
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
 }
 
 .btn-primary:active {
@@ -220,13 +236,16 @@ html, body {
 .btn-danger {
   background: var(--error);
   color: white;
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 8px;
+  font-size: 14px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  height: 48px;
 }
 
 .btn-danger:hover {
   background: #DC2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
 }
 
 /* Error messages */
@@ -359,16 +378,21 @@ html, body {
     opacity: 1;
     pointer-events: auto;
   }
-  
-  /* Adjust form elements for mobile */
+    /* Adjust form elements for mobile */
   .form-group {
     margin-bottom: 16px;
   }
   
-  .form-select, .form-textarea {
-    padding: 14px 16px;
+  .form-select, .form-textarea, .form-input {
+    padding: 16px 18px;
     font-size: 16px; /* Prevents zoom on iOS */
     border-radius: 12px;
+    height: 52px; /* Slightly larger for mobile touch */
+  }
+  
+  .form-textarea {
+    height: auto;
+    min-height: 104px; /* 2x mobile button height */
   }
   
   .btn {
@@ -376,6 +400,38 @@ html, body {
     font-size: 16px;
     width: 100%;
     border-radius: 12px;
+    height: 52px; /* Larger touch target for mobile */
+  }
+  
+  .btn-locate, .btn-comment, .btn-delete, .btn-update-status {
+    height: 52px;
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+  
+  .comment-author-input, .comment-input {
+    padding: 16px 18px;
+    font-size: 16px;
+  }
+  
+  .comment-author-input {
+    height: 52px;
+  }
+  
+  .comment-input {
+    min-height: 104px;
+  }
+  
+  .status-select {
+    height: 52px;
+    padding: 16px 18px;
+    font-size: 16px;
+  }
+  
+  .form-file {
+    height: 52px;
+    padding: 16px 18px;
+    font-size: 16px;
   }
   
   .location-prompt {
@@ -492,44 +548,37 @@ html, body {
 .add-comment-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+}
+
+.comment-author-input, .comment-input {
+  padding: 12px 16px;
+  border: 2px solid var(--gray-100);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+  background: var(--white);
 }
 
 .comment-author-input {
-  padding: 8px 12px;
-  border: 1px solid var(--gray-100);
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: 'Inter', sans-serif;
-  transition: border-color 0.2s;
-}
-
-.comment-author-input:focus {
-  outline: none;
-  border-color: var(--primary-teal);
-  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+  height: 48px; /* Match other form elements */
 }
 
 .comment-input {
-  padding: 8px 12px;
-  border: 1px solid var(--gray-100);
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: 'Inter', sans-serif;
+  min-height: 96px; /* 2x button height */
   resize: vertical;
-  min-height: 60px;
-  transition: border-color 0.2s;
 }
 
-.comment-input:focus {
+.comment-author-input:focus, .comment-input:focus {
   outline: none;
   border-color: var(--primary-teal);
-  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
 }
 
 .comment-buttons {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   margin-top: 4px;
 }
 
@@ -537,63 +586,81 @@ html, body {
   background: linear-gradient(135deg, var(--primary-teal), var(--primary-purple));
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 12px;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   flex: 1;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-comment:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
 }
 
 .btn-delete {
   background: var(--error);
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 12px;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
 }
 
 .btn-delete:hover {
   background: #dc2626;
   transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
 }
 
 /* Photo upload and display styles */
 .form-file {
-  padding: 8px 12px;
+  padding: 14px 16px;
   border: 2px dashed var(--gray-100);
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 14px;
   font-family: 'Inter', sans-serif;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
   cursor: pointer;
   background: var(--gray-50);
+  height: 48px; /* Match other form elements */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-file:hover {
   border-color: var(--primary-teal);
+  background: rgba(6, 182, 212, 0.05);
 }
 
 .form-file:focus {
   outline: none;
   border-color: var(--primary-teal);
-  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
 }
 
 .photo-preview {
   position: relative;
   margin-top: 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--gray-100);
   max-width: 200px;
@@ -615,19 +682,21 @@ html, body {
   color: white;
   border: none;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 12px;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-remove-photo:hover {
   background: rgba(239, 68, 68, 1);
+  transform: scale(1.1);
 }
 
 /* Marker photo in popup */
@@ -740,44 +809,57 @@ html, body {
 /* Status update section */
 .status-update-section {
   margin: 16px 0;
-  padding: 12px;
+  padding: 16px;
   background: var(--gray-50);
-  border-radius: 8px;
-  border-left: 3px solid var(--primary-teal);
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-teal);
 }
 
 .status-label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--gray-900);
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .status-select {
   width: 100%;
-  padding: 6px 10px;
-  border: 1px solid var(--gray-100);
-  border-radius: 6px;
-  font-size: 13px;
-  margin-bottom: 8px;
+  padding: 14px 16px;
+  border: 2px solid var(--gray-100);
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 12px;
   background: white;
+  height: 48px; /* Match other form elements */
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: var(--primary-teal);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
 }
 
 .btn-update-status {
   background: linear-gradient(135deg, var(--primary-teal), #059669);
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 12px;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-update-status:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
 }
