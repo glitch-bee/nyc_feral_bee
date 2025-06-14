@@ -110,8 +110,6 @@ export async function getComments(markerId) {
     .select('*')
     .eq('marker_id', parseInt(markerId)) // Ensure markerId is an integer
     .order('timestamp', { ascending: true })
-    .eq('marker_id', markerId)
-    .order('timestamp', { ascending: true })
 
   if (error) {
     console.error('Error fetching comments:', error)

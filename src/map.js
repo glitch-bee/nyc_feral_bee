@@ -1,7 +1,7 @@
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map.css'
-import { getComments, addComment, updateMarkerStatus } from './supabase.js'
+import { getComments, addComment, updateMarkerStatus, deleteMarker, updateMarker, uploadPhoto } from './supabase.js'
 
 console.log('map.js loaded, maplibregl:', maplibregl)
 
@@ -215,55 +215,45 @@ function formatDate(timestamp) {
 
 // Global function to add comments (called from popup buttons)
 window.addCommentToMarker = async (markerId) => {
-  // Try to find comment inputs in both desktop popup and mobile modal
-  let authorInput = document.getElementById(`author-${markerId}`) ||
-                    document.querySelector(`#mobile-marker-info input[id*="author-${markerId}"]`) ||
-                    document.querySelector(`.mobile-marker-info .comment-author-input`)
-  
-  let commentInput = document.getElementById(`comment-${markerId}`) ||
-                     document.querySelector(`#mobile-marker-info textarea[id*="comment-${markerId}"]`) ||
-                     document.querySelector(`.mobile-marker-info .comment-input`)
-  
-  const authorName = authorInput?.value.trim() || 'Anonymous'
-  const commentText = commentInput?.value.trim()
-  
-  if (!commentText) {
-    alert('Please enter a comment')
-    return
-  }
-  
-  try {
-    await addComment(markerId, commentText, authorName)
+  if (window.innerWidth <= 768) {
+    // Mobile: use mobile-specific handler
+    await addCommentToMarkerMobile(markerId);
+  } else {
+    // Desktop: handle comment addition
+    let authorInput = document.getElementById(`author-${markerId}`) ||
+                      document.querySelector(`#mobile-marker-info input[id*="author-${markerId}"]`) ||
+                      document.querySelector(`.mobile-marker-info .comment-author-input`)
     
-    // Clear the inputs
-    if (authorInput) authorInput.value = ''
-    if (commentInput) commentInput.value = ''
+    let commentInput = document.getElementById(`comment-${markerId}`) ||
+                       document.querySelector(`#mobile-marker-info textarea[id*="comment-${markerId}"]`) ||
+                       document.querySelector(`.mobile-marker-info .comment-input`)
     
-    // Handle mobile vs desktop refresh
-    if (window.innerWidth <= 768) {
-      // Mobile: close modal and show success
-      closeMobileMarkerInfo()
-      const successMsg = document.createElement('div')
-      successMsg.textContent = 'Comment added successfully!'
-      successMsg.style.cssText = `
-        position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-        background: var(--success); color: white; padding: 12px 20px;
-        border-radius: 8px; z-index: 3000; font-weight: 600;
-      `
-      document.body.appendChild(successMsg)
-      setTimeout(() => successMsg.remove(), 2000)
-    } else {
+    const authorName = authorInput?.value.trim() || 'Anonymous'
+    const commentText = commentInput?.value.trim()
+    
+    if (!commentText) {
+      alert('Please enter a comment')
+      return
+    }
+    
+    try {
+      await addComment(markerId, commentText, authorName)
+      
+      // Clear the inputs
+      if (authorInput) authorInput.value = ''
+      if (commentInput) commentInput.value = ''
+      
       // Desktop: refresh popup content
       const marker = markerInstances.get(markerId)
       if (marker && marker.getPopup()) {
         // Simple reload for now - could be optimized later
         location.reload()      }
+      
+      console.log('Comment added successfully')
+    } catch (error) {
+      console.error('Error adding comment:', error)
+      alert('Error adding comment: ' + error.message)
     }
-    
-    console.log('Comment added successfully')
-  } catch (error) {
-    console.error('Error adding comment:', error)
-    alert('Error adding comment: ' + error.message)
   }
 }
 
@@ -298,6 +288,38 @@ window.openPhotoModal = function(photoUrl) {
   const img = modal.querySelector('.photo-modal-image')
   img.src = photoUrl
   modal.style.display = 'block'
+}
+
+// Global function to delete marker (called from popup buttons)
+window.deleteMarker = async (markerId) => {
+  if (window.innerWidth <= 768) {
+    // Mobile: use mobile-specific handler
+    await deleteMarkerMobile(markerId);
+  } else {
+    // Desktop: handle marker deletion
+    if (!confirm('Are you sure you want to delete this marker?')) {
+      return;
+    }
+
+    try {
+      console.log('Deleting marker:', markerId);
+      // Use the imported deleteMarker function from supabase
+      const { deleteMarker: deleteMarkerFromSupabase } = await import('./supabase.js');
+      await deleteMarkerFromSupabase(parseInt(markerId));
+      
+      console.log('Marker deleted successfully');
+      alert('Marker deleted successfully!');
+      
+      // Remove marker from map
+      removeMarkerFromMap(markerId);
+      
+      // Reload page to refresh the UI
+      location.reload();
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Failed to delete marker: ' + error.message);
+    }
+  }
 }
 
 export function createMap(containerId = 'map', onMapClick) {
@@ -463,50 +485,45 @@ document.head.append(style)
 
 // Global function to update marker status
 window.updateMarkerStatus = async (markerId) => {
-  // Try to find status select in both desktop popup and mobile modal
-  let statusSelect = document.getElementById(`status-${markerId}`) ||
-                     document.querySelector(`#mobile-marker-info select[id*="status-${markerId}"]`) ||
-                     document.querySelector(`.mobile-marker-info select`)
-  
-  const newStatus = statusSelect?.value
-  
-  if (!newStatus) {
-    alert('Please select a status')
-    return
-  }
-    try {
-    const result = await updateMarkerStatus(markerId, newStatus)
-    console.log('Status update result:', result)
+  if (window.innerWidth <= 768) {
+    // Mobile: use mobile-specific handler
+    const statusSelect = document.querySelector('#mobile-marker-info .status-select') ||
+                        document.getElementById(`status-${markerId}`);
+    if (statusSelect) {
+      await updateMarkerStatusMobile(markerId, statusSelect.value);
+    }
+  } else {
+    // Desktop: handle status update
+    let statusSelect = document.getElementById(`status-${markerId}`) ||
+                       document.querySelector(`#mobile-marker-info select[id*="status-${markerId}"]`) ||
+                       document.querySelector(`.mobile-marker-info select`)
     
-    // If we get here, the update was successful
-    const marker = markerInstances.get(markerId)
-    if (marker) {
-      // Update marker color immediately
-      marker.setColor(getMarkerColor('Hive', newStatus)) // Default to Hive for color
+    const newStatus = statusSelect?.value
+    
+    if (!newStatus) {
+      alert('Please select a status')
+      return
+    }
+      try {
+      const result = await updateMarkerStatus(markerId, newStatus)
+      console.log('Status update result:', result)
       
-      // Show success feedback
-      if (window.innerWidth <= 768) {
-        closeMobileMarkerInfo()
-        const successMsg = document.createElement('div')
-        successMsg.textContent = 'Status updated successfully!'
-        successMsg.style.cssText = `
-          position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-          background: #10B981; color: white; padding: 12px 20px;
-          border-radius: 8px; z-index: 3000; font-weight: 600;
-        `
-        document.body.appendChild(successMsg)
-        setTimeout(() => successMsg.remove(), 2000)
-      } else {
+      // If we get here, the update was successful
+      const marker = markerInstances.get(markerId)
+      if (marker) {
+        // Update marker color immediately
+        marker.setColor(getMarkerColor('Hive', newStatus)) // Default to Hive for color
+        
         // Desktop: refresh popup content (simplified for now)
         alert('Status updated successfully!')
         location.reload()
       }
+      
+      console.log('Status updated successfully')
+    } catch (error) {
+      console.error('Error updating status:', error)
+      alert('Error updating status: ' + error.message)
     }
-    
-    console.log('Status updated successfully')
-  } catch (error) {
-    console.error('Error updating status:', error)
-    alert('Error updating status: ' + error.message)
   }
 }
 
@@ -519,52 +536,6 @@ window.removeMarkerPhoto = (markerId) => {
   
   if (input) input.value = '';
   if (preview) preview.style.display = 'none';
-};
-
-// Override the original updateMarkerStatus for mobile compatibility
-const originalUpdateMarkerStatus = window.updateMarkerStatus;
-window.updateMarkerStatus = async (markerId) => {
-  if (window.innerWidth <= 768) {
-    // Mobile: use mobile-specific handler
-    const statusSelect = document.querySelector('#mobile-marker-info .status-select') ||
-                        document.getElementById(`status-${markerId}`);
-    if (statusSelect) {
-      await updateMarkerStatusMobile(markerId, statusSelect.value);
-    }
-  } else {
-    // Desktop: use original handler
-    if (originalUpdateMarkerStatus) {
-      await originalUpdateMarkerStatus(markerId);
-    }
-  }
-};
-
-// Override the original addCommentToMarker for mobile compatibility
-const originalAddCommentToMarker = window.addCommentToMarker;
-window.addCommentToMarker = async (markerId) => {
-  if (window.innerWidth <= 768) {
-    // Mobile: use mobile-specific handler
-    await addCommentToMarkerMobile(markerId);
-  } else {
-    // Desktop: use original handler
-    if (originalAddCommentToMarker) {
-      await originalAddCommentToMarker(markerId);
-    }
-  }
-};
-
-// Override the original deleteMarker for mobile compatibility
-const originalDeleteMarker = window.deleteMarker;
-window.deleteMarker = async (markerId) => {
-  if (window.innerWidth <= 768) {
-    // Mobile: use mobile-specific handler
-    await deleteMarkerMobile(markerId);
-  } else {
-    // Desktop: use original handler
-    if (originalDeleteMarker) {
-      await originalDeleteMarker(markerId);
-    }
-  }
 };
 
 // Mobile detection utility
@@ -774,7 +745,9 @@ async function deleteMarkerMobile(markerId) {
 
   try {
     console.log('Deleting marker:', markerId);
-    await deleteMarker(parseInt(markerId));
+    // Use the imported deleteMarker function from supabase
+    const { deleteMarker: deleteMarkerFromSupabase } = await import('./supabase.js');
+    await deleteMarkerFromSupabase(parseInt(markerId));
     
     console.log('Marker deleted successfully');
     showMobileToast('Marker deleted successfully!');
