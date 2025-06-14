@@ -32,9 +32,14 @@ export function createMarkerForm() {
         
         <input type="hidden" name="lat">
         <input type="hidden" name="lng">
-        
-        <div id="locationPrompt" class="location-prompt">
+          <div id="locationPrompt" class="location-prompt">
           📍 Click the map to select location
+        </div>
+        
+        <div class="location-controls">
+          <button type="button" id="locateBtn" class="btn btn-locate">
+            📍 Locate Me
+          </button>
         </div>
         
         <button type="submit" class="btn btn-primary">Add Marker</button>
@@ -47,7 +52,6 @@ export function createMarkerForm() {
   window.toggleMobileForm = function() {
     formContainer.classList.toggle('expanded')
   }
-
   const form = formContainer.querySelector('#markerForm')
   const typeSelect = form.querySelector('select[name="type"]')
   const notesInput = form.querySelector('textarea[name="notes"]')
@@ -55,6 +59,7 @@ export function createMarkerForm() {
   const lngInput = form.querySelector('input[name="lng"]')
   const locationPrompt = form.querySelector('#locationPrompt')
   const errorDiv = form.querySelector('#formError')
+  const locateBtn = form.querySelector('#locateBtn')
 
   let mapRef
   
@@ -104,6 +109,7 @@ export function createMarkerForm() {
   }
 
   form.addEventListener('submit', submitForm)
+  locateBtn.addEventListener('click', locateUser)
   function handleMapClick({ lng, lat }) {
     lngInput.value = lng
     latInput.value = lat
@@ -118,6 +124,94 @@ export function createMarkerForm() {
 
   function setMap(m) {
     mapRef = m
+  }
+
+  // Geolocation function
+  function locateUser() {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by this browser.')
+      return
+    }
+
+    // Update button to show loading state
+    const originalText = locateBtn.innerHTML
+    locateBtn.innerHTML = '🔄 Locating...'
+    locateBtn.disabled = true
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        
+        // Check if coordinates are within NYC bounds (roughly)
+        const nycBounds = {
+          north: 41.0,
+          south: 40.4,
+          east: -73.4,
+          west: -74.5
+        }
+        
+        if (latitude >= nycBounds.south && latitude <= nycBounds.north &&
+            longitude >= nycBounds.west && longitude <= nycBounds.east) {
+          
+          // Set the form coordinates
+          latInput.value = latitude
+          lngInput.value = longitude
+          locationPrompt.textContent = `📍 Your location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
+          locationPrompt.classList.add('picked')
+          
+          // Center the map on user's location
+          if (mapRef) {
+            mapRef.flyTo({
+              center: [longitude, latitude],
+              zoom: 16, // Zoom in closer for precise placement
+              duration: 1500
+            })
+          }
+          
+          // Auto-expand form on mobile when location is found
+          if (window.innerWidth <= 768) {
+            formContainer.classList.add('expanded')
+          }
+          
+        } else {
+          alert('Your location appears to be outside of NYC. Please manually select a location on the map.')
+          locationPrompt.textContent = '📍 Click the map to select location'
+        }
+        
+        // Reset button
+        locateBtn.innerHTML = originalText
+        locateBtn.disabled = false
+      },
+      (error) => {
+        let errorMessage = 'Unable to retrieve your location. '
+        
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage += 'Location access was denied.'
+            break
+          case error.POSITION_UNAVAILABLE:
+            errorMessage += 'Location information is unavailable.'
+            break
+          case error.TIMEOUT:
+            errorMessage += 'The request to get location timed out.'
+            break
+          default:
+            errorMessage += 'An unknown error occurred.'
+            break
+        }
+        
+        alert(errorMessage + ' Please manually select a location on the map.')
+        
+        // Reset button
+        locateBtn.innerHTML = originalText
+        locateBtn.disabled = false
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000 // Cache location for 1 minute
+      }
+    )
   }
 
   return { handleMapClick, setMap }
