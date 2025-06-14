@@ -6,20 +6,27 @@ This list will be shared with the NY Bee Club for feedback and prioritization.
 
 ---
 
-## Short Term Features (Add Soon)
+## ✅ Recently Completed Features
 
-- **Comments with Name & Timestamp on Pins**  
-  Track conversation and history for each sighting.
-- **Status Updates on Pins**  
-  (Active, Gone, Checked, Removed, etc.) for field verification.
+- **✅ Comments with Name & Timestamp on Pins**  
+  Track conversation and history for each sighting. *(Implemented 2025-06-13)*
+- **✅ Status Updates on Pins**  
+  (Unverified, Active, Checked, Gone, Removed) for field verification. *(Implemented 2025-06-14)*
+- **✅ Photo Uploads**  
+  Attach photos to sightings with full-size modal viewing. *(Implemented 2025-06-14)*
+- **✅ Mobile Geolocation**  
+  "Locate Me" button uses GPS to center map on user location. *(Implemented 2025-06-14)*
+
+---
+
+## Short Term Features (Next Phase)
+
 - **Basic Map Filters & Search**  
-  Filter pins by type, status, or date.
-- **Export/Download Data**  
-  Export sightings as CSV/JSON for records or research.
-- **Photo Uploads**  
-  Attach photos to sightings or comments for verification.
+  Filter pins by type, status, or date range.
 - **Disclaimer/Welcome Pop-up**  
   Brief project mission, community rules, or liability note on first visit.
+- **Export/Download Data**  
+  Export sightings as CSV/JSON for records or research.
 
 ---
 
