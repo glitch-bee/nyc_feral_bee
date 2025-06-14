@@ -278,11 +278,13 @@ export function createMap(containerId = 'map', onMapClick) {
     [-74.5, 40.4], // Southwest corner (longitude, latitude)
     [-73.4, 41.0]  // Northeast corner (longitude, latitude)
   ]
-
   try {
+    // Use environment variable if available, otherwise fallback to embedded key
+    const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY || 'mbriicWDtoa7yG1tmDK0'
+    
     const map = new maplibregl.Map({
       container: mapContainer,
-      style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=mbriicWDtoa7yG1tmDK0',
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${mapTilerKey}`,
       center: [-73.935242, 40.730610], // Manhattan center
       zoom: 11,
       minZoom: 9,  // Prevent zooming out too far

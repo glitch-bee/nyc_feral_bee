@@ -1,41 +1,135 @@
-# CityHive2
+# CityHive2 - NYC Bee Sighting Map 🐝
 
-CityHive2 is a modern mapping tool for beekeepers and citizen scientists to record and share feral honey bee hives and related sightings. Built for the New York Bee Club and open to the public, it lets anyone add, edit, and view hive locations on a real-time map.
+A collaborative mapping platform for tracking bee sightings in New York City. Built for beekeepers, researchers, and citizen scientists to document and verify bee activity across the five boroughs.
 
-[//]: # (TODO: add screenshot)
+## Features ✨
 
-## Key Features
-- **Interactive map** powered by MapLibre GL JS
-- **Marker types** for hives, swarms, structures, and trees
-- **Real-time sync** via Supabase so everyone sees updates instantly
-- **Import/Export** your sightings for further analysis (CSV/JSON)
-- Works with modern browsers and mobile devices
+- **🗺️ Interactive Map** - Real-time collaborative bee sighting map
+- **📍 Location Tracking** - GPS-powered location detection and manual pin placement  
+- **💬 Community Comments** - Add comments and observations to any sighting
+- **📸 Photo Uploads** - Document sightings with photos
+- **🔄 Status System** - Track verification status (Unverified, Active, Checked, Gone, Removed)
+- **🎯 NYC-Focused** - Optimized boundaries for the five boroughs
+- **📱 Mobile-First** - Responsive design for field use
 
-## Quick Start for Developers
+## Tech Stack 🛠️
+
+- **Frontend:** Vanilla JavaScript + Vite
+- **Map:** MapLibre GL JS with MapTiler
+- **Backend:** Supabase (PostgreSQL + Realtime + Storage)
+- **Styling:** Modern CSS with Inter font
+
+## Quick Start 🚀
+
+### Option 1: Use with Default Keys (Demo)
 ```bash
-# Clone the repo
-git clone <repo-url>
+git clone https://github.com/yourusername/cityhive2.git
 cd cityhive2
-
-# Install dependencies
 npm install
-
-# Start the development server
 npm run dev
 ```
-Open `http://localhost:5173` in your browser to see the app.
 
-## How It Works
-CityHive2 uses **Vite** for fast development and bundling, **MapLibre GL JS** for the interactive map, and **Supabase** for real-time data storage and authentication. Markers are stored in Supabase and synced to the map as soon as they are added or edited.
+### Option 2: Use Your Own API Keys (Recommended)
+```bash
+git clone https://github.com/yourusername/cityhive2.git
+cd cityhive2
+npm install
 
-## Contributing
-Contributions are very welcome! Please open an issue or pull request. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+# Copy example environment file
+cp .env.example .env
 
-## Project Status and Roadmap
-CityHive2 currently loads a map, displays markers from Supabase, and provides a placeholder form for adding new sightings. Upcoming work includes marker editing, photo uploads, moderation tools, and data export features.
+# Edit .env with your own API keys:
+# VITE_SUPABASE_URL=your_supabase_project_url
+# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key  
+# VITE_MAPTILER_KEY=your_maptiler_api_key
 
-## Credits
-Created and maintained by **Usher Gay** (<pres.qns@nybeeclub.org>).
+npm run dev
+```
 
-## License
-MIT
+## Setting Up Your Own Instance 🔧
+
+### 1. Supabase Setup
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Run the SQL scripts in order:
+   - `database_setup_comments.sql` - Comments system
+   - `database_setup_photos.sql` - Photo storage
+   - `database_setup_status.sql` - Status tracking
+3. Get your project URL and anon key from Settings > API
+
+### 2. MapTiler Setup  
+1. Sign up at [maptiler.com](https://maptiler.com)
+2. Get your API key from the dashboard
+3. Free tier includes 100,000 map loads/month
+
+### 3. Environment Configuration
+Create a `.env` file with your keys:
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_MAPTILER_KEY=your_maptiler_api_key
+```
+
+## Deployment 🌐
+
+### GitHub Pages
+```bash
+npm run build
+npm run deploy
+```
+
+### Other Platforms
+```bash
+npm run build
+# Upload dist/ folder to your hosting platform
+```
+
+## Development 👩‍💻
+
+```bash
+# Start development server
+npm run dev
+
+# Build for production  
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## Project Structure 📁
+
+```
+src/
+├── main.js          # Application entry point
+├── supabase.js      # Database functions
+├── map.js           # Map and marker logic
+├── markerform.js    # Form handling
+├── style.css        # Main styles
+└── map.css          # Map-specific styles
+
+public/
+└── cityhive-logo.svg # Logo file
+
+*.sql               # Database setup scripts
+```
+
+## Contributing 🤝
+
+This project is focused on the NYC bee community. If you'd like to contribute:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License 📄
+
+MIT License - see LICENSE file for details
+
+## Contact 📧
+
+For questions about the NYC bee community or this project, please open an issue.
+
+---
+
+**Made with 🐝 for NYC beekeepers and citizen scientists**
