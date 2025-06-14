@@ -955,9 +955,40 @@ html, body {
   overflow-y: auto;
 }
 
+/* Make sure form elements work well in mobile modal */
+.mobile-marker-info .form-file {
+  width: 100%;
+  height: 44px;
+  font-size: 14px;
+}
+
+.mobile-marker-info .photo-preview {
+  margin-top: 8px;
+  max-width: 150px;
+}
+
+.mobile-marker-info .btn-update-status {
+  width: 100%;
+  height: 44px;
+  font-size: 14px;
+}
+
 /* Hide mobile marker info on desktop */
 @media (min-width: 769px) {
   .mobile-marker-info {
     display: none !important;
   }
+}
+
+/* Photo upload section in popups */
+.photo-upload-section {
+  margin: 16px 0;
+  padding: 16px;
+  background: var(--gray-50);
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-purple);
+}
+
+.photo-upload-section .status-label {
+  color: var(--primary-purple);
 }

@@ -39,10 +39,9 @@ export function createMarkerForm() {
           <label class="form-label" for="notesInput">Notes</label>
           <textarea name="notes" id="notesInput" class="form-textarea" rows="3" placeholder="Add details about this sighting..."></textarea>
         </div>
-        
-        <div class="form-group">
+          <div class="form-group">
           <label class="form-label" for="photoInput">Photo (optional)</label>
-          <input type="file" name="photo" id="photoInput" class="form-file" accept="image/*" capture="environment">
+          <input type="file" name="photo" id="photoInput" class="form-file" accept="image/*">
           <div id="photoPreview" class="photo-preview" style="display: none;">
             <img id="previewImage" alt="Photo preview">
             <button type="button" id="removePhoto" class="btn-remove-photo">✕</button>
