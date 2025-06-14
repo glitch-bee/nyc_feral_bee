@@ -146,12 +146,25 @@ async function createPopupContent(markerId, type, notes, photo_url, status) {
         </div>
       `).join('')
     : '<div class="no-comments">No comments yet. Be the first to comment!</div>'
-    
-  const photoHtml = photo_url ? `
+      const photoHtml = photo_url ? `
     <div class="marker-photo">
-      <img src="${photo_url}" alt="Bee sighting photo" onclick="window.openPhotoModal('${photo_url}')">
+      <img src="${photo_url}" 
+           alt="Bee sighting photo" 
+           onclick="window.openPhotoModal('${photo_url}')"
+           style="max-width: 100%; height: auto; border-radius: 8px; cursor: pointer;"
+           onerror="this.style.display='none'; console.error('Failed to load image:', '${photo_url}');">
     </div>
-  ` : ''
+  ` : `
+    <div class="photo-upload-section">
+      <label for="photo-${markerId}" class="status-label">Add Photo:</label>
+      <input type="file" id="photo-${markerId}" accept="image/*" class="form-file" onchange="window.handleMarkerPhotoUpload('${markerId}', this)">
+      <div id="photo-preview-${markerId}" style="display: none;" class="photo-preview">
+        <img id="preview-img-${markerId}" alt="Photo preview">
+        <button type="button" onclick="window.removeMarkerPhoto('${markerId}')" class="btn-remove-photo">✕</button>
+      </div>
+      <button onclick="window.uploadMarkerPhoto('${markerId}')" class="btn-update-status btn-upload-photo" style="margin-top: 8px;">Upload Photo</button>
+    </div>
+  `
 
   return `
     <div class="marker-popup">
@@ -172,20 +185,8 @@ async function createPopupContent(markerId, type, notes, photo_url, status) {
           <option value="Checked" ${status === 'Checked' ? 'selected' : ''}>🟡 Checked</option>
           <option value="Gone" ${status === 'Gone' ? 'selected' : ''}>🔴 Gone</option>
           <option value="Removed" ${status === 'Removed' ? 'selected' : ''}>🗑️ Removed</option>
-        </select>
-        <button onclick="window.updateMarkerStatus('${markerId}')" class="btn-update-status">Update</button>
+        </select>        <button onclick="window.updateMarkerStatus('${markerId}')" class="btn-update-status">Update</button>
       </div>
-        ${!photo_url ? `
-      <div class="photo-upload-section">
-        <label for="photo-${markerId}" class="status-label">Add Photo:</label>
-        <input type="file" id="photo-${markerId}" accept="image/*" class="form-file" onchange="window.handleMarkerPhotoUpload('${markerId}', this)">
-        <div id="photo-preview-${markerId}" style="display: none;" class="photo-preview">
-          <img id="preview-img-${markerId}" alt="Photo preview">
-          <button type="button" onclick="window.removeMarkerPhoto('${markerId}')" class="btn-remove-photo">✕</button>
-        </div>
-        <button onclick="window.uploadMarkerPhoto('${markerId}')" class="btn-update-status" style="margin-top: 8px;">Upload Photo</button>
-      </div>
-      ` : ''}
       
       <div class="comments-section">
         <h4>Comments (${comments.length})</h4>
@@ -509,77 +510,62 @@ window.updateMarkerStatus = async (markerId) => {
   }
 }
 
-// Handle photo upload for existing markers
-window.handleMarkerPhotoUpload = async (markerId, input) => {
-  const file = input.files?.[0]
-  if (!file) return
-  
-  const preview = document.getElementById(`photo-preview-${markerId}`)
-  const previewImg = document.getElementById(`preview-img-${markerId}`)
-  
-  if (preview && previewImg) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      previewImg.src = e.target.result
-      preview.style.display = 'block'
-    }
-    reader.readAsDataURL(file)
-  }
-}
-
-// Remove photo preview for existing markers
+// Make photo upload functions globally available for existing markers
+window.handleMarkerPhotoUpload = handleMobilePhotoUpload;
+window.uploadMarkerPhoto = uploadMarkerPhotoMobile;
 window.removeMarkerPhoto = (markerId) => {
-  const input = document.getElementById(`photo-${markerId}`)
-  const preview = document.getElementById(`photo-preview-${markerId}`)
+  const input = document.getElementById(`photo-${markerId}`);
+  const preview = document.getElementById(`photo-preview-${markerId}`);
   
-  if (input) input.value = ''
-  if (preview) preview.style.display = 'none'
-}
+  if (input) input.value = '';
+  if (preview) preview.style.display = 'none';
+};
 
-// Upload photo to existing marker
-window.uploadMarkerPhoto = async (markerId) => {
-  const input = document.getElementById(`photo-${markerId}`)
-  const file = input?.files?.[0]
-  
-  if (!file) {
-    alert('Please select a photo first')
-    return
-  }
-  
-  try {
-    const { uploadPhoto, updateMarker } = await import('./supabase.js')
-    
-    // Upload photo
-    const photoResult = await uploadPhoto(file)
-    console.log('Photo upload result:', photoResult)
-    
-    // Update marker with photo URL
-    const updateResult = await updateMarker(parseInt(markerId), { photo_url: photoResult.url })
-    console.log('Marker update result:', updateResult)
-    
-    // Show success and refresh
-    if (window.innerWidth <= 768) {
-      closeMobileMarkerInfo()
-      const successMsg = document.createElement('div')
-      successMsg.textContent = 'Photo uploaded successfully!'
-      successMsg.style.cssText = `
-        position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-        background: #10B981; color: white; padding: 12px 20px;
-        border-radius: 8px; z-index: 3000; font-weight: 600;
-      `
-      document.body.appendChild(successMsg)
-      setTimeout(() => successMsg.remove(), 2000)
-    } else {
-      alert('Photo uploaded successfully!')
-      location.reload()
+// Override the original updateMarkerStatus for mobile compatibility
+const originalUpdateMarkerStatus = window.updateMarkerStatus;
+window.updateMarkerStatus = async (markerId) => {
+  if (window.innerWidth <= 768) {
+    // Mobile: use mobile-specific handler
+    const statusSelect = document.querySelector('#mobile-marker-info .status-select') ||
+                        document.getElementById(`status-${markerId}`);
+    if (statusSelect) {
+      await updateMarkerStatusMobile(markerId, statusSelect.value);
     }
-    
-    console.log('Photo uploaded successfully to marker:', markerId)
-  } catch (error) {
-    console.error('Error uploading photo:', error)
-    alert('Error uploading photo: ' + error.message)
+  } else {
+    // Desktop: use original handler
+    if (originalUpdateMarkerStatus) {
+      await originalUpdateMarkerStatus(markerId);
+    }
   }
-}
+};
+
+// Override the original addCommentToMarker for mobile compatibility
+const originalAddCommentToMarker = window.addCommentToMarker;
+window.addCommentToMarker = async (markerId) => {
+  if (window.innerWidth <= 768) {
+    // Mobile: use mobile-specific handler
+    await addCommentToMarkerMobile(markerId);
+  } else {
+    // Desktop: use original handler
+    if (originalAddCommentToMarker) {
+      await originalAddCommentToMarker(markerId);
+    }
+  }
+};
+
+// Override the original deleteMarker for mobile compatibility
+const originalDeleteMarker = window.deleteMarker;
+window.deleteMarker = async (markerId) => {
+  if (window.innerWidth <= 768) {
+    // Mobile: use mobile-specific handler
+    await deleteMarkerMobile(markerId);
+  } else {
+    // Desktop: use original handler
+    if (originalDeleteMarker) {
+      await originalDeleteMarker(markerId);
+    }
+  }
+};
 
 // Mobile detection utility
 function isMobile() {
@@ -601,42 +587,275 @@ function createMobileMarkerInfo() {
 
 // Show marker info in mobile-friendly way
 async function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
-  const mobileInfo = createMobileMarkerInfo()
+  console.log('Showing mobile marker info for:', markerId);
   
-  // Get the existing popup content but display it in mobile container
-  const content = await createPopupContent(markerId, type, notes, photo_url, status)
-  
-  mobileInfo.innerHTML = `
-    <div class="mobile-marker-content-wrapper">
-      <div class="mobile-marker-header">
-        <h3>Marker Details</h3>
-        <button onclick="closeMobileMarkerInfo()" class="btn-close-mobile">✕</button>
+  // Remove any existing mobile modal
+  const existingModal = document.getElementById('mobile-marker-info');
+  if (existingModal) {
+    existingModal.remove();
+  }
+
+  // Create mobile modal container
+  const modalContainer = document.createElement('div');
+  modalContainer.id = 'mobile-marker-info';
+  modalContainer.className = 'mobile-marker-info';
+
+  try {
+    // Get marker data
+    const markerData = { id: markerId, type, notes, photo_url, status };
+    const content = await createPopupContent(markerId, type, notes, photo_url, status);
+    
+    modalContainer.innerHTML = `
+      <div class="mobile-marker-content-wrapper">
+        <div class="mobile-marker-header">
+          <h3>Marker Details</h3>
+          <button onclick="closeMobileMarkerInfo()" class="btn-close-mobile">✕</button>
+        </div>
+        <div class="mobile-marker-content">
+          ${content}
+        </div>
       </div>
-      <div class="mobile-marker-content">
-        ${content}
+    `;
+    
+    modalContainer.style.display = 'flex';
+    document.body.appendChild(modalContainer);
+    
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+    
+    // Close on backdrop click
+    modalContainer.addEventListener('click', (e) => {
+      if (e.target === modalContainer) {
+        closeMobileMarkerInfo();
+      }
+    });
+
+    // Add mobile-specific event listeners
+    addMobileEventListeners(markerId);
+    
+  } catch (error) {
+    console.error('Error creating mobile marker info:', error);
+    modalContainer.innerHTML = `
+      <div class="mobile-marker-content-wrapper">
+        <div class="mobile-marker-header">
+          <h3>Error</h3>
+          <button onclick="closeMobileMarkerInfo()" class="btn-close-mobile">✕</button>
+        </div>
+        <div class="mobile-marker-content">
+          <p>Error loading marker information: ${error.message}</p>
+        </div>
       </div>
-    </div>
-  `
-  mobileInfo.style.display = 'flex'
-  
-  // Prevent body scrolling when modal is open
-  document.body.style.overflow = 'hidden'
-  
-  // Close on backdrop click
-  mobileInfo.addEventListener('click', (e) => {
-    if (e.target === mobileInfo) {
-      closeMobileMarkerInfo()
-    }
-  })
+    `;
+    modalContainer.style.display = 'flex';
+    document.body.appendChild(modalContainer);
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Add mobile-specific event listeners
+function addMobileEventListeners(markerId) {
+  // Status update button
+  const statusBtn = document.querySelector('#mobile-marker-info .btn-update-status');
+  if (statusBtn) {
+    statusBtn.onclick = function() {
+      const statusSelect = document.querySelector('#mobile-marker-info .status-select');
+      if (statusSelect) {
+        updateMarkerStatusMobile(markerId, statusSelect.value);
+      }
+    };
+  }
+
+  // Comment button
+  const commentBtn = document.querySelector('#mobile-marker-info .btn-comment');
+  if (commentBtn) {
+    commentBtn.onclick = function() {
+      addCommentToMarkerMobile(markerId);
+    };
+  }
+
+  // Delete button
+  const deleteBtn = document.querySelector('#mobile-marker-info .btn-delete');
+  if (deleteBtn) {
+    deleteBtn.onclick = function() {
+      deleteMarkerMobile(markerId);
+    };
+  }
+
+  // Photo upload
+  const photoInput = document.querySelector('#mobile-marker-info input[type="file"]');
+  if (photoInput) {
+    photoInput.onchange = function() {
+      if (this.files && this.files[0]) {
+        handleMobilePhotoUpload(markerId, this);
+      }
+    };
+  }
+
+  // Photo upload button
+  const photoUploadBtn = document.querySelector('#mobile-marker-info .btn-upload-photo');
+  if (photoUploadBtn) {
+    photoUploadBtn.onclick = function() {
+      uploadMarkerPhotoMobile(markerId);
+    };
+  }
 }
 
 // Close mobile marker info
 window.closeMobileMarkerInfo = function() {
   const mobileInfo = document.getElementById('mobile-marker-info')
   if (mobileInfo) {
-    mobileInfo.style.display = 'none'
+    mobileInfo.remove()
     // Re-enable body scrolling
     document.body.style.overflow = ''
   }
+}
+
+// Make mobile functions globally available
+window.showMobileToast = showMobileToast;
+
+// Mobile-specific functions with proper error handling
+async function updateMarkerStatusMobile(markerId, newStatus) {
+  try {
+    console.log('Updating marker status:', markerId, newStatus);
+    await updateMarkerStatus(parseInt(markerId), newStatus);
+    
+    console.log('Status updated successfully');
+    showMobileToast('Status updated successfully!');
+    closeMobileMarkerInfo();
+    
+    // Update marker color immediately
+    const marker = markerInstances.get(markerId);
+    if (marker) {
+      marker.setColor(getMarkerColor('Hive', newStatus));
+    }
+  } catch (error) {
+    console.error('Status update failed:', error);
+    alert('Failed to update status: ' + error.message);
+  }
+}
+
+async function addCommentToMarkerMobile(markerId) {
+  try {
+    const nameInput = document.querySelector('#mobile-marker-info .comment-author-input');
+    const commentInput = document.querySelector('#mobile-marker-info .comment-input');
+    
+    if (!nameInput || !commentInput) {
+      console.error('Comment inputs not found');
+      alert('Error: Comment form not found');
+      return;
+    }
+
+    const authorName = nameInput.value.trim() || 'Anonymous';
+    const commentText = commentInput.value.trim();
+
+    if (!commentText) {
+      alert('Please enter a comment');
+      return;
+    }
+
+    console.log('Adding comment:', { markerId, authorName, commentText });
+    
+    await addComment(parseInt(markerId), commentText, authorName);
+    
+    console.log('Comment added successfully');
+    showMobileToast('Comment added successfully!');
+    closeMobileMarkerInfo();
+    
+  } catch (error) {
+    console.error('Comment failed:', error);
+    alert('Failed to add comment: ' + error.message);
+  }
+}
+
+async function deleteMarkerMobile(markerId) {
+  if (!confirm('Are you sure you want to delete this marker?')) {
+    return;
+  }
+
+  try {
+    console.log('Deleting marker:', markerId);
+    await deleteMarker(parseInt(markerId));
+    
+    console.log('Marker deleted successfully');
+    showMobileToast('Marker deleted successfully!');
+    closeMobileMarkerInfo();
+    
+    // Remove marker from map
+    removeMarkerFromMap(markerId);
+  } catch (error) {
+    console.error('Delete failed:', error);
+    alert('Failed to delete marker: ' + error.message);
+  }
+}
+
+async function handleMobilePhotoUpload(markerId, fileInput) {
+  if (!fileInput.files || !fileInput.files[0]) return;
+
+  const preview = document.querySelector(`#photo-preview-${markerId}`);
+  const previewImg = document.querySelector(`#preview-img-${markerId}`);
+  
+  if (preview && previewImg) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewImg.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  }
+}
+
+async function uploadMarkerPhotoMobile(markerId) {
+  const input = document.querySelector(`#photo-${markerId}`);
+  const file = input?.files?.[0];
+  
+  if (!file) {
+    alert('Please select a photo first');
+    return;
+  }
+
+  try {
+    console.log('Uploading photo for marker:', markerId);
+    showMobileToast('Uploading photo...');
+    
+    const photoResult = await uploadPhoto(file);
+    console.log('Photo uploaded, result:', photoResult);
+    
+    await updateMarker(parseInt(markerId), { photo_url: photoResult.url });
+    
+    console.log('Photo saved successfully');
+    showMobileToast('Photo uploaded successfully!');
+    closeMobileMarkerInfo();
+    
+  } catch (error) {
+    console.error('Photo upload failed:', error);
+    alert('Failed to upload photo: ' + error.message);
+  }
+}
+
+// Mobile toast notification
+function showMobileToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'mobile-toast';
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #10B981;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    z-index: 10000;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  `;
+  
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
 
