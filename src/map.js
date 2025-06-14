@@ -42,13 +42,24 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
     offset: 25,
     maxWidth: '350px'
   }).setHTML(popupContent)
-  
-  const marker = new maplibregl.Marker({
+    const marker = new maplibregl.Marker({
     color: getMarkerColor(type, status)
   })
     .setLngLat([lng, lat])
-    .setPopup(popup)
-    .addTo(map)
+
+  // Different behavior for mobile vs desktop
+  if (isMobile()) {
+    // On mobile: click shows info in fixed container, no popup
+    marker.getElement().addEventListener('click', (e) => {
+      e.stopPropagation() // Prevent map click events
+      showMobileMarkerInfo(id, type, notes, photo_url, status)
+    })
+  } else {
+    // On desktop: use traditional popup
+    marker.setPopup(popup)
+  }
+
+  marker.addTo(map)
 
   // Store marker reference
   markerInstances.set(id, marker)
@@ -382,6 +393,43 @@ style.textContent = `
   height: auto;
   border-radius: 8px;
 }
+
+.mobile-marker-info {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.mobile-marker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.mobile-marker-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.btn-close-mobile {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
 `
 document.head.append(style)
 
@@ -422,6 +470,51 @@ window.updateMarkerStatus = async (markerId) => {
   } catch (error) {
     console.error('Error updating marker status:', error)
     alert('Failed to update status. Please try again.')
+  }
+}
+
+// Mobile detection utility
+function isMobile() {
+  return window.innerWidth <= 768
+}
+
+// Mobile marker info container
+function createMobileMarkerInfo() {
+  let mobileInfo = document.getElementById('mobile-marker-info')
+  if (!mobileInfo) {
+    mobileInfo = document.createElement('div')
+    mobileInfo.id = 'mobile-marker-info'
+    mobileInfo.className = 'mobile-marker-info'
+    mobileInfo.style.display = 'none'
+    document.body.appendChild(mobileInfo)
+  }
+  return mobileInfo
+}
+
+// Show marker info in mobile-friendly way
+function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
+  const mobileInfo = createMobileMarkerInfo()
+  
+  // Get the existing popup content but display it in mobile container
+  createPopupContent(markerId, type, notes, photo_url, status).then(content => {
+    mobileInfo.innerHTML = `
+      <div class="mobile-marker-header">
+        <h3>Marker Details</h3>
+        <button onclick="closeMobileMarkerInfo()" class="btn-close-mobile">✕</button>
+      </div>
+      <div class="mobile-marker-content">
+        ${content}
+      </div>
+    `
+    mobileInfo.style.display = 'block'
+  })
+}
+
+// Close mobile marker info
+window.closeMobileMarkerInfo = function() {
+  const mobileInfo = document.getElementById('mobile-marker-info')
+  if (mobileInfo) {
+    mobileInfo.style.display = 'none'
   }
 }
 
