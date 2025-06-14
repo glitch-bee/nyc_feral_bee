@@ -17,6 +17,11 @@ dist-ssr
 .env.local
 .env.*.local
 
+# Local troubleshooting and notes (keep local only)
+TROUBLESHOOTING_LOCAL.txt
+*_LOCAL.txt
+notes_local.txt
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
