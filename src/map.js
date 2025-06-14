@@ -37,25 +37,28 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
       </div>
     `
   }
-  
-  const popup = new maplibregl.Popup({ 
-    offset: 25,
-    maxWidth: '350px'
-  }).setHTML(popupContent)
-    const marker = new maplibregl.Marker({
+    // Check if mobile at time of marker creation
+  const isMobileDevice = window.innerWidth <= 768
+
+  const marker = new maplibregl.Marker({
     color: getMarkerColor(type, status)
   })
     .setLngLat([lng, lat])
 
-  // Different behavior for mobile vs desktop
-  if (isMobile()) {
-    // On mobile: click shows info in fixed container, no popup
-    marker.getElement().addEventListener('click', (e) => {
-      e.stopPropagation() // Prevent map click events
-      showMobileMarkerInfo(id, type, notes, photo_url, status)
+  if (isMobileDevice) {
+    // Mobile: NO popup, custom click handler only
+    marker.getElement().addEventListener('click', async (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      await showMobileMarkerInfo(id, type, notes, photo_url, status)
     })
   } else {
-    // On desktop: use traditional popup
+    // Desktop: create and attach popup
+    const popup = new maplibregl.Popup({ 
+      offset: 25,
+      maxWidth: '350px'
+    }).setHTML(popupContent)
+    
     marker.setPopup(popup)
   }
 
@@ -492,12 +495,14 @@ function createMobileMarkerInfo() {
 }
 
 // Show marker info in mobile-friendly way
-function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
+async function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
   const mobileInfo = createMobileMarkerInfo()
   
   // Get the existing popup content but display it in mobile container
-  createPopupContent(markerId, type, notes, photo_url, status).then(content => {
-    mobileInfo.innerHTML = `
+  const content = await createPopupContent(markerId, type, notes, photo_url, status)
+  
+  mobileInfo.innerHTML = `
+    <div class="mobile-marker-content-wrapper">
       <div class="mobile-marker-header">
         <h3>Marker Details</h3>
         <button onclick="closeMobileMarkerInfo()" class="btn-close-mobile">✕</button>
@@ -505,8 +510,18 @@ function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
       <div class="mobile-marker-content">
         ${content}
       </div>
-    `
-    mobileInfo.style.display = 'block'
+    </div>
+  `
+  mobileInfo.style.display = 'flex'
+  
+  // Prevent body scrolling when modal is open
+  document.body.style.overflow = 'hidden'
+  
+  // Close on backdrop click
+  mobileInfo.addEventListener('click', (e) => {
+    if (e.target === mobileInfo) {
+      closeMobileMarkerInfo()
+    }
   })
 }
 
@@ -515,6 +530,8 @@ window.closeMobileMarkerInfo = function() {
   const mobileInfo = document.getElementById('mobile-marker-info')
   if (mobileInfo) {
     mobileInfo.style.display = 'none'
+    // Re-enable body scrolling
+    document.body.style.overflow = ''
   }
 }
 
