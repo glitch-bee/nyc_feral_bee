@@ -26,14 +26,14 @@ window.deleteMarker = async (markerId) => {
 }
 
 // Helper to update markers on the map
-function updateMapMarkers(map, markers) {
+async function updateMapMarkers(map, markers) {
   // Clear existing markers
   clearAllMarkers()
   
   // Add new markers
-  markers.forEach((marker) => {
-    addMarkerToMap(map, marker)
-  })
+  for (const marker of markers) {
+    await addMarkerToMap(map, marker)
+  }
 }
 
 async function fetchAndDisplayMarkers() {
@@ -45,10 +45,9 @@ async function fetchAndDisplayMarkers() {
     // Only update if markers changed
     if (JSON.stringify(markers) === JSON.stringify(currentMarkers)) return
     currentMarkers = markers
-    
-    // Update markers on existing map
+      // Update markers on existing map
     if (map) {
-      updateMapMarkers(map, markers)
+      await updateMapMarkers(map, markers)
     }
   } catch (err) {
     console.error('Unexpected error fetching markers:', err)

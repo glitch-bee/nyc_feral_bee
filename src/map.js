@@ -1,13 +1,14 @@
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map.css'
+import { getComments, addComment } from './supabase.js'
 
 console.log('map.js loaded, maplibregl:', maplibregl)
 
 // Store marker references for management
 let markerInstances = new Map()
 
-export function addMarkerToMap(map, { id, lat, lng, type, notes }) {
+export async function addMarkerToMap(map, { id, lat, lng, type, notes }) {
   if (!map) return
 
   // Remove existing marker if it exists
@@ -15,9 +16,31 @@ export function addMarkerToMap(map, { id, lat, lng, type, notes }) {
     markerInstances.get(id).remove()
   }
 
-  const popup = new maplibregl.Popup({ offset: 25 }).setHTML(
-    `<strong>${type}</strong><p>${notes}</p><small>ID: ${id}</small><br><button onclick="window.deleteMarker('${id}')" class="btn-primary">Delete</button>`
-  )
+  // Create popup with comments (with fallback)
+  let popupContent
+  try {
+    popupContent = await createPopupContent(id, type, notes)
+  } catch (error) {
+    console.warn('Using fallback popup for marker', id, ':', error)
+    // Fallback to simple popup if comments fail
+    popupContent = `
+      <div class="marker-popup">
+        <div class="marker-info">
+          <strong class="marker-type">${type}</strong>
+          <p class="marker-notes">${notes}</p>
+          <small class="marker-id">ID: ${id}</small>
+        </div>
+        <div class="comment-buttons">
+          <button onclick="window.deleteMarker('${id}')" class="btn-delete">Delete Pin</button>
+        </div>
+      </div>
+    `
+  }
+  
+  const popup = new maplibregl.Popup({ 
+    offset: 25,
+    maxWidth: '350px'
+  }).setHTML(popupContent)
   
   const marker = new maplibregl.Marker({
     color: getMarkerColor(type)
@@ -52,6 +75,101 @@ function getMarkerColor(type) {
     'Tree': '#00aa00'
   }
   return colors[type] || '#333333'
+}
+
+// Create popup content with comments
+async function createPopupContent(markerId, type, notes) {
+  let comments = []
+  
+  // Try to get comments, but don't fail if there's an error
+  try {
+    comments = await getComments(markerId)
+  } catch (error) {
+    console.warn('Could not fetch comments for marker', markerId, ':', error)
+    comments = []
+  }
+  
+  const commentsHtml = comments.length > 0 
+    ? comments.map(comment => `
+        <div class="comment">
+          <div class="comment-author">${comment.author_name}</div>
+          <div class="comment-text">${comment.comment_text}</div>
+          <div class="comment-time">${formatDate(comment.timestamp)}</div>
+        </div>
+      `).join('')
+    : '<div class="no-comments">No comments yet. Be the first to comment!</div>'
+
+  return `
+    <div class="marker-popup">
+      <div class="marker-info">
+        <strong class="marker-type">${type}</strong>
+        <p class="marker-notes">${notes}</p>
+        <small class="marker-id">ID: ${markerId}</small>
+      </div>
+      
+      <div class="comments-section">
+        <h4>Comments (${comments.length})</h4>
+        <div class="comments-list">
+          ${commentsHtml}
+        </div>
+        
+        <div class="add-comment-form">
+          <input type="text" id="author-${markerId}" placeholder="Your name (optional)" class="comment-author-input">
+          <textarea id="comment-${markerId}" placeholder="Add a comment..." class="comment-input"></textarea>
+          <div class="comment-buttons">
+            <button onclick="window.addCommentToMarker('${markerId}')" class="btn-comment">Add Comment</button>
+            <button onclick="window.deleteMarker('${markerId}')" class="btn-delete">Delete Pin</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+}
+
+// Helper function to format dates
+function formatDate(timestamp) {
+  const date = new Date(timestamp)
+  return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+}
+
+// Global function to add comments (called from popup buttons)
+window.addCommentToMarker = async (markerId) => {
+  const authorInput = document.getElementById(`author-${markerId}`)
+  const commentInput = document.getElementById(`comment-${markerId}`)
+  
+  const authorName = authorInput?.value.trim() || 'Anonymous'
+  const commentText = commentInput?.value.trim()
+  
+  if (!commentText) {
+    alert('Please enter a comment')
+    return
+  }
+  
+  try {
+    await addComment(markerId, commentText, authorName)
+    
+    // Clear the inputs
+    if (authorInput) authorInput.value = ''
+    if (commentInput) commentInput.value = ''
+    
+    // Refresh the popup by getting the marker and updating its popup
+    const marker = markerInstances.get(markerId)
+    if (marker) {
+      const popup = marker.getPopup()
+      const markerData = { 
+        id: markerId, 
+        type: popup._content.querySelector('.marker-type')?.textContent || '',
+        notes: popup._content.querySelector('.marker-notes')?.textContent || ''
+      }
+      const newContent = await createPopupContent(markerId, markerData.type, markerData.notes)
+      popup.setHTML(newContent)
+    }
+    
+    console.log('Comment added successfully to marker:', markerId)
+  } catch (error) {
+    console.error('Error adding comment:', error)
+    alert('Failed to add comment. Please try again.')
+  }
 }
 
 export function createMap(containerId = 'map', onMapClick) {

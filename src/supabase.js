@@ -72,3 +72,39 @@ export async function updateMarker(markerId, updates) {
 
   return data
 }
+
+// Comment-related functions
+export async function addComment(markerId, commentText, authorName = 'Anonymous') {
+  const { data, error } = await supabase
+    .from('comments')
+    .insert([{
+      marker_id: markerId,
+      comment_text: commentText,
+      author_name: authorName,
+      timestamp: new Date().toISOString()
+    }])
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error adding comment:', error)
+    throw error
+  }
+
+  return data
+}
+
+export async function getComments(markerId) {
+  const { data, error } = await supabase
+    .from('comments')
+    .select('*')
+    .eq('marker_id', markerId)
+    .order('timestamp', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching comments:', error)
+    throw error
+  }
+
+  return data || []
+}
