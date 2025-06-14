@@ -695,3 +695,89 @@ html, body {
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
+
+/* Status system styles */
+.marker-status {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 8px 0;
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  border: 1px solid;
+}
+
+.status-unverified {
+  background: rgba(156, 163, 175, 0.1);
+  color: #6B7280;
+  border-color: #D1D5DB;
+}
+
+.status-active {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border-color: #10B981;
+}
+
+.status-checked {
+  background: rgba(245, 158, 11, 0.1);
+  color: #D97706;
+  border-color: #F59E0B;
+}
+
+.status-gone {
+  background: rgba(239, 68, 68, 0.1);
+  color: #DC2626;
+  border-color: #EF4444;
+}
+
+.status-removed {
+  background: rgba(107, 114, 128, 0.1);
+  color: #6B7280;
+  border-color: #9CA3AF;
+}
+
+/* Status update section */
+.status-update-section {
+  margin: 16px 0;
+  padding: 12px;
+  background: var(--gray-50);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary-teal);
+}
+
+.status-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-900);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.status-select {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--gray-100);
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  background: white;
+}
+
+.btn-update-status {
+  background: linear-gradient(135deg, var(--primary-teal), #059669);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.btn-update-status:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+}

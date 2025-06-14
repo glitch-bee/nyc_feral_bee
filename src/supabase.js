@@ -14,6 +14,7 @@ export async function addMarker(markerData) {
       lng: markerData.lng,
       type: markerData.type,
       notes: markerData.notes,
+      status: markerData.status || 'Unverified',
       photo_url: markerData.photo_url || null,
       timestamp: new Date().toISOString(),
       // user_id: markerData.user_id, // for future use
@@ -71,6 +72,14 @@ export async function updateMarker(markerId, updates) {
   }
 
   return data
+}
+
+// Update marker status specifically
+export async function updateMarkerStatus(markerId, status) {
+  return updateMarker(markerId, { 
+    status: status,
+    timestamp: new Date().toISOString() // Update timestamp when status changes
+  })
 }
 
 // Comment-related functions

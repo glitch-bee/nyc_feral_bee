@@ -14,8 +14,7 @@ export function createMarkerForm() {
     
     <!-- Form content -->
     <div class="mobile-form-content">
-      <form id="markerForm">
-        <div class="form-group">
+      <form id="markerForm">        <div class="form-group">
           <label class="form-label" for="typeSelect">Marker Type</label>
           <select name="type" id="typeSelect" class="form-select">
             <option value="Hive">🍯 Hive</option>
@@ -24,6 +23,18 @@ export function createMarkerForm() {
             <option value="Tree">🌳 Tree</option>
           </select>
         </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="statusSelect">Status</label>
+          <select name="status" id="statusSelect" class="form-select">
+            <option value="Unverified">⚪ Unverified</option>
+            <option value="Active">🟢 Active</option>
+            <option value="Checked">🟡 Checked</option>
+            <option value="Gone">🔴 Gone</option>
+            <option value="Removed">🗑️ Removed</option>
+          </select>
+        </div>
+        
           <div class="form-group">
           <label class="form-label" for="notesInput">Notes</label>
           <textarea name="notes" id="notesInput" class="form-textarea" rows="3" placeholder="Add details about this sighting..."></textarea>
@@ -59,9 +70,9 @@ export function createMarkerForm() {
   window.toggleMobileForm = function() {
     formContainer.classList.toggle('expanded')
   }
-
   const form = formContainer.querySelector('#markerForm')
   const typeSelect = form.querySelector('select[name="type"]')
+  const statusSelect = form.querySelector('select[name="status"]')
   const notesInput = form.querySelector('textarea[name="notes"]')
   const photoInput = form.querySelector('input[name="photo"]')
   const photoPreview = form.querySelector('#photoPreview')
@@ -86,9 +97,9 @@ export function createMarkerForm() {
       errorDiv.style.display = 'block'
       return
     }
-    
-    const markerData = { 
+      const markerData = { 
       type: typeSelect.value, 
+      status: statusSelect.value,
       notes: notesInput.value, 
       lat, 
       lng 

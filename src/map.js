@@ -1,14 +1,14 @@
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map.css'
-import { getComments, addComment } from './supabase.js'
+import { getComments, addComment, updateMarkerStatus } from './supabase.js'
 
 console.log('map.js loaded, maplibregl:', maplibregl)
 
 // Store marker references for management
 let markerInstances = new Map()
 
-export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url }) {
+export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url, status }) {
   if (!map) return
 
   // Remove existing marker if it exists
@@ -19,7 +19,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
   // Create popup with comments (with fallback)
   let popupContent
   try {
-    popupContent = await createPopupContent(id, type, notes, photo_url)
+    popupContent = await createPopupContent(id, type, notes, photo_url, status)
   } catch (error) {
     console.warn('Using fallback popup for marker', id, ':', error)
     // Fallback to simple popup if comments fail
@@ -27,6 +27,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
       <div class="marker-popup">
         <div class="marker-info">
           <strong class="marker-type">${type}</strong>
+          <div class="marker-status status-${status?.toLowerCase() || 'unverified'}">${getStatusEmoji(status)} ${status || 'Unverified'}</div>
           <p class="marker-notes">${notes}</p>
           <small class="marker-id">ID: ${id}</small>
         </div>
@@ -43,7 +44,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
   }).setHTML(popupContent)
   
   const marker = new maplibregl.Marker({
-    color: getMarkerColor(type)
+    color: getMarkerColor(type, status)
   })
     .setLngLat([lng, lat])
     .setPopup(popup)
@@ -67,18 +68,51 @@ export function clearAllMarkers() {
   markerInstances.clear()
 }
 
-function getMarkerColor(type) {
-  const colors = {
+function getMarkerColor(type, status) {
+  // Base colors by type
+  const baseColors = {
     'Hive': '#ffaa00',
     'Swarm': '#ff6600', 
     'Structure': '#666666',
     'Tree': '#00aa00'
   }
-  return colors[type] || '#333333'
+  
+  // Status modifications
+  const statusModifiers = {
+    'Active': 1.0,      // Full brightness
+    'Checked': 0.8,     // Slightly dimmed
+    'Unverified': 0.6,  // More dimmed
+    'Gone': 0.3,        // Very dimmed
+    'Removed': 0.2      // Almost grey
+  }
+  
+  const baseColor = baseColors[type] || '#333333'
+  const modifier = statusModifiers[status] || 0.6
+  
+  if (modifier === 1.0) return baseColor
+  
+  // Convert hex to RGB, apply modifier, convert back
+  const hex = baseColor.replace('#', '')
+  const r = Math.round(parseInt(hex.substr(0, 2), 16) * modifier)
+  const g = Math.round(parseInt(hex.substr(2, 2), 16) * modifier)
+  const b = Math.round(parseInt(hex.substr(4, 2), 16) * modifier)
+  
+  return `rgb(${r}, ${g}, ${b})`
+}
+
+function getStatusEmoji(status) {
+  const emojis = {
+    'Unverified': '⚪',
+    'Active': '🟢',
+    'Checked': '🟡',
+    'Gone': '🔴',
+    'Removed': '🗑️'
+  }
+  return emojis[status] || '⚪'
 }
 
 // Create popup content with comments
-async function createPopupContent(markerId, type, notes, photo_url) {
+async function createPopupContent(markerId, type, notes, photo_url, status) {
   let comments = []
   
   // Try to get comments, but don't fail if there's an error
@@ -109,9 +143,24 @@ async function createPopupContent(markerId, type, notes, photo_url) {
     <div class="marker-popup">
       <div class="marker-info">
         <strong class="marker-type">${type}</strong>
+        <div class="marker-status status-${status?.toLowerCase() || 'unverified'}">
+          ${getStatusEmoji(status)} ${status || 'Unverified'}
+        </div>
         <p class="marker-notes">${notes}</p>
         ${photoHtml}
         <small class="marker-id">ID: ${markerId}</small>
+      </div>
+      
+      <div class="status-update-section">
+        <label for="status-${markerId}" class="status-label">Update Status:</label>
+        <select id="status-${markerId}" class="status-select">
+          <option value="Unverified" ${status === 'Unverified' ? 'selected' : ''}>⚪ Unverified</option>
+          <option value="Active" ${status === 'Active' ? 'selected' : ''}>🟢 Active</option>
+          <option value="Checked" ${status === 'Checked' ? 'selected' : ''}>🟡 Checked</option>
+          <option value="Gone" ${status === 'Gone' ? 'selected' : ''}>🔴 Gone</option>
+          <option value="Removed" ${status === 'Removed' ? 'selected' : ''}>🗑️ Removed</option>
+        </select>
+        <button onclick="window.updateMarkerStatus('${markerId}')" class="btn-update-status">Update</button>
       </div>
       
       <div class="comments-section">
@@ -157,8 +206,7 @@ window.addCommentToMarker = async (markerId) => {
     
     // Clear the inputs
     if (authorInput) authorInput.value = ''
-    if (commentInput) commentInput.value = ''
-      // Refresh the popup by getting the marker and updating its popup
+    if (commentInput) commentInput.value = ''    // Refresh the popup by getting the marker and updating its popup
     const marker = markerInstances.get(markerId)
     if (marker) {
       const popup = marker.getPopup()
@@ -166,9 +214,10 @@ window.addCommentToMarker = async (markerId) => {
         id: markerId, 
         type: popup._content.querySelector('.marker-type')?.textContent || '',
         notes: popup._content.querySelector('.marker-notes')?.textContent || '',
-        photo_url: popup._content.querySelector('.marker-photo img')?.src || null
+        photo_url: popup._content.querySelector('.marker-photo img')?.src || null,
+        status: popup._content.querySelector('.marker-status')?.textContent?.split(' ')[1] || 'Unverified'
       }
-      const newContent = await createPopupContent(markerId, markerData.type, markerData.notes, markerData.photo_url)
+      const newContent = await createPopupContent(markerId, markerData.type, markerData.notes, markerData.photo_url, markerData.status)
       popup.setHTML(newContent)
     }
     
@@ -333,4 +382,44 @@ style.textContent = `
 }
 `
 document.head.append(style)
+
+// Global function to update marker status
+window.updateMarkerStatus = async (markerId) => {
+  const statusSelect = document.getElementById(`status-${markerId}`)
+  const newStatus = statusSelect?.value
+  
+  if (!newStatus) {
+    alert('Please select a status')
+    return
+  }
+  
+  try {
+    await updateMarkerStatus(markerId, newStatus)
+    
+    // Refresh the popup and marker color
+    const marker = markerInstances.get(markerId)
+    if (marker) {
+      const popup = marker.getPopup()
+      const markerData = { 
+        id: markerId, 
+        type: popup._content.querySelector('.marker-type')?.textContent || '',
+        notes: popup._content.querySelector('.marker-notes')?.textContent || '',
+        photo_url: popup._content.querySelector('.marker-photo img')?.src || null,
+        status: newStatus
+      }
+      
+      // Update marker color
+      marker.getElement().style.backgroundColor = getMarkerColor(markerData.type, newStatus)
+      
+      // Refresh popup content
+      const newContent = await createPopupContent(markerId, markerData.type, markerData.notes, markerData.photo_url, newStatus)
+      popup.setHTML(newContent)
+    }
+    
+    console.log('Marker status updated successfully:', markerId, newStatus)
+  } catch (error) {
+    console.error('Error updating marker status:', error)
+    alert('Failed to update status. Please try again.')
+  }
+}
 
