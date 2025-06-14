@@ -1,4 +1,4 @@
-import { addMarker } from './supabase.js'
+import { addMarker, uploadPhoto } from './supabase.js'
 import { addMarkerToMap } from './map.js'
 
 export function createMarkerForm() {
@@ -24,10 +24,18 @@ export function createMarkerForm() {
             <option value="Tree">🌳 Tree</option>
           </select>
         </div>
-        
-        <div class="form-group">
+          <div class="form-group">
           <label class="form-label" for="notesInput">Notes</label>
           <textarea name="notes" id="notesInput" class="form-textarea" rows="3" placeholder="Add details about this sighting..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="photoInput">Photo (optional)</label>
+          <input type="file" name="photo" id="photoInput" class="form-file" accept="image/*" capture="environment">
+          <div id="photoPreview" class="photo-preview" style="display: none;">
+            <img id="previewImage" alt="Photo preview">
+            <button type="button" id="removePhoto" class="btn-remove-photo">✕</button>
+          </div>
         </div>
         
         <input type="hidden" name="lat">
@@ -47,14 +55,18 @@ export function createMarkerForm() {
       </form>
     </div>
   `
-
   // Add mobile toggle functionality to global scope
   window.toggleMobileForm = function() {
     formContainer.classList.toggle('expanded')
   }
+
   const form = formContainer.querySelector('#markerForm')
   const typeSelect = form.querySelector('select[name="type"]')
   const notesInput = form.querySelector('textarea[name="notes"]')
+  const photoInput = form.querySelector('input[name="photo"]')
+  const photoPreview = form.querySelector('#photoPreview')
+  const previewImage = form.querySelector('#previewImage')
+  const removePhotoBtn = form.querySelector('#removePhoto')
   const latInput = form.querySelector('input[name="lat"]')
   const lngInput = form.querySelector('input[name="lng"]')
   const locationPrompt = form.querySelector('#locationPrompt')
@@ -62,8 +74,7 @@ export function createMarkerForm() {
   const locateBtn = form.querySelector('#locateBtn')
 
   let mapRef
-  
-  async function submitForm(e) {
+    async function submitForm(e) {
     e.preventDefault()
     errorDiv.textContent = ''
     errorDiv.style.display = 'none'
@@ -84,17 +95,41 @@ export function createMarkerForm() {
     }
     
     try {
+      // Show loading state
+      const submitBtn = form.querySelector('button[type="submit"]')
+      const originalBtnText = submitBtn.innerHTML
+      submitBtn.innerHTML = '⏳ Adding...'
+      submitBtn.disabled = true
+      
+      // Upload photo if selected
+      if (photoInput.files[0]) {
+        try {
+          const photoResult = await uploadPhoto(photoInput.files[0])
+          markerData.photo_url = photoResult.url
+        } catch (photoError) {
+          console.error('Photo upload failed:', photoError)
+          // Continue without photo rather than failing completely
+          alert('Photo upload failed, but marker will be added without photo.')
+        }
+      }
+      
       // Use the new addMarker function
       const newMarker = await addMarker(markerData)
       
       if (mapRef) {
         addMarkerToMap(mapRef, newMarker)
       }
-        form.reset()
+      
+      form.reset()
+      removePhoto() // Clear photo preview
       latInput.value = ''
       lngInput.value = ''
       locationPrompt.textContent = '📍 Click the map to select location'
       locationPrompt.classList.remove('picked')
+      
+      // Reset button
+      submitBtn.innerHTML = originalBtnText
+      submitBtn.disabled = false
       
       // Auto-collapse form on mobile after successful submission
       if (window.innerWidth <= 768) {
@@ -103,13 +138,19 @@ export function createMarkerForm() {
       
       console.log('Marker added successfully:', newMarker)
     } catch (err) {
+      // Reset button
+      const submitBtn = form.querySelector('button[type="submit"]')
+      submitBtn.innerHTML = 'Add Marker'
+      submitBtn.disabled = false
+      
       errorDiv.textContent = err.message || 'Error adding marker'
       errorDiv.style.display = 'block'
     }
   }
-
   form.addEventListener('submit', submitForm)
   locateBtn.addEventListener('click', locateUser)
+  photoInput.addEventListener('change', handlePhotoSelection)
+  removePhotoBtn.addEventListener('click', removePhoto)
   function handleMapClick({ lng, lat }) {
     lngInput.value = lng
     latInput.value = lat
@@ -213,6 +254,44 @@ export function createMarkerForm() {
       }
     )
   }
+
+  // Photo handling functions
+  function handlePhotoSelection() {
+    const file = photoInput.files[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file.')
+        photoInput.value = ''
+        return
+      }
+      
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Photo must be less than 5MB. Please choose a smaller image.')
+        photoInput.value = ''
+        return
+      }
+      
+      // Show preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        previewImage.src = e.target.result
+        photoPreview.style.display = 'block'
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+  
+  function removePhoto() {
+    photoInput.value = ''
+    photoPreview.style.display = 'none'
+    previewImage.src = ''
+  }
+
+  // Event listeners for photo handling
+  photoInput.addEventListener('change', handlePhotoSelection)
+  removePhotoBtn.addEventListener('click', removePhoto)
 
   return { handleMapClick, setMap }
 }

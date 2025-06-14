@@ -14,8 +14,8 @@ export async function addMarker(markerData) {
       lng: markerData.lng,
       type: markerData.type,
       notes: markerData.notes,
+      photo_url: markerData.photo_url || null,
       timestamp: new Date().toISOString(),
-      // photo_url: markerData.photo_url, // for future use
       // user_id: markerData.user_id, // for future use
     }])
     .select()
@@ -107,4 +107,48 @@ export async function getComments(markerId) {
   }
 
   return data || []
+}
+
+// Photo upload functions
+export async function uploadPhoto(file) {
+  // Generate unique filename
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+  const filePath = fileName
+
+  // Upload file to storage
+  const { data, error } = await supabase.storage
+    .from('bee-photos')
+    .upload(filePath, file, {
+      cacheControl: '3600',
+      upsert: false
+    })
+
+  if (error) {
+    console.error('Error uploading photo:', error)
+    throw error
+  }
+
+  // Get public URL
+  const { data: urlData } = supabase.storage
+    .from('bee-photos')
+    .getPublicUrl(filePath)
+
+  return {
+    path: data.path,
+    url: urlData.publicUrl
+  }
+}
+
+export async function deletePhoto(photoPath) {
+  const { error } = await supabase.storage
+    .from('bee-photos')
+    .remove([photoPath])
+
+  if (error) {
+    console.error('Error deleting photo:', error)
+    throw error
+  }
+
+  return true
 }

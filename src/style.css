@@ -567,3 +567,131 @@ html, body {
   background: #dc2626;
   transform: translateY(-1px);
 }
+
+/* Photo upload and display styles */
+.form-file {
+  padding: 8px 12px;
+  border: 2px dashed var(--gray-100);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+  cursor: pointer;
+  background: var(--gray-50);
+}
+
+.form-file:hover {
+  border-color: var(--primary-teal);
+}
+
+.form-file:focus {
+  outline: none;
+  border-color: var(--primary-teal);
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+}
+
+.photo-preview {
+  position: relative;
+  margin-top: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--gray-100);
+  max-width: 200px;
+}
+
+.photo-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 150px;
+  object-fit: cover;
+}
+
+.btn-remove-photo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.btn-remove-photo:hover {
+  background: rgba(239, 68, 68, 1);
+}
+
+/* Marker photo in popup */
+.marker-photo {
+  margin: 12px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.marker-photo img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+.marker-photo img:hover {
+  transform: scale(1.02);
+}
+
+/* Photo modal */
+.photo-modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.photo-modal-content {
+  position: relative;
+  margin: 5% auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.photo-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10001;
+}
+
+.photo-modal-close:hover,
+.photo-modal-close:focus {
+  color: var(--primary-teal);
+}
+
+.photo-modal-image {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}

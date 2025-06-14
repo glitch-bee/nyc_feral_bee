@@ -8,7 +8,7 @@ console.log('map.js loaded, maplibregl:', maplibregl)
 // Store marker references for management
 let markerInstances = new Map()
 
-export async function addMarkerToMap(map, { id, lat, lng, type, notes }) {
+export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url }) {
   if (!map) return
 
   // Remove existing marker if it exists
@@ -19,7 +19,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes }) {
   // Create popup with comments (with fallback)
   let popupContent
   try {
-    popupContent = await createPopupContent(id, type, notes)
+    popupContent = await createPopupContent(id, type, notes, photo_url)
   } catch (error) {
     console.warn('Using fallback popup for marker', id, ':', error)
     // Fallback to simple popup if comments fail
@@ -78,7 +78,7 @@ function getMarkerColor(type) {
 }
 
 // Create popup content with comments
-async function createPopupContent(markerId, type, notes) {
+async function createPopupContent(markerId, type, notes, photo_url) {
   let comments = []
   
   // Try to get comments, but don't fail if there's an error
@@ -98,12 +98,19 @@ async function createPopupContent(markerId, type, notes) {
         </div>
       `).join('')
     : '<div class="no-comments">No comments yet. Be the first to comment!</div>'
+    
+  const photoHtml = photo_url ? `
+    <div class="marker-photo">
+      <img src="${photo_url}" alt="Bee sighting photo" onclick="window.openPhotoModal('${photo_url}')">
+    </div>
+  ` : ''
 
   return `
     <div class="marker-popup">
       <div class="marker-info">
         <strong class="marker-type">${type}</strong>
         <p class="marker-notes">${notes}</p>
+        ${photoHtml}
         <small class="marker-id">ID: ${markerId}</small>
       </div>
       
@@ -151,17 +158,17 @@ window.addCommentToMarker = async (markerId) => {
     // Clear the inputs
     if (authorInput) authorInput.value = ''
     if (commentInput) commentInput.value = ''
-    
-    // Refresh the popup by getting the marker and updating its popup
+      // Refresh the popup by getting the marker and updating its popup
     const marker = markerInstances.get(markerId)
     if (marker) {
       const popup = marker.getPopup()
       const markerData = { 
         id: markerId, 
         type: popup._content.querySelector('.marker-type')?.textContent || '',
-        notes: popup._content.querySelector('.marker-notes')?.textContent || ''
+        notes: popup._content.querySelector('.marker-notes')?.textContent || '',
+        photo_url: popup._content.querySelector('.marker-photo img')?.src || null
       }
-      const newContent = await createPopupContent(markerId, markerData.type, markerData.notes)
+      const newContent = await createPopupContent(markerId, markerData.type, markerData.notes, markerData.photo_url)
       popup.setHTML(newContent)
     }
     
@@ -170,6 +177,39 @@ window.addCommentToMarker = async (markerId) => {
     console.error('Error adding comment:', error)
     alert('Failed to add comment. Please try again.')
   }
+}
+
+// Global function to open photo modal
+window.openPhotoModal = function(photoUrl) {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById('photoModal')
+  if (!modal) {
+    modal = document.createElement('div')
+    modal.id = 'photoModal'
+    modal.className = 'photo-modal'
+    modal.innerHTML = `
+      <div class="photo-modal-content">
+        <span class="photo-modal-close">&times;</span>
+        <img class="photo-modal-image" alt="Bee sighting photo">
+      </div>
+    `
+    document.body.appendChild(modal)
+    
+    // Add click handlers
+    modal.querySelector('.photo-modal-close').onclick = () => {
+      modal.style.display = 'none'
+    }
+    modal.onclick = (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none'
+      }
+    }
+  }
+  
+  // Show modal with photo
+  const img = modal.querySelector('.photo-modal-image')
+  img.src = photoUrl
+  modal.style.display = 'block'
 }
 
 export function createMap(containerId = 'map', onMapClick) {
@@ -256,6 +296,40 @@ style.textContent = `
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
+}
+
+.photo-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.photo-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.photo-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.photo-modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
 `
 document.head.append(style)
