@@ -11,6 +11,10 @@ let map
 let currentMarkers = []
 let formHelpers
 
+// Make map and currentMarkers globally accessible for mobile functions
+window.map = null
+window.currentMarkers = []
+
 // Global function to delete markers (called from popup buttons)
 window.deleteMarker = async (markerId) => {
   try {
@@ -42,9 +46,9 @@ async function fetchAndDisplayMarkers() {
     const markers = await getAllMarkers()
     console.log('Fetched markers:', markers)
     
-    // Only update if markers changed
-    if (JSON.stringify(markers) === JSON.stringify(currentMarkers)) return
+    // Only update if markers changed    if (JSON.stringify(markers) === JSON.stringify(currentMarkers)) return
     currentMarkers = markers
+    window.currentMarkers = markers // Keep global copy updated
       // Update markers on existing map
     if (map) {
       await updateMapMarkers(map, markers)
@@ -60,11 +64,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Initialize form first
   formHelpers = createMarkerForm()
-  console.log('Form helpers created:', formHelpers)
-    // Create map once
+  console.log('Form helpers created:', formHelpers)  // Create map once
   if (!map) {
     console.log('Creating map...')
     map = createMap('map', formHelpers?.handleMapClick)
+    window.map = map // Keep global copy updated
     if (formHelpers && map) formHelpers.setMap(map)
   }
   

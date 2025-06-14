@@ -49,7 +49,7 @@ export async function deleteMarker(markerId) {
   const { error } = await supabase
     .from('markers')
     .delete()
-    .eq('id', parseInt(markerId)) // Ensure markerId is an integer
+    .eq('id', markerId) // Keep markerId as string (UUID)
 
   if (error) {
     console.error('Error deleting marker:', error)
@@ -63,7 +63,7 @@ export async function updateMarker(markerId, updates) {
   const { data, error } = await supabase
     .from('markers')
     .update(updates)
-    .eq('id', parseInt(markerId)) // Ensure markerId is an integer
+    .eq('id', markerId) // Keep markerId as string (UUID)
     .select()
     .single()
 
@@ -75,9 +75,8 @@ export async function updateMarker(markerId, updates) {
   return data
 }
 
-// Update marker status specifically
 export async function updateMarkerStatus(markerId, status) {
-  return updateMarker(parseInt(markerId), { // Ensure markerId is an integer
+  return updateMarker(markerId, { // Keep markerId as string (UUID)
     status: status,
     timestamp: new Date().toISOString() // Update timestamp when status changes
   })
@@ -88,7 +87,7 @@ export async function addComment(markerId, commentText, authorName = 'Anonymous'
   const { data, error } = await supabase
     .from('comments')
     .insert([{
-      marker_id: parseInt(markerId), // Ensure markerId is an integer
+      marker_id: markerId, // Keep markerId as string (UUID)
       comment_text: commentText,
       author_name: authorName,
       timestamp: new Date().toISOString()
@@ -108,7 +107,7 @@ export async function getComments(markerId) {
   const { data, error } = await supabase
     .from('comments')
     .select('*')
-    .eq('marker_id', parseInt(markerId)) // Ensure markerId is an integer
+    .eq('marker_id', markerId) // Keep markerId as string (UUID)
     .order('timestamp', { ascending: true })
 
   if (error) {

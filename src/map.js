@@ -299,13 +299,11 @@ window.deleteMarker = async (markerId) => {
     // Desktop: handle marker deletion
     if (!confirm('Are you sure you want to delete this marker?')) {
       return;
-    }
-
-    try {
+    }    try {
       console.log('Deleting marker:', markerId);
       // Use the imported deleteMarker function from supabase
       const { deleteMarker: deleteMarkerFromSupabase } = await import('./supabase.js');
-      await deleteMarkerFromSupabase(parseInt(markerId));
+      await deleteMarkerFromSupabase(markerId);
       
       console.log('Marker deleted successfully');
       alert('Marker deleted successfully!');
@@ -507,19 +505,12 @@ window.updateMarkerStatus = async (markerId) => {
       try {
       const result = await updateMarkerStatus(markerId, newStatus)
       console.log('Status update result:', result)
-      
-      // If we get here, the update was successful
-      const marker = markerInstances.get(markerId)
-      if (marker) {
-        // Update marker color immediately
-        marker.setColor(getMarkerColor('Hive', newStatus)) // Default to Hive for color
-        
-        // Desktop: refresh popup content (simplified for now)
-        alert('Status updated successfully!')
-        location.reload()
-      }
-      
+        // If we get here, the update was successful
       console.log('Status updated successfully')
+      
+      // Desktop: refresh popup content
+      alert('Status updated successfully!')
+      location.reload()
     } catch (error) {
       console.error('Error updating status:', error)
       alert('Error updating status: ' + error.message)
@@ -687,18 +678,25 @@ window.showMobileToast = showMobileToast;
 // Mobile-specific functions with proper error handling
 async function updateMarkerStatusMobile(markerId, newStatus) {
   try {
-    console.log('Updating marker status:', markerId, newStatus);
-    await updateMarkerStatus(parseInt(markerId), newStatus);
+    await updateMarkerStatus(markerId, newStatus);
     
-    console.log('Status updated successfully');
     showMobileToast('Status updated successfully!');
     closeMobileMarkerInfo();
     
-    // Update marker color immediately
-    const marker = markerInstances.get(markerId);
-    if (marker) {
-      marker.setColor(getMarkerColor('Hive', newStatus));
+    // Remove the old marker and add it back with new status
+    const oldMarker = markerInstances.get(markerId);
+    if (oldMarker) {
+      const position = oldMarker.getLngLat();
+      removeMarkerFromMap(markerId);
+      
+      // Find the marker data and update it
+      const markerData = currentMarkers.find(m => m.id === markerId);
+      if (markerData && window.map) {
+        markerData.status = newStatus;
+        await addMarkerToMap(window.map, markerData);
+      }
     }
+    
   } catch (error) {
     console.error('Status update failed:', error);
     alert('Failed to update status: ' + error.message);
@@ -722,11 +720,9 @@ async function addCommentToMarkerMobile(markerId) {
     if (!commentText) {
       alert('Please enter a comment');
       return;
-    }
-
-    console.log('Adding comment:', { markerId, authorName, commentText });
+    }    console.log('Adding comment:', { markerId, authorName, commentText });
     
-    await addComment(parseInt(markerId), commentText, authorName);
+    await addComment(markerId, commentText, authorName);
     
     console.log('Comment added successfully');
     showMobileToast('Comment added successfully!');
@@ -741,20 +737,24 @@ async function addCommentToMarkerMobile(markerId) {
 async function deleteMarkerMobile(markerId) {
   if (!confirm('Are you sure you want to delete this marker?')) {
     return;
-  }
-
-  try {
+  }  try {
     console.log('Deleting marker:', markerId);
     // Use the imported deleteMarker function from supabase
     const { deleteMarker: deleteMarkerFromSupabase } = await import('./supabase.js');
-    await deleteMarkerFromSupabase(parseInt(markerId));
+    await deleteMarkerFromSupabase(markerId);
     
     console.log('Marker deleted successfully');
     showMobileToast('Marker deleted successfully!');
     closeMobileMarkerInfo();
     
-    // Remove marker from map
+    // Remove marker from map immediately
     removeMarkerFromMap(markerId);
+    
+    // Remove from currentMarkers array
+    if (window.currentMarkers) {
+      window.currentMarkers = window.currentMarkers.filter(m => m.id !== markerId);
+    }
+    
   } catch (error) {
     console.error('Delete failed:', error);
     alert('Failed to delete marker: ' + error.message);
@@ -793,7 +793,7 @@ async function uploadMarkerPhotoMobile(markerId) {
     const photoResult = await uploadPhoto(file);
     console.log('Photo uploaded, result:', photoResult);
     
-    await updateMarker(parseInt(markerId), { photo_url: photoResult.url });
+    await updateMarker(markerId, { photo_url: photoResult.url });
     
     console.log('Photo saved successfully');
     showMobileToast('Photo uploaded successfully!');
