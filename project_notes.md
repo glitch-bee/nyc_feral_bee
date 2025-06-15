@@ -7,23 +7,27 @@
 ### **Core Purpose & Users**
 
 **For Beekeepers:**
+
 - Monitor swarm activity in their area for capture opportunities
 - Track removal sites for cut-out services
 - Share hive locations with the community
 - Opt-in to receive notifications about nearby swarms or bee-inhabited structures
 
 **For Citizen Scientists:**
+
 - Contribute to feral bee colony research and conservation data
 - Document wild hive locations, behavior patterns, and health indicators
 - Track bee population trends over time
 - Collect data on tree species preferences, aggression levels, varroa presence, and colony origins
 
 **For Community Collaboration:**
+
 - Real-time sharing of bee sightings across all users
 - Collective mapping of urban bee populations
 - Research data for conservation and urban planning initiatives
 
 ### **Key Features:**
+
 - **Mobile-first responsive design** - Optimized for smartphones and field use
 - **Real-time data sync** via Supabase cloud database
 - **Interactive markers** for Hives, Swarms, Structures, and Trees
@@ -39,12 +43,14 @@
 ### **🎉 PRODUCTION-READY MOBILE APP COMPLETED!**
 
 #### **1. Mobile-First Experience**
+
 - ✅ **Fully responsive design** optimized for mobile devices
 - ✅ **Touch-friendly interface** with modal-based marker details
 - ✅ **Instant updates** without page reloads for seamless mobile experience
 - ✅ **Mobile-optimized popups** that work perfectly on small screens
 
 #### **2. Complete Marker System**
+
 - ✅ **Four marker types** with color-coded identification:
   - 🟡 **Hive** = Orange (`#ffaa00`) - Established bee colonies
   - 🔴 **Swarm** = Red-orange (`#ff6600`) - Mobile bee clusters
@@ -52,6 +58,7 @@
   - 🟢 **Tree** = Green (`#00aa00`) - Natural tree cavities with bees
 - ✅ **Status system** with visual indicators:
   - ⚪ Unverified, 🟢 Active, 🟡 Checked, 🔴 Gone, 🗑️ Removed
+
 #### **3. Advanced Features**
 
 - ✅ **Photo upload system** with cloud storage integration
@@ -152,6 +159,4 @@ The platform now supports comprehensive data gathering for:
 
 ---
 
-*Last updated: June 14, 2025*
-
-
+#### Last updated: June 14, 2025
