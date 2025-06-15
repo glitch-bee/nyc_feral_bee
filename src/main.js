@@ -64,17 +64,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Initialize form first
   formHelpers = createMarkerForm()
-  console.log('Form helpers created:', formHelpers)  // Create map once
+  console.log('Form helpers created:', formHelpers)
+  
+  // Create map once
   if (!map) {
     console.log('Creating map...')
-    map = createMap('map', formHelpers?.handleMapClick)
-    window.map = map // Keep global copy updated
-    if (formHelpers && map) formHelpers.setMap(map)
+    try {
+      map = createMap('map', formHelpers?.handleMapClick)
+      window.map = map // Keep global copy updated
+      if (formHelpers && map) formHelpers.setMap(map)
+    } catch (error) {
+      console.error('Error creating map:', error)
+    }
   }
   
   // Fetch and display initial markers
-  await fetchAndDisplayMarkers()
-  console.log('Initial markers fetched')
+  try {
+    await fetchAndDisplayMarkers()
+    console.log('Initial markers fetched')
+  } catch (error) {
+    console.error('Error fetching markers:', error)
+  }
   
   // Set up periodic refresh
   setInterval(fetchAndDisplayMarkers, 10000)

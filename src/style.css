@@ -270,11 +270,16 @@ html, body {
 }
 
 /* Mobile responsive */
-@media (max-width: 768px) {  /* Fix map to fill full screen on mobile */
-  #map {    height: calc(100vh - 80px);
+@media (max-width: 768px) {
+  /* Fix map for mobile with navigation */
+  #map {
+    height: calc(100vh - 80px);
     height: calc(100dvh - 80px); /* Dynamic viewport height for mobile browsers */
-    margin-top: 80px;
-    position: relative;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     z-index: 1;
   }
@@ -441,26 +446,11 @@ html, body {
     padding: 16px 18px;
     font-size: 16px;
   }
-  
-  .location-prompt {
+    .location-prompt {
     padding: 16px;
     font-size: 15px;
     margin-bottom: 16px;
   }
-}
-
-/* Ensure navigation is visible on mobile */
-.main-nav {
-  z-index: 10002;
-}
-
-.nav-links.nav-active {
-  z-index: 10001;
-}
-
-/* Adjust body for navigation on mobile */
-body {
-  padding-top: 0;
 }
 
 /* Add some bee-inspired touches */
