@@ -1,6 +1,26 @@
-/* Page-specific styles for About and Resources pages */
+/* 
+ * Page-specific styles for About and Resources pages
+ * 
+ * IMPORTANT FOR CODE ANALYSIS TOOLS (Codex, etc.):
+ * This file contains BOTH navigation and page-specific styles.
+ * 
+ * 1. NAVIGATION STYLES (lines ~4-103): These are duplicated in src/style.css
+ *    - This duplication is INTENTIONAL for now to ensure About/Resources pages work
+ *    - These pages load this CSS file independently from the main app
+ *    - DO NOT remove navigation styles without ensuring pages.css loads style.css
+ * 
+ * 2. PAGE-SPECIFIC STYLES (lines ~104+): These are UNIQUE to About/Resources pages
+ *    - These styles are NOT duplicated elsewhere
+ *    - Removing these WILL break the layout of About and Resources pages
+ *    - These include: .page-content, .container, .feature-grid, etc.
+ * 
+ * If you want to remove duplication:
+ * - Add <link rel="stylesheet" href="/src/style.css"> to about.html and resources.html
+ * - Then remove only the navigation styles section (lines ~4-103)
+ * - Keep all page-specific styles intact
+ */
 
-/* Navigation Styles */
+/* Navigation Styles - DUPLICATED in style.css (see comments above) */
 .main-nav {
     background: #2d4a22;
     padding: 0.75rem 0;
@@ -98,6 +118,16 @@
 .nav-toggle.nav-toggle-active span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -6px);
 }
+
+/* 
+ * PAGE-SPECIFIC STYLES START HERE
+ * 
+ * CRITICAL: The styles below are UNIQUE to About and Resources pages.
+ * They are NOT duplicated in style.css and are REQUIRED for proper layout.
+ * 
+ * DO NOT REMOVE these styles - they will break About and Resources page formatting.
+ * This includes all layout grids, cards, typography, and mobile responsive styles.
+ */
 
 /* Page Layout */
 .page-content {
