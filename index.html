@@ -3,16 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/cityhive2/cityhive-logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CityHive2 - NYC Bee Sighting Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    <title>CityHive2 - NYC Bee Sighting Map</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/cityhive2/assets/index-BRBbz5vF.js"></script>
-    <link rel="stylesheet" crossorigin href="/cityhive2/assets/index-BSjniTco.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/cityhive2/assets/index-fYa2frEZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/cityhive2/assets/index-BGa_olv0.css">
   </head>
-  <body>    <!-- App Header -->
+  <body>
+    <!-- Navigation Header -->
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <img src="/cityhive2/cityhive-logo.svg" alt="CityHive Logo" class="nav-logo">
+          <span class="brand-text">CityHive2</span>
+        </div>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link active">Map</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="resources.html" class="nav-link">Resources</a>
+        </div>
+        <div class="nav-toggle" id="navToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- App Header -->
     <div class="app-header">
       <img src="/cityhive2/cityhive-logo.svg" alt="CityHive Logo" class="app-logo">
     </div>
@@ -21,7 +41,7 @@
     <div id="map"></div>
     
     <!-- Form Container -->
-    <div id="marker-form"></div>
-    
+    <div id="marker-form"></div>
+    <script src="/src/navigation.js"></script>
   </body>
 </html>
