@@ -5,6 +5,14 @@ export default defineConfig({
   base: '/cityhive2/',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        // Use consistent filenames instead of hashes
+        entryFileNames: 'assets/index.js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/index.css'
+      }
+    }
   }
 })

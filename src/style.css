@@ -270,6 +270,18 @@ html, body {
   right: 0;
   bottom: 0;
   z-index: 1;
+  background: #f0f0f0; /* Fallback background */
+}
+
+/* Ensure MapLibre canvas takes full space */
+#map .maplibregl-canvas-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#map .maplibregl-canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Navigation Styles */
@@ -395,6 +407,7 @@ html, body {
   .nav-toggle {
     display: flex !important;
     z-index: 10003;
+    position: relative;
   }
 
   .nav-link {

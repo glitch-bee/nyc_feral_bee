@@ -1,19 +1,26 @@
 // Navigation functionality for CityHive2
 console.log('Navigation script loading...');
 
-// Navigation functionality for CityHive2
-
 function initNavigation() {
+    console.log('Initializing navigation...');
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.querySelector('.nav-links');
+    
+    console.log('navToggle found:', navToggle);
+    console.log('navLinks found:', navLinks);
 
     // Mobile navigation toggle
     if (navToggle && navLinks) {
-        navToggle.addEventListener('click', function(e) {
+        // Remove any existing listeners to prevent duplicates
+        navToggle.replaceWith(navToggle.cloneNode(true));
+        const newNavToggle = document.getElementById('navToggle');
+        
+        newNavToggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Nav toggle clicked');
             navLinks.classList.toggle('nav-active');
-            navToggle.classList.toggle('nav-toggle-active');
+            newNavToggle.classList.toggle('nav-toggle-active');
         });
 
         // Close mobile nav when clicking on links
@@ -21,19 +28,23 @@ function initNavigation() {
         navLinkElements.forEach(link => {
             link.addEventListener('click', function() {
                 navLinks.classList.remove('nav-active');
-                navToggle.classList.remove('nav-toggle-active');
+                newNavToggle.classList.remove('nav-toggle-active');
             });
         });
 
         // Close mobile nav when clicking outside
         document.addEventListener('click', function(event) {
-            const isClickInsideNav = navToggle.contains(event.target) || navLinks.contains(event.target);
+            const isClickInsideNav = newNavToggle.contains(event.target) || navLinks.contains(event.target);
             
             if (!isClickInsideNav && navLinks.classList.contains('nav-active')) {
                 navLinks.classList.remove('nav-active');
-                navToggle.classList.remove('nav-toggle-active');
+                newNavToggle.classList.remove('nav-toggle-active');
             }
         });
+        
+        console.log('Navigation event listeners attached');
+    } else {
+        console.warn('Navigation elements not found!');
     }
 
     // Smooth scroll for anchor links

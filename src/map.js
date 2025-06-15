@@ -327,10 +327,14 @@ export function createMap(containerId = 'map', onMapClick) {
   if (!mapContainer) {
     console.error('Map container not found!')
     return null
-  }
-  // Remove any placeholder text
+  }  // Remove any placeholder text and ensure container is ready
   mapContainer.textContent = ''
-  // NYC + 5 Boroughs bounds with some cushion
+  mapContainer.style.width = '100%'
+  mapContainer.style.height = '100%'
+  
+  // Force a reflow to ensure container dimensions are calculated
+  mapContainer.offsetHeight
+    // NYC + 5 Boroughs bounds with some cushion
   // Covers: Manhattan, Brooklyn, Queens, Bronx, Staten Island
   // Plus parts of NJ, Westchester, and Long Island for context
   const nycBounds = [
@@ -340,6 +344,7 @@ export function createMap(containerId = 'map', onMapClick) {
   try {
     // Use environment variable if available, otherwise fallback to embedded key
     const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY || 'mbriicWDtoa7yG1tmDK0'
+    console.log('Using MapTiler key:', mapTilerKey.substring(0, 8) + '...')
     
     const map = new maplibregl.Map({
       container: mapContainer,
@@ -352,13 +357,23 @@ export function createMap(containerId = 'map', onMapClick) {
     })
 
     console.log('MapLibre map object created:', map)
-
+    
     map.on('load', () => {
       console.log('Map loaded successfully!')
+      // Force resize to ensure proper rendering
+      setTimeout(() => {
+        map.resize()
+      }, 100)
+    })
+      map.on('error', (e) => {
+      console.error('Map error:', e)
     })
 
-    map.on('error', (e) => {
-      console.error('Map error:', e)
+    // Add resize handler for responsive behavior
+    window.addEventListener('resize', () => {
+      if (map) {
+        map.resize()
+      }
     })
 
     if (onMapClick) {
