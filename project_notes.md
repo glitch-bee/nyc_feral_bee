@@ -4,37 +4,22 @@
 
 **CityHive2** is a modern, mobile-first mapping platform designed for beekeepers, citizen scientists, and bee conservation enthusiasts. It serves as a comprehensive tool for tracking bee activity across urban environments with real-time data sharing and collaboration features.
 
-### **Core Purpose & Users**
+## **BRANDING NOTES (June 2025)**
 
-**For Beekeepers:**
+**IMPORTANT: Display naming conventions for consistency:**
 
-- Monitor swarm activity in their area for capture opportunities
-- Track removal sites for cut-out services
-- Share hive locations with the community
-- Opt-in to receive notifications about nearby swarms or bee-inhabited structures
+- **Application name:** Display as "City Hive" (not "CityHive2")
+  - Technical URLs and file paths remain `/cityhive2/` for compatibility
+  - Only update display text in HTML titles, headings, and content
 
-**For Citizen Scientists:**
+- **Organization name:** Display as "New York Bee Club" (not "NYC Bee Club")
+  - Keep all geographic references as "NYC" (NYC regulations, NYC beekeepers, etc.)
+  - Only change organization name references to "New York Bee Club"
+  - All links to nybeeclub.org remain unchanged
 
-- Contribute to feral bee colony research and conservation data
-- Document wild hive locations, behavior patterns, and health indicators
-- Track bee population trends over time
-- Collect data on tree species preferences, aggression levels, varroa presence, and colony origins
-
-**For Community Collaboration:**
-
-- Real-time sharing of bee sightings across all users
-- Collective mapping of urban bee populations
-- Research data for conservation and urban planning initiatives
-
-### **Key Features:**
-
-- **Mobile-first responsive design** - Optimized for smartphones and field use
-- **Real-time data sync** via Supabase cloud database
-- **Interactive markers** for Hives, Swarms, Structures, and Trees
-- **Comprehensive data collection** including photos, status updates, and detailed notes
-- **Community comments system** for collaborative observations
-- **Status tracking** (Active, Checked, Gone, Removed, Unverified)
-- **Photo documentation** with cloud storage integration
+**Files updated with branding:**
+- `public/about.html` - Updated all display references
+- `public/resources.html` - Updated all display references
 
 ---
 
