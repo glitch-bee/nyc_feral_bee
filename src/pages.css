@@ -8,7 +8,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 10002;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
 }
@@ -677,8 +677,7 @@
 }
 
 /* Mobile Navigation */
-@media (max-width: 768px) {
-    .nav-links {
+@media (max-width: 768px) {    .nav-links {
         position: fixed;
         top: 70px;
         left: -100%;
@@ -690,7 +689,7 @@
         align-items: center;
         padding-top: 2rem;
         transition: left 0.3s ease;
-        z-index: 999;
+        z-index: 10001;
     }
 
     .nav-links.nav-active {

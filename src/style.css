@@ -271,15 +271,11 @@ html, body {
 
 /* Mobile responsive */
 @media (max-width: 768px) {  /* Fix map to fill full screen on mobile */
-  #map {
-    height: calc(100vh - 80px);
+  #map {    height: calc(100vh - 80px);
     height: calc(100dvh - 80px); /* Dynamic viewport height for mobile browsers */
     margin-top: 80px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: relative;
+    width: 100%;
     z-index: 1;
   }
   
@@ -304,8 +300,7 @@ html, body {
     display: flex;
   }
   
-  /* Mobile form as bottom drawer */
-  #marker-form {
+  /* Mobile form as bottom drawer */  #marker-form {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -320,6 +315,7 @@ html, body {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
     overflow: hidden;
+    z-index: 1001;
   }
   
   #marker-form.expanded {
@@ -451,6 +447,20 @@ html, body {
     font-size: 15px;
     margin-bottom: 16px;
   }
+}
+
+/* Ensure navigation is visible on mobile */
+.main-nav {
+  z-index: 10002;
+}
+
+.nav-links.nav-active {
+  z-index: 10001;
+}
+
+/* Adjust body for navigation on mobile */
+body {
+  padding-top: 0;
 }
 
 /* Add some bee-inspired touches */
