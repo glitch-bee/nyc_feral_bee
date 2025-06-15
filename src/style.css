@@ -263,20 +263,155 @@ html, body {
 /* Map container */
 #map {
   width: 100%;
-  height: calc(100vh - 80px);
-  margin-top: 80px;
-  position: relative;
+  height: calc(100vh - 70px);
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
 }
 
-/* Mobile responsive */
+/* Navigation Styles */
+.main-nav {
+  background: #2d4a22;
+  padding: 0.75rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10002;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.main-nav.nav-scrolled {
+  background: rgba(45, 74, 34, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 1.25rem;
+  text-decoration: none;
+}
+
+.nav-logo {
+  width: 32px;
+  height: 32px;
+}
+
+.brand-text {
+  font-family: 'Inter', sans-serif;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffd700;
+}
+
+.nav-link.active {
+  background: #ffd700;
+  color: #2d4a22;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.nav-toggle span {
+  width: 25px;
+  height: 3px;
+  background: #ffffff;
+  transition: 0.3s;
+}
+
+.nav-toggle.nav-toggle-active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.nav-toggle-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.nav-toggle-active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Navigation */
 @media (max-width: 768px) {
-  /* Fix map for mobile with navigation */
-  #map {
-    height: calc(100vh - 80px);
-    height: calc(100dvh - 80px); /* Dynamic viewport height for mobile browsers */
+  .nav-links {
     position: fixed;
-    top: 80px;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: #2d4a22;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 2rem;
+    transition: left 0.3s ease;
+    z-index: 10001;
+  }
+
+  .nav-links.nav-active {
+    left: 0;
+  }
+
+  .nav-toggle {
+    display: flex !important;
+    z-index: 10003;
+  }
+
+  .nav-link {
+    width: 90%;
+    text-align: center;
+    margin: 0.5rem 0;
+    padding: 1rem;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {  /* Fix map for mobile with navigation */
+  #map {
+    height: calc(100vh - 70px);
+    height: calc(100dvh - 70px); /* Dynamic viewport height for mobile browsers */
+    position: fixed;
+    top: 70px;
     left: 0;
     right: 0;
     bottom: 0;
