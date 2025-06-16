@@ -18,6 +18,7 @@
   - All links to nybeeclub.org remain unchanged
 
 **Files updated with branding:**
+
 - `public/about.html` - Updated all display references
 - `public/resources.html` - Updated all display references
 
