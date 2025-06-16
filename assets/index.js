@@ -789,7 +789,7 @@ ${D.shaderPreludeCode.vertexSource}`,define:D.shaderDefine},defaultProjectionDat
       </div>
       <button onclick="window.uploadMarkerPhoto('${C}')" class="btn-update-status btn-upload-photo" style="margin-top: 8px;">Upload Photo</button>
     </div>
-  `,le=encodeURIComponent(g||"Bee Sighting"),Te=k&&b?`https://www.google.com/maps/search/?api=1&query=${k},${b}(${le})`:"",Se=k&&b?`http://maps.apple.com/?ll=${k},${b}&q=${le}`:"",ne=k&&b?`
+  `,le=encodeURIComponent(g||"Bee Sighting"),Te=k&&b?`https://www.google.com/maps/search/?api=1&query=${k},${b}(${le})`:"",Se=k&&b?`http://maps.apple.com/?daddr=${k},${b}&q=${le}`:"",ne=k&&b?`
     <div class="export-map-buttons" style="display:flex;gap:8px;margin:8px 0 4px 0;">
       <a href="${Te}" target="_blank" rel="noopener" class="export-map-btn google" style="background:#4285F4;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;font-weight:600;">Google Maps</a>
       <a href="${Se}" target="_blank" rel="noopener" class="export-map-btn apple" style="background:#222;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;font-weight:600;">Apple Maps</a>
