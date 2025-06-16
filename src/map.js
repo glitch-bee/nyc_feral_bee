@@ -6,8 +6,8 @@ import { getComments, addComment, updateMarkerStatus, deleteMarker, updateMarker
 console.log('map.js loaded, maplibregl:', maplibregl)
 
 // Store marker references for management
-let markerInstances = new Map()
-let openPopup = null;
+export let markerInstances = new Map()
+export let openPopup = null;
 
 export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url, status }) {
   if (!map) return
@@ -906,4 +906,7 @@ function showMobileToast(message) {
     toast.remove();
   }, 3000);
 }
+
+export function getOpenPopup() { return openPopup; }
+export function getMarkerInstances() { return markerInstances; }
 

@@ -1,5 +1,5 @@
 import './style.css'
-import { createMap, addMarkerToMap, clearAllMarkers, removeMarkerFromMap } from './map.js'
+import { createMap, addMarkerToMap, clearAllMarkers, removeMarkerFromMap, getMarkerInstances, getOpenPopup } from './map.js'
 import { createMarkerForm } from './markerform.js'
 import { getAllMarkers, deleteMarker } from './supabase.js'
 import { createWelcomeGuide } from './welcome.js'
@@ -32,6 +32,7 @@ window.deleteMarker = async (markerId) => {
 
 // Helper to update markers on the map
 async function updateMapMarkers(map, markers) {
+  const markerInstances = getMarkerInstances();
   // Build a set of current and new marker IDs
   const newMarkerIds = new Set(markers.map(m => m.id));
   const currentMarkerIds = new Set(markerInstances ? Array.from(markerInstances.keys()) : []);
@@ -83,6 +84,8 @@ async function fetchAndDisplayMarkers() {
     }
 
     // Store the currently open popup's marker ID if any
+    const markerInstances = getMarkerInstances();
+    const openPopup = getOpenPopup();
     const openPopupMarkerId = openPopup ? 
       Array.from(markerInstances.entries())
         .find(([_, marker]) => marker.getPopup() === openPopup)?.[0] 
