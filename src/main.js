@@ -32,12 +32,41 @@ window.deleteMarker = async (markerId) => {
 
 // Helper to update markers on the map
 async function updateMapMarkers(map, markers) {
-  // Clear existing markers
-  clearAllMarkers()
-  
-  // Add new markers
+  // Build a set of current and new marker IDs
+  const newMarkerIds = new Set(markers.map(m => m.id));
+  const currentMarkerIds = new Set(markerInstances ? Array.from(markerInstances.keys()) : []);
+
+  // Remove markers that no longer exist
+  for (const id of currentMarkerIds) {
+    if (!newMarkerIds.has(id)) {
+      removeMarkerFromMap(id);
+    }
+  }
+
+  // Add or update markers
   for (const marker of markers) {
-    await addMarkerToMap(map, marker)
+    const existingMarker = markerInstances && markerInstances.get(marker.id);
+    // If marker doesn't exist, add it
+    if (!existingMarker) {
+      await addMarkerToMap(map, marker);
+    } else {
+      // If marker data has changed, update it (remove and re-add)
+      // Compare relevant fields
+      const prev = existingMarker._markerData;
+      if (!prev || prev.lat !== marker.lat || prev.lng !== marker.lng || prev.type !== marker.type || prev.status !== marker.status || prev.notes !== marker.notes || prev.photo_url !== marker.photo_url) {
+        // Only remove if popup is not open
+        const popup = existingMarker.getPopup && existingMarker.getPopup();
+        if (!popup || !popup.isOpen()) {
+          removeMarkerFromMap(marker.id);
+          await addMarkerToMap(map, marker);
+        }
+        // If popup is open, skip update to preserve user input
+      }
+    }
+    // Store marker data for future comparison
+    if (markerInstances && markerInstances.get(marker.id)) {
+      markerInstances.get(marker.id)._markerData = { ...marker };
+    }
   }
 }
 
@@ -47,12 +76,32 @@ async function fetchAndDisplayMarkers() {
     const markers = await getAllMarkers()
     console.log('Fetched markers:', markers)
     
-    // Only update if markers changed    if (JSON.stringify(markers) === JSON.stringify(currentMarkers)) return
+    // Only update if markers changed
+    if (JSON.stringify(markers) === JSON.stringify(currentMarkers)) {
+      console.log('No marker changes detected, skipping update')
+      return
+    }
+
+    // Store the currently open popup's marker ID if any
+    const openPopupMarkerId = openPopup ? 
+      Array.from(markerInstances.entries())
+        .find(([_, marker]) => marker.getPopup() === openPopup)?.[0] 
+      : null
+
     currentMarkers = markers
     window.currentMarkers = markers // Keep global copy updated
-      // Update markers on existing map
+    
+    // Update markers on existing map
     if (map) {
       await updateMapMarkers(map, markers)
+      
+      // If there was an open popup, try to reopen it
+      if (openPopupMarkerId) {
+        const marker = markerInstances.get(openPopupMarkerId)
+        if (marker) {
+          marker.togglePopup()
+        }
+      }
     }
   } catch (err) {
     console.error('Unexpected error fetching markers:', err)
@@ -87,8 +136,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Error fetching markers:', error)
   }
   
-  // Set up periodic refresh
-  setInterval(fetchAndDisplayMarkers, 10000)
+  // Set up periodic refresh with longer interval
+  setInterval(fetchAndDisplayMarkers, 30000) // Changed from 10000 to 30000 (30 seconds)
 
   // Show welcome guide if needed
   const welcomeGuide = createWelcomeGuide()
