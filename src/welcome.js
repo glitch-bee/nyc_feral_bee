@@ -149,6 +149,14 @@ export function createWelcomeGuide() {
                 existingModal.remove();
             }
 
+            // Hide marker form on mobile when welcome is shown
+            if (isMobile) {
+                const markerForm = document.getElementById('marker-form');
+                if (markerForm) {
+                    markerForm.style.display = 'none';
+                }
+            }
+
             const modal = document.createElement('div');
             modal.className = 'welcome-modal';
             modal.innerHTML = welcomeContent;
@@ -165,6 +173,14 @@ export function createWelcomeGuide() {
                 modal.remove();
                 document.body.classList.remove('welcome-open');
                 localStorage.setItem('welcomeSeen', 'true');
+
+                // Show marker form again on mobile after welcome is dismissed
+                if (isMobile) {
+                    const markerForm = document.getElementById('marker-form');
+                    if (markerForm) {
+                        markerForm.style.display = 'block';
+                    }
+                }
             };
 
             if (closeBtn) {

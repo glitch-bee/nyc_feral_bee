@@ -678,7 +678,7 @@ html, body {
     max-width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 100000; /* Much higher z-index */
     display: flex;
     flex-direction: column;
 }
@@ -754,17 +754,20 @@ html, body {
         overflow-y: auto;
         box-sizing: border-box;
         position: fixed;
+        z-index: 100000; /* Ensure it's above everything */
     }
     .welcome-content {
-        padding-top: 3rem; /* Add space for the fixed close button */
+        padding-top: 3rem;
         padding-bottom: 2.5rem;
+        height: 100%;
+        overflow-y: auto;
     }
     .close-welcome {
         position: fixed;
         top: 1rem;
         right: 1rem;
         font-size: 2rem;
-        z-index: 99999;
+        z-index: 100001; /* Higher than modal */
         background: white;
         padding: 0.5rem;
         border-radius: 50%;
@@ -777,6 +780,22 @@ html, body {
         border: 2px solid #2d4a22;
         color: #2d4a22;
         font-weight: bold;
+    }
+    .got-it-button {
+        position: sticky;
+        bottom: 1rem;
+        margin: 2rem auto;
+        padding: 1.2rem 2rem;
+        font-size: 1.4rem;
+        width: 90%;
+        max-width: none;
+        z-index: 100001; /* Higher than modal */
+        background: linear-gradient(135deg, var(--primary-purple), var(--primary-teal));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 }
 
