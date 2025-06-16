@@ -1,6 +1,8 @@
 // Navigation functionality for CityHive2
 console.log('Navigation script loading...');
 
+import { createWelcomeGuide } from './welcome.js';
+
 function initNavigation() {
     console.log('Initializing navigation...');
     const navToggle = document.getElementById('navToggle');
@@ -60,6 +62,21 @@ function initNavigation() {
             }
         });
     });
+
+    // Add welcome guide link to navigation only if not already present
+    if (navLinks && !navLinks.querySelector('.welcome-link')) {
+        const welcomeLink = document.createElement('a');
+        welcomeLink.className = 'nav-link welcome-link';
+        welcomeLink.innerHTML = '📖 Guide';
+        welcomeLink.href = '#';
+        welcomeLink.style.cursor = 'pointer';
+        welcomeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const welcomeGuide = createWelcomeGuide();
+            welcomeGuide.show();
+        });
+        navLinks.appendChild(welcomeLink);
+    }
 }
 
 // Try multiple initialization methods for better compatibility

@@ -2,6 +2,7 @@ import './style.css'
 import { createMap, addMarkerToMap, clearAllMarkers, removeMarkerFromMap } from './map.js'
 import { createMarkerForm } from './markerform.js'
 import { getAllMarkers, deleteMarker } from './supabase.js'
+import { createWelcomeGuide } from './welcome.js'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map.css'
 
@@ -88,6 +89,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Set up periodic refresh
   setInterval(fetchAndDisplayMarkers, 10000)
+
+  // Show welcome guide if needed
+  const welcomeGuide = createWelcomeGuide()
+  if (welcomeGuide.shouldShow()) {
+    welcomeGuide.show()
+  }
 })
 
 
