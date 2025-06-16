@@ -75,6 +75,8 @@ export function createWelcomeGuide() {
             <footer>
                 <p><em>City Hive is a community project built with 🐝 for the New York Bee Club</em></p>
             </footer>
+
+            <button class="got-it-button">Got It!</button>
         </div>
     ` : `
         <div class="welcome-content desktop">
@@ -134,6 +136,8 @@ export function createWelcomeGuide() {
             <footer>
                 <p><em>City Hive is a community project built with 🐝 for the New York Bee Club</em></p>
             </footer>
+
+            <button class="got-it-button">Got It!</button>
         </div>
     `;
     
@@ -153,15 +157,21 @@ export function createWelcomeGuide() {
             document.body.appendChild(modal);
             document.body.classList.add('welcome-open');
             
-            // Add event listeners
+            // Add event listeners for both close button and Got It button
             const closeBtn = modal.querySelector('.close-welcome');
+            const gotItBtn = modal.querySelector('.got-it-button');
+            
+            const closeModal = () => {
+                modal.remove();
+                document.body.classList.remove('welcome-open');
+                localStorage.setItem('welcomeSeen', 'true');
+            };
+
             if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    modal.remove();
-                    document.body.classList.remove('welcome-open');
-                    // Store in localStorage that user has seen welcome
-                    localStorage.setItem('welcomeSeen', 'true');
-                });
+                closeBtn.addEventListener('click', closeModal);
+            }
+            if (gotItBtn) {
+                gotItBtn.addEventListener('click', closeModal);
             }
         },
         

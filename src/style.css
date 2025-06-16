@@ -867,3 +867,43 @@ body.welcome-open {
     max-height: 80vh;
   }
 }
+
+.got-it-button {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-teal));
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.got-it-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+.got-it-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .got-it-button {
+        position: sticky;
+        bottom: 1rem;
+        margin: 2rem auto;
+        padding: 1.2rem 2rem;
+        font-size: 1.4rem;
+        width: 90%;
+        max-width: none;
+        z-index: 1000;
+    }
+}
