@@ -7,6 +7,7 @@ console.log('map.js loaded, maplibregl:', maplibregl)
 
 // Store marker references for management
 let markerInstances = new Map()
+let openPopup = null;
 
 export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url, status }) {
   if (!map) return
@@ -19,7 +20,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
   // Create popup with comments (with fallback)
   let popupContent
   try {
-    popupContent = await createPopupContent(id, type, notes, photo_url, status)
+    popupContent = await createPopupContent(id, type, notes, photo_url, status, lat, lng)
   } catch (error) {
     console.warn('Using fallback popup for marker', id, ':', error)
     // Fallback to simple popup if comments fail
@@ -56,10 +57,24 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
     // Desktop: create and attach popup
     const popup = new maplibregl.Popup({ 
       offset: 25,
-      maxWidth: '350px'
+      maxWidth: '350px',
+      closeOnClick: false,
+      closeOnMove: false,
+      closeButton: true
     }).setHTML(popupContent)
     
     marker.setPopup(popup)
+    // Manage only one open popup at a time
+    popup.on('open', () => {
+      if (openPopup && openPopup !== popup && openPopup.isOpen()) {
+        openPopup.remove();
+      }
+      openPopup = popup;
+    });
+    // Prevent popup from closing except via close button
+    popup.on('close', () => {
+      openPopup = null;
+    });
   }
 
   marker.addTo(map)
@@ -126,7 +141,7 @@ function getStatusEmoji(status) {
 }
 
 // Create popup content with comments
-async function createPopupContent(markerId, type, notes, photo_url, status) {
+async function createPopupContent(markerId, type, notes, photo_url, status, lat, lng) {
   let comments = []
   
   // Try to get comments, but don't fail if there's an error
@@ -166,6 +181,16 @@ async function createPopupContent(markerId, type, notes, photo_url, status) {
     </div>
   `
 
+  // Export to map app buttons
+  const googleMapsUrl = lat && lng ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}` : '';
+  const appleMapsUrl = lat && lng ? `http://maps.apple.com/?ll=${lat},${lng}` : '';
+  const exportButtons = lat && lng ? `
+    <div class="export-map-buttons" style="display:flex;gap:8px;margin:8px 0 4px 0;">
+      <a href="${googleMapsUrl}" target="_blank" rel="noopener" class="export-map-btn google" style="background:#4285F4;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;font-weight:600;">Google Maps</a>
+      <a href="${appleMapsUrl}" target="_blank" rel="noopener" class="export-map-btn apple" style="background:#222;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;font-weight:600;">Apple Maps</a>
+    </div>
+  ` : '';
+
   return `
     <div class="marker-popup">
       <div class="marker-info">
@@ -176,6 +201,7 @@ async function createPopupContent(markerId, type, notes, photo_url, status) {
         <p class="marker-notes">${notes}</p>
         ${photoHtml}
         <small class="marker-id">ID: ${markerId}</small>
+        ${exportButtons}
       </div>
         <div class="status-update-section">
         <label for="status-${markerId}" class="status-label">Update Status:</label>
@@ -257,38 +283,72 @@ window.addCommentToMarker = async (markerId) => {
   }
 }
 
-// Global function to open photo modal
+// Global function to open photo modal (lightbox)
 window.openPhotoModal = function(photoUrl) {
-  // Create modal if it doesn't exist
-  let modal = document.getElementById('photoModal')
-  if (!modal) {
-    modal = document.createElement('div')
-    modal.id = 'photoModal'
-    modal.className = 'photo-modal'
-    modal.innerHTML = `
-      <div class="photo-modal-content">
-        <span class="photo-modal-close">&times;</span>
-        <img class="photo-modal-image" alt="Bee sighting photo">
-      </div>
-    `
-    document.body.appendChild(modal)
-    
-    // Add click handlers
-    modal.querySelector('.photo-modal-close').onclick = () => {
-      modal.style.display = 'none'
+  // Remove any existing modal
+  let modal = document.getElementById('imageLightboxModal');
+  if (modal) modal.remove();
+
+  // Create modal
+  modal = document.createElement('div');
+  modal.id = 'imageLightboxModal';
+  modal.className = 'image-lightbox-modal';
+  modal.innerHTML = `
+    <div class="image-lightbox-content">
+      <button class="image-lightbox-close" aria-label="Close" tabindex="0">&times;</button>
+      <img src="${photoUrl}" class="image-lightbox-img" alt="Bee sighting photo" />
+    </div>
+  `;
+  document.body.appendChild(modal);
+  document.body.classList.add('welcome-open');
+
+  // Close logic
+  const closeModal = () => {
+    modal.remove();
+    document.body.classList.remove('welcome-open');
+  };
+  modal.querySelector('.image-lightbox-close').onclick = closeModal;
+  modal.onclick = (e) => {
+    if (e.target === modal) closeModal();
+  };
+  document.addEventListener('keydown', function escListener(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+      document.removeEventListener('keydown', escListener);
     }
-    modal.onclick = (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none'
-      }
+  });
+
+  // Pinch-to-zoom (basic)
+  const img = modal.querySelector('.image-lightbox-img');
+  let scale = 1;
+  let startDist = 0;
+  let lastScale = 1;
+  img.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2) {
+      startDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      lastScale = scale;
     }
-  }
-  
-  // Show modal with photo
-  const img = modal.querySelector('.photo-modal-image')
-  img.src = photoUrl
-  modal.style.display = 'block'
-}
+  });
+  img.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 2) {
+      const newDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      scale = Math.max(1, Math.min(4, lastScale * (newDist / startDist)));
+      img.style.transform = `scale(${scale})`;
+      e.preventDefault();
+    }
+  }, { passive: false });
+  img.addEventListener('touchend', function(e) {
+    if (e.touches.length < 2) {
+      lastScale = scale;
+    }
+  });
+};
 
 // Global function to delete marker (called from popup buttons)
 window.deleteMarker = async (markerId) => {
@@ -580,7 +640,7 @@ async function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
   try {
     // Get marker data
     const markerData = { id: markerId, type, notes, photo_url, status };
-    const content = await createPopupContent(markerId, type, notes, photo_url, status);
+    const content = await createPopupContent(markerId, type, notes, photo_url, status, markerData.lat, markerData.lng);
     
     modalContainer.innerHTML = `
       <div class="mobile-marker-content-wrapper">
