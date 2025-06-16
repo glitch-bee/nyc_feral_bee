@@ -761,19 +761,22 @@ html, body {
     }
     .close-welcome {
         position: fixed;
-        top: 0.5rem;
-        right: 0.5rem;
+        top: 1rem;
+        right: 1rem;
         font-size: 2rem;
-        z-index: 1001;
-        background: rgba(255,255,255,0.95);
+        z-index: 99999;
+        background: white;
         padding: 0.5rem;
         border-radius: 50%;
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 3rem;
+        height: 3rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        border: 2px solid #2d4a22;
+        color: #2d4a22;
+        font-weight: bold;
     }
 }
 

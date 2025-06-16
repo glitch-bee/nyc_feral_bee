@@ -5,7 +5,7 @@ export function createWelcomeGuide() {
     // Welcome content based on device type
     const welcomeContent = isMobile ? `
         <div class="welcome-content mobile">
-            <button class="close-welcome">×</button>
+            <button class="close-welcome" aria-label="Close welcome guide">×</button>
             <h1>Welcome to City Hive 🐝</h1>
             
             <section class="quick-start">
@@ -78,7 +78,7 @@ export function createWelcomeGuide() {
         </div>
     ` : `
         <div class="welcome-content desktop">
-            <button class="close-welcome">×</button>
+            <button class="close-welcome" aria-label="Close welcome guide">×</button>
             <h1>Welcome to City Hive 🐝</h1>
             
             <section class="what-is">
@@ -139,6 +139,12 @@ export function createWelcomeGuide() {
     
     return {
         show: () => {
+            // Remove any existing welcome modal
+            const existingModal = document.querySelector('.welcome-modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
             const modal = document.createElement('div');
             modal.className = 'welcome-modal';
             modal.innerHTML = welcomeContent;

@@ -93,7 +93,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Show welcome guide if needed
   const welcomeGuide = createWelcomeGuide()
   if (welcomeGuide.shouldShow()) {
-    welcomeGuide.show()
+    if (!document.querySelector('.welcome-modal')) {
+      console.log('Showing welcome guide modal...')
+      welcomeGuide.show()
+    } else {
+      console.log('Welcome modal already present, not showing again.')
+    }
   }
 })
 
