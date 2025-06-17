@@ -2,7 +2,10 @@
 
 ## **Project Overview**
 
-**CityHive2** is a modern, mobile-first mapping platform designed for beekeepers, citizen scientists, and bee conservation enthusiasts. It serves as a comprehensive tool for tracking bee activity across urban environments with real-time data sharing and collaboration features.
+**CityHive2** is a modern, mobile-first mapping platform designed for beekeepers,
+citizen scientists, and bee conservation enthusiasts. It serves as a
+comprehensive tool for tracking bee activity across urban environments with
+real-time data sharing and collaboration features.
 
 ## **BRANDING NOTES (June 2025)**
 
@@ -40,7 +43,7 @@
 - ✅ **Four marker types** with color-coded identification:
   - 🟡 **Hive** = Orange (`#ffaa00`) - Established bee colonies
   - 🔴 **Swarm** = Red-orange (`#ff6600`) - Mobile bee clusters
-  - ⚫ **Structure** = Gray (`#666666`) - Bees in buildings/man-made structures  
+  - ⚫ **Structure** = Gray (`#666666`) - Bees in buildings/man-made structures
   - 🟢 **Tree** = Green (`#00aa00`) - Natural tree cavities with bees
 - ✅ **Status system** with visual indicators:
   - ⚪ Unverified, 🟢 Active, 🟡 Checked, 🔴 Gone, 🗑️ Removed
