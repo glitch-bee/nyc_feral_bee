@@ -30,7 +30,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
           <strong class="marker-type">${type}</strong>
           <div class="marker-status status-${status?.toLowerCase() || 'unverified'}">${getStatusEmoji(status)} ${status || 'Unverified'}</div>
           <p class="marker-notes">${notes}</p>
-          <small class="marker-id">ID: ${id}</small>
+          ${photoHtml}
         </div>
         <div class="comment-buttons">
           <button onclick="window.deleteMarker('${id}')" class="btn-delete">Delete Pin</button>
@@ -182,8 +182,7 @@ async function createPopupContent(markerId, type, notes, photo_url, status, lat,
   `
 
   // Export to map app buttons
-  const label = encodeURIComponent(type || 'Bee Sighting');
-  const googleMapsUrl = lat && lng ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}(${label})` : '';
+  const googleMapsUrl = lat && lng ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}` : '';
   const exportButtons = lat && lng ? `
     <div class="export-map-buttons" style="display:flex;gap:8px;margin:8px 0 4px 0;">
       <a href="${googleMapsUrl}" target="_blank" rel="noopener" class="export-map-btn google" style="background:#4285F4;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;font-weight:600;">Google Maps</a>
@@ -199,7 +198,6 @@ async function createPopupContent(markerId, type, notes, photo_url, status, lat,
         </div>
         <p class="marker-notes">${notes}</p>
         ${photoHtml}
-        <small class="marker-id">ID: ${markerId}</small>
         ${exportButtons}
       </div>
         <div class="status-update-section">
