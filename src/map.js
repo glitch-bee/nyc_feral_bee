@@ -182,12 +182,11 @@ async function createPopupContent(markerId, type, notes, photo_url, status, lat,
   `
 
   // Export to map app buttons
-  const googleMapsUrl = lat && lng ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}` : '';
-  const appleMapsUrl = lat && lng ? `http://maps.apple.com/?ll=${lat},${lng}` : '';
+  const label = encodeURIComponent(type || 'Bee Sighting');
+  const googleMapsUrl = lat && lng ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}(${label})` : '';
   const exportButtons = lat && lng ? `
     <div class="export-map-buttons" style="display:flex;gap:8px;margin:8px 0 4px 0;">
       <a href="${googleMapsUrl}" target="_blank" rel="noopener" class="export-map-btn google" style="background:#4285F4;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;font-weight:600;">Google Maps</a>
-      <a href="${appleMapsUrl}" target="_blank" rel="noopener" class="export-map-btn apple" style="background:#222;color:#fff;padding:6px 12px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;font-weight:600;">Apple Maps</a>
     </div>
   ` : '';
 
@@ -638,9 +637,13 @@ async function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
   modalContainer.className = 'mobile-marker-info';
 
   try {
-    // Get marker data
-    const markerData = { id: markerId, type, notes, photo_url, status };
-    const content = await createPopupContent(markerId, type, notes, photo_url, status, markerData.lat, markerData.lng);
+    // Get marker data from global currentMarkers
+    let markerData = { id: markerId, type, notes, photo_url, status };
+    if (window.currentMarkers && Array.isArray(window.currentMarkers)) {
+      const found = window.currentMarkers.find(m => m.id === markerId);
+      if (found) markerData = found;
+    }
+    const content = await createPopupContent(markerId, markerData.type, markerData.notes, markerData.photo_url, markerData.status, markerData.lat, markerData.lng);
     
     modalContainer.innerHTML = `
       <div class="mobile-marker-content-wrapper">
@@ -671,21 +674,7 @@ async function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
     addMobileEventListeners(markerId);
     
   } catch (error) {
-    console.error('Error creating mobile marker info:', error);
-    modalContainer.innerHTML = `
-      <div class="mobile-marker-content-wrapper">
-        <div class="mobile-marker-header">
-          <h3>Error</h3>
-          <button onclick="closeMobileMarkerInfo()" class="btn-close-mobile">✕</button>
-        </div>
-        <div class="mobile-marker-content">
-          <p>Error loading marker information: ${error.message}</p>
-        </div>
-      </div>
-    `;
-    modalContainer.style.display = 'flex';
-    document.body.appendChild(modalContainer);
-    document.body.style.overflow = 'hidden';
+    console.error('Error showing mobile marker info:', error);
   }
 }
 
