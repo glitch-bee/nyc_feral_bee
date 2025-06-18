@@ -24,6 +24,31 @@
   --marker-tree: #00aa00;
 }
 
+/* NYBC Partnership Styles */
+.nybc-partnership {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.nybc-logo {
+  max-width: 200px;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.nybc-logo:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .nybc-logo {
+    max-width: 150px;
+  }
+}
+
 /* Reset and base styles */
 * {
   box-sizing: border-box;
