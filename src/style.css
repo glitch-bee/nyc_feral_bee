@@ -818,6 +818,27 @@ html, body {
     margin-bottom: 0.5rem;
 }
 
+.welcome-content footer {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-content footer a {
+  color: var(--primary-purple);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.welcome-content footer a:hover {
+  color: var(--primary-teal);
+  text-decoration: underline;
+}
+
+.welcome-content footer p {
+  color: var(--gray-600);
+  font-size: 0.9rem;
+}
+
 .close-welcome {
     position: absolute;
     top: 1rem;
