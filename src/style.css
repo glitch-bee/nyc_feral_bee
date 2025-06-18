@@ -43,7 +43,7 @@
   background-image: url('/cityhive2/skyline.png');
   background-size: cover;
   background-position: center;
-  filter: blur(8px) brightness(0.7);
+  filter: blur(8px) brightness(0.9);
   transform: scale(1.1);  /* Prevent blur edges from showing */
   z-index: -2;
 }
@@ -52,7 +52,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
   z-index: -1;
 }
 
