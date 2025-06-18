@@ -1025,3 +1025,25 @@ body.welcome-open {
         z-index: 1000;
     }
 }
+
+.site-footer {
+  padding: 2rem 0;
+  background: var(--gray-50);
+  text-align: center;
+}
+
+.site-footer a {
+  color: var(--primary-purple);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-footer a:hover {
+  color: var(--primary-teal);
+  text-decoration: underline;
+}
+
+.site-footer p {
+  margin: 0.5rem 0;
+  color: var(--gray-600);
+}
