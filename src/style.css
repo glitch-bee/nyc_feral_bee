@@ -824,19 +824,20 @@ html, body {
 }
 
 .welcome-content footer a {
-  color: var(--primary-purple);
+  color: var(--primary-teal);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .welcome-content footer a:hover {
-  color: var(--primary-teal);
+  color: #FFD700;
   text-decoration: underline;
 }
 
 .welcome-content footer p {
-  color: var(--gray-600);
-  font-size: 0.9rem;
+  color: var(--gray-100);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .close-welcome {
@@ -1049,22 +1050,47 @@ body.welcome-open {
 
 .site-footer {
   padding: 2rem 0;
-  background: var(--gray-50);
+  background: var(--gray-900);
   text-align: center;
 }
 
 .site-footer a {
-  color: var(--primary-purple);
+  color: var(--primary-teal);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .site-footer a:hover {
-  color: var(--primary-teal);
+  color: #FFD700;
   text-decoration: underline;
 }
 
 .site-footer p {
   margin: 0.5rem 0;
-  color: var(--gray-600);
+  color: var(--gray-100);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Welcome modal footer styles */
+.welcome-content footer {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-content footer a {
+  color: var(--primary-teal);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.welcome-content footer a:hover {
+  color: var(--primary-purple);
+  text-decoration: underline;
+}
+
+.welcome-content footer p {
+  color: var(--gray-100);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
