@@ -835,7 +835,7 @@ html, body {
 }
 
 .welcome-content footer p {
-  color: var(--gray-100);
+  color: var(--gray-600);
   font-size: 0.95rem;
   line-height: 1.5;
 }
@@ -1050,7 +1050,7 @@ body.welcome-open {
 
 .site-footer {
   padding: 2rem 0;
-  background: var(--gray-900);
+  background: var(--gray-50);
   text-align: center;
 }
 
@@ -1067,7 +1067,7 @@ body.welcome-open {
 
 .site-footer p {
   margin: 0.5rem 0;
-  color: var(--gray-100);
+  color: var(--gray-600);
   font-size: 0.95rem;
   line-height: 1.5;
 }
@@ -1085,12 +1085,12 @@ body.welcome-open {
 }
 
 .welcome-content footer a:hover {
-  color: var(--primary-purple);
+  color: #FFD700;
   text-decoration: underline;
 }
 
 .welcome-content footer p {
-  color: var(--gray-100);
+  color: var(--gray-600);
   font-size: 0.95rem;
   line-height: 1.5;
 }
