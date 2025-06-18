@@ -25,27 +25,104 @@
 }
 
 /* NYBC Partnership Styles */
+.cta-section {
+  position: relative;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  margin: 2rem 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('skyline.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.7);
+  z-index: -2;
+}
+
+.cta-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+.cta-section h3 {
+  color: #FFD700;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cta-section p {
+  color: white;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 .nybc-partnership {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-  margin: 20px 0;
+  gap: 1.5rem;
+  position: relative;
 }
 
 .nybc-logo {
-  max-width: 200px;
+  max-width: 180px;
   height: auto;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
   transition: transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .nybc-logo:hover {
   transform: scale(1.05);
 }
 
+.cta-button {
+  display: inline-block;
+  background: #FFD700;
+  color: var(--gray-900);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button:hover {
+  background: #FFC800;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
 @media (max-width: 768px) {
+  .cta-section {
+    padding: 2.5rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
   .nybc-logo {
     max-width: 150px;
+    padding: 0.75rem;
   }
 }
 
