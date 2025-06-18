@@ -1076,7 +1076,7 @@ ${D.shaderPreludeCode.vertexSource}`,define:D.shaderDefine},defaultProjectionDat
             </section>
 
             <footer>
-                <p><em>City Hive is a community project built with 🐝 for the New York Bee Club</em></p>
+                <p>Built by Usher Gay (<a href="https://github.com/glitch-bee" target="_blank" rel="noopener noreferrer">glitch-bee</a>) for the New York Bee Club</p>
             </footer>
 
             <button class="got-it-button">Got It!</button>
@@ -1137,7 +1137,7 @@ ${D.shaderPreludeCode.vertexSource}`,define:D.shaderDefine},defaultProjectionDat
             </section>
 
             <footer>
-                <p><em>City Hive is a community project built with 🐝 for the New York Bee Club</em></p>
+                <p>Built by Usher Gay (<a href="https://github.com/glitch-bee" target="_blank" rel="noopener noreferrer">glitch-bee</a>) for the New York Bee Club</p>
             </footer>
 
             <button class="got-it-button">Got It!</button>
