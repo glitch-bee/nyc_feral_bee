@@ -1,13 +1,13 @@
 import { showAuthModal } from './auth.js';
 import { signOut } from './supabase.js';
 
-const navLinks = [
-  { href: '/index.html', text: 'Map' },
-  { href: '/about.html', text: 'About' },
-  { href: '/resources.html', text: 'Resources' },
-];
-
 export function initNavigation(appState) {
+  const pages = [
+    { name: 'Map', path: 'index.html' },
+    { name: 'About', path: 'about.html' },
+    { name: 'Resources', path: 'resources.html' },
+  ];
+
   const header = document.querySelector('header');
   if (!header) {
     console.error('Header element not found, appending nav to body.');
@@ -25,21 +25,22 @@ export function initNavigation(appState) {
   navContainer.className = 'nav-container';
 
   // Brand section (Logo + Text)
-  const brandDiv = document.createElement('div');
-  brandDiv.className = 'nav-brand';
-  
+  const brandLink = document.createElement('a');
+  brandLink.href = 'index.html';
+  brandLink.className = 'nav-brand';
+
   const logoImg = document.createElement('img');
-  logoImg.src = '/cityhivenew.png'; // Using the correct logo from the static files
+  logoImg.src = '/cityhivenew.png'; // Use absolute path for assets in public dir
   logoImg.alt = 'City Hive Logo';
   logoImg.className = 'nav-logo';
-  brandDiv.appendChild(logoImg);
+  brandLink.appendChild(logoImg);
   
   const brandText = document.createElement('span');
   brandText.className = 'brand-text';
   brandText.textContent = 'City Hive';
-  brandDiv.appendChild(brandText);
+  brandLink.appendChild(brandText);
 
-  navContainer.appendChild(brandDiv);
+  navContainer.appendChild(brandLink);
 
   // Nav links
   const navLinksDiv = document.createElement('div');
@@ -50,7 +51,7 @@ export function initNavigation(appState) {
     a.href = page.path;
     a.textContent = page.name;
     a.className = 'nav-link';
-    if (window.location.pathname.endsWith(page.path) || (window.location.pathname === '/' && page.path === 'index.html') || (window.location.pathname === '/cityhive2/' && page.path === 'index.html')) {
+    if (window.location.pathname.endsWith(page.path)) {
       a.classList.add('active');
     }
     navLinksDiv.appendChild(a);
