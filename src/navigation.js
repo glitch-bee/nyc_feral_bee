@@ -1,7 +1,3 @@
-// Navigation functionality for CityHive2
-console.log('Navigation script loading...');
-
-import { createWelcomeGuide } from './welcome.js';
 import { showAuthModal } from './auth.js';
 import { signOut } from './supabase.js';
 
@@ -37,7 +33,7 @@ export function initNavigation(appState) {
     const a = document.createElement('a');
     a.href = link.href;
     a.textContent = link.text;
-    if (window.location.pathname === link.href) {
+    if (window.location.pathname.endsWith(link.href) || (window.location.pathname === '/cityhive2/' && link.href === '/index.html')) {
       a.classList.add('active');
     }
     li.appendChild(a);
@@ -61,7 +57,6 @@ export function initNavigation(appState) {
     logoutBtn.addEventListener('click', async () => {
       try {
         await signOut();
-        // The onAuthStateChange listener in main.js will handle the UI update
       } catch (error) {
         console.error('Error signing out:', error);
       }
@@ -81,45 +76,3 @@ export function initNavigation(appState) {
   nav.appendChild(authContainer);
   header.appendChild(nav);
 }
-
-// Try multiple initialization methods for better compatibility
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => initNavigation(appState));
-} else {
-    initNavigation(appState);
-}
-
-// Fallback initialization
-setTimeout(() => initNavigation(appState), 100);
-
-// Add scroll effect to navigation
-window.addEventListener('scroll', function() {
-    try {
-        const nav = document.querySelector('.main-nav');
-        if (nav) {
-            if (window.scrollY > 50) {
-                nav.classList.add('nav-scrolled');
-            } else {
-                nav.classList.remove('nav-scrolled');
-            }
-        }
-    } catch (error) {
-        console.warn('Navigation scroll error:', error);
-    }
-});
-
-// Add scroll effect to navigation
-window.addEventListener('scroll', function() {
-    try {
-        const nav = document.querySelector('.main-nav');
-        if (nav) {
-            if (window.scrollY > 50) {
-                nav.classList.add('nav-scrolled');
-            } else {
-                nav.classList.remove('nav-scrolled');
-            }
-        }
-    } catch (error) {
-        console.warn('Navigation scroll error:', error);
-    }
-});
