@@ -1,6 +1,6 @@
-# CityHive2 – Feature Roadmap & Community Vision
+# City Hive – Feature Roadmap & Community Vision
 
-This document outlines the vision and planned features for CityHive2, focusing on serving beekeepers, citizen scientists, and bee conservation efforts. Features are grouped by development priority and community impact.
+This document outlines the vision and planned features for City Hive, focusing on serving beekeepers, citizen scientists, and bee conservation efforts. Features are grouped by development priority and community impact.
 
 ---
 
@@ -8,7 +8,7 @@ This document outlines the vision and planned features for CityHive2, focusing o
 
 ### **For Beekeepers**
 
-CityHive2 serves as a comprehensive tool for professional and hobbyist beekeepers to:
+City Hive serves as a comprehensive tool for professional and hobbyist beekeepers to:
 
 - **Monitor swarm activity** in their operational area for capture opportunities
 - **Track removal sites** for cut-out services and structural bee removal
@@ -29,7 +29,7 @@ The platform enables comprehensive data collection for bee research and conserva
 
 ### **For Community Collaboration**
 
-CityHive2 facilitates knowledge sharing and collective bee stewardship:
+City Hive facilitates knowledge sharing and collective bee stewardship:
 
 - **Real-time sighting alerts** for time-sensitive swarm captures
 - **Collaborative documentation** through community comments and observations
@@ -38,7 +38,7 @@ CityHive2 facilitates knowledge sharing and collective bee stewardship:
 
 ---
 
-## ✅ Currently Implemented Features
+## ✅ Currently Implemented Features (Production Ready)
 
 ### **Core Mapping Platform**
 
@@ -46,20 +46,39 @@ CityHive2 facilitates knowledge sharing and collective bee stewardship:
 - **✅ Real-time data synchronization** across all users and devices
 - **✅ Four marker types:** Hive, Swarm, Structure, Tree with color coding
 - **✅ GPS location accuracy** with click-to-place and "Locate Me" functionality
+- **✅ NYC boundary constraints** for focused urban mapping
 
-### **Advanced Data Collection (Current)**
+### **User Authentication & Management**
+
+- **✅ Secure user registration and login** with email/password
+- **✅ User profiles** with display names and admin roles
+- **✅ Session management** with automatic login persistence
+- **✅ Admin permissions** for content moderation and oversight
+- **✅ User ownership** of markers with edit/delete capabilities
+
+### **Advanced Data Collection (Production)**
 
 - **✅ Photo documentation** with cloud storage and full-size viewing
 - **✅ Status tracking system** (Unverified, Active, Checked, Gone, Removed)
 - **✅ Community comments** with names and timestamps for collaborative observations
 - **✅ Comprehensive marker data** including location, type, notes, photos, and activity status
+- **✅ User attribution** for all contributions and research credibility
 
-### **Mobile Optimization**
+### **Mobile Optimization (Production)**
 
 - **✅ Touch-optimized interface** with modal-based marker details
 - **✅ Instant updates** without page reloads for seamless mobile experience
-- **✅ Offline-ready architecture** for field data collection
+- **✅ GPS integration** for easy location capture in the field
+- **✅ Photo uploads** directly from mobile cameras
 - **✅ Performance optimized** for mobile networks and battery life
+- **✅ Responsive design** that works on all screen sizes
+
+### **Real-time Collaboration**
+
+- **✅ Live data synchronization** across all users and devices
+- **✅ Instant status updates** visible to all community members
+- **✅ Community comments** for collaborative observations
+- **✅ User notifications** for new activity in their area
 
 ---
 
@@ -79,16 +98,16 @@ CityHive2 facilitates knowledge sharing and collective bee stewardship:
 - **Capture Success Tracking** - Document successful swarm captures and outcomes
 - **Service Area Mapping** - Beekeepers can mark their operational territories
 
----
-
-## 🔬 Medium Term: Research & Data Features
-
-### **Advanced Data Collection (Planned)**
+### **Advanced Data Collection**
 
 - **Tree Species Database** - Standardized tree identification for nesting site research
 - **Colony Health Tracking** - Systematic recording of varroa, aggression, and health indicators
 - **Environmental Correlation** - Weather, season, and urban environment data integration
 - **Colony Origin Tracking** - Document swarm sources, local hive connections, and feral populations
+
+---
+
+## 🔬 Medium Term: Research & Data Features
 
 ### **Scientific Integration**
 
@@ -102,6 +121,14 @@ CityHive2 facilitates knowledge sharing and collective bee stewardship:
 - **Expert Verification System** - Trusted community members can verify sightings
 - **Knowledge Base** - Collaborative wiki for bee identification, behavior, and best practices
 - **Event Integration** - Connect with local beekeeping events, inspections, and training
+- **Advanced Notifications** - Customizable alerts for specific types of bee activity
+
+### **Data Analytics**
+
+- **Population Density Mapping** - Visualize bee activity patterns across NYC
+- **Seasonal Trend Analysis** - Track swarming patterns and colony success rates
+- **Urban Habitat Assessment** - Evaluate bee-friendly environments and conservation impact
+- **Research Dashboard** - Tools for researchers to analyze community data
 
 ---
 
@@ -134,12 +161,12 @@ CityHive2 facilitates knowledge sharing and collective bee stewardship:
 
 We actively seek input from the beekeeping and research communities to prioritize features that provide the greatest value. Current feedback mechanisms include:
 
-- **Direct community input** from NY Bee Club and local beekeeping organizations
+- **Direct community input** from New York Bee Club and local beekeeping organizations
 - **User testing sessions** with active beekeepers and researchers
 - **Feature request tracking** through community discussions
 - **Usage analytics** to understand most valuable current features
 
 ---
 
-**Last Updated:** June 14, 2025  
+**Last Updated:** June 16, 2025  
 **Status:** Production-ready platform with active development roadmap

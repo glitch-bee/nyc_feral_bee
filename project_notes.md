@@ -1,11 +1,8 @@
-# CityHive2 – Urban Bee Mapping Platform
+# City Hive – Urban Bee Mapping Platform
 
 ## **Project Overview**
 
-**CityHive2** is a modern, mobile-first mapping platform designed for beekeepers,
-citizen scientists, and bee conservation enthusiasts. It serves as a
-comprehensive tool for tracking bee activity across urban environments with
-real-time data sharing and collaboration features.
+**City Hive** is a **production-ready, mobile-first mapping platform** designed for beekeepers, citizen scientists, and bee conservation enthusiasts. It serves as a comprehensive tool for tracking bee activity across urban environments with real-time data sharing and collaboration features.
 
 ## **BRANDING NOTES (June 2025)**
 
@@ -21,24 +18,36 @@ real-time data sharing and collaboration features.
   - All links to nybeeclub.org remain unchanged
 
 **Files updated with branding:**
-
 - `public/about.html` - Updated all display references
 - `public/resources.html` - Updated all display references
+- `README.md` - Updated to "City Hive" branding
 
 ---
 
-## **✅ CURRENT STATUS - JUNE 2025**
+## **✅ PRODUCTION STATUS - JUNE 2025**
 
-### **🎉 PRODUCTION-READY MOBILE APP COMPLETED!**
+### **🎉 FULLY FUNCTIONAL MOBILE APPLICATION COMPLETED!**
 
-#### **1. Mobile-First Experience**
+City Hive is now a **complete, production-ready platform** with all core features implemented and tested.
+
+#### **1. Complete Authentication System**
+
+- ✅ **User registration and login** with email/password
+- ✅ **User profiles** with display names and admin roles
+- ✅ **Secure authentication** via Supabase Auth
+- ✅ **Session management** with automatic login persistence
+- ✅ **Admin permissions** for content moderation
+
+#### **2. Advanced Mobile-First Experience**
 
 - ✅ **Fully responsive design** optimized for mobile devices
 - ✅ **Touch-friendly interface** with modal-based marker details
 - ✅ **Instant updates** without page reloads for seamless mobile experience
 - ✅ **Mobile-optimized popups** that work perfectly on small screens
+- ✅ **GPS integration** for easy location capture in the field
+- ✅ **Photo uploads** directly from mobile cameras
 
-#### **2. Complete Marker System**
+#### **3. Complete Marker Management System**
 
 - ✅ **Four marker types** with color-coded identification:
   - 🟡 **Hive** = Orange (`#ffaa00`) - Established bee colonies
@@ -47,40 +56,39 @@ real-time data sharing and collaboration features.
   - 🟢 **Tree** = Green (`#00aa00`) - Natural tree cavities with bees
 - ✅ **Status system** with visual indicators:
   - ⚪ Unverified, 🟢 Active, 🟡 Checked, 🔴 Gone, 🗑️ Removed
+- ✅ **User ownership** - Users can manage their own markers
+- ✅ **Admin oversight** - Admins can manage all content
 
-#### **3. Advanced Features**
+#### **4. Advanced Collaboration Features**
 
 - ✅ **Photo upload system** with cloud storage integration
 - ✅ **Community comments** on each marker for collaborative observations
-- ✅ **Real-time status updates** (Active, Checked, Gone, Removed, Unverified)
-- ✅ **Mobile-optimized UI** with modal-based marker details
-- ✅ **Instant updates** without page reloads for seamless user experience
+- ✅ **Real-time status updates** across all users and devices
+- ✅ **Instant data synchronization** without page refreshes
+- ✅ **User attribution** for all contributions
 
-#### **4. Robust Architecture**
+#### **5. Production-Ready Architecture**
 
 - ✅ **UUID-based database schema** with proper foreign key relationships
 - ✅ **Clean separation of concerns:**
+  - `main.js` - Application initialization and global state management
   - `map.js` - Map creation, marker management, mobile optimization
-  - `markerform.js` - Form handling, user input validation
-  - `supabase.js` - Database operations with UUID consistency
-  - `main.js` - Application initialization and real-time updates
+  - `markerform.js` - Form handling, user input validation, photo uploads
+  - `supabase.js` - Database operations, authentication, and file storage
+  - `auth.js` - Authentication modal and user management
+  - `navigation.js` - Site navigation and user interface
+  - `welcome.js` - Welcome guide for new users
 - ✅ **Mobile-first design patterns** with responsive layouts
-- ✅ **Error handling** with proper mobile user feedback
+- ✅ **Comprehensive error handling** with user-friendly messages
 - ✅ **Real-time data sync** across all users and devices
+- ✅ **Performance optimization** for mobile networks
 
-#### **5. Production-Ready Quality**
-
-- ✅ **Comprehensive testing** on mobile devices
-- ✅ **Database schema optimization** with UUID consistency
-- ✅ **Performance optimized** for mobile networks
-- ✅ **Proper error handling** with user-friendly messages
-- ✅ **Code documentation** and troubleshooting guides
-
-### **🔧 Technical Stack (Current)**
+### **🔧 Technical Stack (Production)**
 
 - **Frontend:** Vite + Vanilla JavaScript + MapLibre GL JS
 - **Map Style:** MapTiler Streets v2 (vector tiles)
 - **Database:** Supabase PostgreSQL with UUID primary keys
+- **Authentication:** Supabase Auth with user profiles
 - **Storage:** Supabase Storage for photo uploads
 - **Real-time:** Supabase real-time updates
 - **Mobile:** Responsive design optimized for touch interfaces
@@ -88,7 +96,7 @@ real-time data sharing and collaboration features.
 ### **📊 Database Schema (Production)**
 
 ```sql
--- Markers table with UUID primary key
+-- Markers table with UUID primary key and user ownership
 CREATE TABLE public.markers (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   lat real NOT NULL,
@@ -98,7 +106,7 @@ CREATE TABLE public.markers (
   photo_url text NULL,
   status text DEFAULT 'Unverified',
   timestamp timestamptz DEFAULT NOW(),
-  user_id text NULL
+  user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL
 );
 
 -- Comments table with UUID foreign key
@@ -109,11 +117,19 @@ CREATE TABLE public.comments (
   author_name varchar(255) DEFAULT 'Anonymous',
   timestamp timestamptz DEFAULT NOW()
 );
+
+-- User profiles table for extended user data
+CREATE TABLE public.profiles (
+  id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  display_name text,
+  is_admin boolean DEFAULT false,
+  created_at timestamptz DEFAULT NOW()
+);
 ```
 
 ### **🎯 Current Capabilities**
 
-CityHive2 is now a **production-ready mobile application** that enables:
+City Hive is now a **fully functional mobile application** that enables:
 
 - **Real-time bee tracking** across urban environments
 - **Community collaboration** through comments and status updates
@@ -121,6 +137,8 @@ CityHive2 is now a **production-ready mobile application** that enables:
 - **Mobile-first experience** optimized for field use
 - **Instant data sync** across all users
 - **Professional data collection** for research and conservation
+- **User authentication** with secure account management
+- **Admin oversight** for content moderation
 
 ---
 
@@ -136,6 +154,7 @@ The platform now supports comprehensive data gathering for:
 - **Visual documentation** through photo uploads
 - **Community observations** through collaborative comments
 - **Long-term trend analysis** through historical data
+- **User attribution** for research credibility
 
 ### **Future Research Features**
 
@@ -148,4 +167,32 @@ The platform now supports comprehensive data gathering for:
 
 ---
 
-#### Last updated: June 14, 2025
+## **📈 Development Roadmap**
+
+### **Completed (Production Ready)**
+- ✅ Core mapping platform with real-time updates
+- ✅ User authentication and profile system
+- ✅ Mobile-optimized interface
+- ✅ Photo upload and storage system
+- ✅ Community comments and collaboration
+- ✅ Status tracking and management
+- ✅ Admin permissions and oversight
+- ✅ GPS integration and location services
+
+### **Next Phase (Planned)**
+- 🔄 Map filters and search functionality
+- 🔄 Data export tools for research
+- 🔄 Enhanced photo management (multiple photos per marker)
+- 🔄 Swarm alert zones for beekeepers
+- 🔄 Contact information system for removal services
+
+### **Future Enhancements**
+- 🔮 Advanced data collection fields
+- 🔮 Research institution partnerships
+- 🔮 Machine learning for bee identification
+- 🔮 Predictive analytics for swarm forecasting
+- 🔮 Mobile app development (iOS/Android)
+
+---
+
+#### Last updated: June 16, 2025
