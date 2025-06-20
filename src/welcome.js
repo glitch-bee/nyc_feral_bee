@@ -195,4 +195,11 @@ export function createWelcomeGuide() {
             return !localStorage.getItem('welcomeSeen');
         }
     };
+}
+
+export function initWelcomePopup() {
+    const welcomeGuide = createWelcomeGuide();
+    if (welcomeGuide.shouldShow()) {
+        welcomeGuide.show();
+    }
 } 
