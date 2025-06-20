@@ -10,36 +10,59 @@ const navLinks = [
 export function initNavigation(appState) {
   const header = document.querySelector('header');
   if (!header) {
-    console.error('Header element not found');
-    return;
+    console.error('Header element not found, appending nav to body.');
+    // If header doesn't exist, we can create/append to body or another element.
+    // For this case, let's assume we want to prepend it to the body.
   }
-
-  // Clear existing header content to prevent duplication
-  header.innerHTML = '';
+  if (header) {
+    header.innerHTML = ''; // Clear it out
+  }
 
   const nav = document.createElement('nav');
   nav.className = 'main-nav';
+  
+  const navContainer = document.createElement('div');
+  navContainer.className = 'nav-container';
 
-  // Logo
-  const logoLink = document.createElement('a');
-  logoLink.href = '/index.html';
-  logoLink.innerHTML = `<img src="/cityhive-logo.svg" alt="CityHive Logo" class="logo">`;
-  nav.appendChild(logoLink);
+  // Brand section (Logo + Text)
+  const brandDiv = document.createElement('div');
+  brandDiv.className = 'nav-brand';
+  
+  const logoImg = document.createElement('img');
+  logoImg.src = '/cityhivenew.png'; // Using the correct logo from the static files
+  logoImg.alt = 'City Hive Logo';
+  logoImg.className = 'nav-logo';
+  brandDiv.appendChild(logoImg);
+  
+  const brandText = document.createElement('span');
+  brandText.className = 'brand-text';
+  brandText.textContent = 'City Hive';
+  brandDiv.appendChild(brandText);
+
+  navContainer.appendChild(brandDiv);
 
   // Nav links
-  const ul = document.createElement('ul');
-  navLinks.forEach(link => {
-    const li = document.createElement('li');
+  const navLinksDiv = document.createElement('div');
+  navLinksDiv.className = 'nav-links';
+
+  pages.forEach(page => {
     const a = document.createElement('a');
-    a.href = link.href;
-    a.textContent = link.text;
-    if (window.location.pathname.endsWith(link.href) || (window.location.pathname === '/cityhive2/' && link.href === '/index.html')) {
+    a.href = page.path;
+    a.textContent = page.name;
+    a.className = 'nav-link';
+    if (window.location.pathname.endsWith(page.path) || (window.location.pathname === '/' && page.path === 'index.html') || (window.location.pathname === '/cityhive2/' && page.path === 'index.html')) {
       a.classList.add('active');
     }
-    li.appendChild(a);
-    ul.appendChild(li);
+    navLinksDiv.appendChild(a);
   });
-  nav.appendChild(ul);
+
+  // Combine nav links and auth section
+  const rightSideContainer = document.createElement('div');
+  rightSideContainer.style.display = 'flex';
+  rightSideContainer.style.alignItems = 'center';
+  rightSideContainer.style.gap = '2rem'; // Match gap from .nav-links
+  
+  rightSideContainer.appendChild(navLinksDiv);
 
   // Auth section
   const authContainer = document.createElement('div');
@@ -73,6 +96,13 @@ export function initNavigation(appState) {
     authContainer.appendChild(loginBtn);
   }
   
-  nav.appendChild(authContainer);
-  header.appendChild(nav);
+  rightSideContainer.appendChild(authContainer);
+  navContainer.appendChild(rightSideContainer);
+  nav.appendChild(navContainer);
+  
+  if (header) {
+      header.appendChild(nav);
+  } else {
+      document.body.prepend(nav);
+  }
 }
