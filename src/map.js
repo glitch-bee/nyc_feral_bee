@@ -32,7 +32,10 @@ export function initMap(containerId = 'map', onMapClick) {
     ];
 
     try {
-        const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY || 'mbriicWDtoa7yG1tmDK0';
+        const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY;
+        if (!mapTilerKey) {
+            throw new Error("VITE_MAPTILER_KEY is not set in the environment. Please add it to your .env file.");
+        }
         const map = new maplibregl.Map({
             container: mapContainer,
             style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${mapTilerKey}`,
