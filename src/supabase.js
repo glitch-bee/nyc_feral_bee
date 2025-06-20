@@ -6,6 +6,95 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1N
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+// --- AUTHENTICATION FUNCTIONS ---
+
+/**
+ * Signs up a new user.
+ * @param {string} email
+ * @param {string} password
+ * @param {string} displayName
+ * @returns {Promise<import('@supabase/supabase-js').User>}
+ */
+export async function signUpNewUser(email, password, displayName) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        display_name: displayName,
+      },
+    },
+  });
+  if (error) {
+    console.error('Error signing up:', error);
+    throw error;
+  }
+  return data.user;
+}
+
+/**
+ * Signs in a user with their email and password.
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<import('@supabase/supabase-js').User>}
+ */
+export async function signInWithPassword(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) {
+    console.error('Error signing in:', error);
+    throw error;
+  }
+  return data.user;
+}
+
+/**
+ * Signs out the current user.
+ * @returns {Promise<void>}
+ */
+export async function signOut() {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error('Error signing out:', error);
+    throw error;
+  }
+}
+
+/**
+ * Listens for changes in the authentication state.
+ * @param {(user: import('@supabase/supabase-js').User | null) => void} callback
+ * @returns {import('@supabase/supabase-js').Subscription}
+ */
+export function onAuthStateChange(callback) {
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    callback(session?.user || null);
+  });
+  return subscription;
+}
+
+/**
+ * Gets the full profile of the current user from the 'profiles' table.
+ * @returns {Promise<object|null>}
+ */
+export async function getUserProfile() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+    if (error) {
+        console.error('Error fetching user profile:', error);
+        return null;
+    }
+    return data;
+}
+
 // Helper functions for marker operations
 export async function addMarker(markerData) {
   const { data, error } = await supabase
@@ -18,7 +107,7 @@ export async function addMarker(markerData) {
       status: markerData.status || 'Unverified',
       photo_url: markerData.photo_url || null,
       timestamp: new Date().toISOString(),
-      // user_id: markerData.user_id, // for future use
+      user_id: markerData.user_id, // for future use -> // This is now active
     }])
     .select()
     .single()

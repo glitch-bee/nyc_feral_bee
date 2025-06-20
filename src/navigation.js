@@ -2,92 +2,95 @@
 console.log('Navigation script loading...');
 
 import { createWelcomeGuide } from './welcome.js';
+import { showAuthModal } from './auth.js';
+import { signOut } from './supabase.js';
 
-function initNavigation() {
-    console.log('Initializing navigation...');
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    console.log('navToggle found:', navToggle);
-    console.log('navLinks found:', navLinks);
+const navLinks = [
+  { href: '/index.html', text: 'Map' },
+  { href: '/about.html', text: 'About' },
+  { href: '/resources.html', text: 'Resources' },
+];
 
-    // Mobile navigation toggle
-    if (navToggle && navLinks) {
-        // Remove any existing listeners to prevent duplicates
-        navToggle.replaceWith(navToggle.cloneNode(true));
-        const newNavToggle = document.getElementById('navToggle');
-        
-        newNavToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Nav toggle clicked');
-            navLinks.classList.toggle('nav-active');
-            newNavToggle.classList.toggle('nav-toggle-active');
-        });
+export function initNavigation(appState) {
+  const header = document.querySelector('header');
+  if (!header) {
+    console.error('Header element not found');
+    return;
+  }
 
-        // Close mobile nav when clicking on links
-        const navLinkElements = navLinks.querySelectorAll('.nav-link');
-        navLinkElements.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.classList.remove('nav-active');
-                newNavToggle.classList.remove('nav-toggle-active');
-            });
-        });
+  // Clear existing header content to prevent duplication
+  header.innerHTML = '';
 
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', function(event) {
-            const isClickInsideNav = newNavToggle.contains(event.target) || navLinks.contains(event.target);
-            
-            if (!isClickInsideNav && navLinks.classList.contains('nav-active')) {
-                navLinks.classList.remove('nav-active');
-                newNavToggle.classList.remove('nav-toggle-active');
-            }
-        });
-        
-        console.log('Navigation event listeners attached');
-    } else {
-        console.warn('Navigation elements not found!');
+  const nav = document.createElement('nav');
+  nav.className = 'main-nav';
+
+  // Logo
+  const logoLink = document.createElement('a');
+  logoLink.href = '/index.html';
+  logoLink.innerHTML = `<img src="/cityhive-logo.svg" alt="CityHive Logo" class="logo">`;
+  nav.appendChild(logoLink);
+
+  // Nav links
+  const ul = document.createElement('ul');
+  navLinks.forEach(link => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = link.href;
+    a.textContent = link.text;
+    if (window.location.pathname === link.href) {
+      a.classList.add('active');
     }
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
+  nav.appendChild(ul);
 
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
+  // Auth section
+  const authContainer = document.createElement('div');
+  authContainer.className = 'auth-container';
+
+  if (appState.currentUser && appState.userProfile) {
+    // User is logged in
+    const userNameEl = document.createElement('span');
+    userNameEl.className = 'user-name';
+    userNameEl.textContent = `Welcome, ${appState.userProfile.display_name || 'User'}`;
+    
+    const logoutBtn = document.createElement('button');
+    logoutBtn.className = 'logout-btn';
+    logoutBtn.textContent = 'Logout';
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await signOut();
+        // The onAuthStateChange listener in main.js will handle the UI update
+      } catch (error) {
+        console.error('Error signing out:', error);
+      }
     });
 
-    // Add welcome guide link to navigation only if not already present
-    if (navLinks && !navLinks.querySelector('.welcome-link')) {
-        const welcomeLink = document.createElement('a');
-        welcomeLink.className = 'nav-link welcome-link';
-        welcomeLink.innerHTML = '📖 Guide';
-        welcomeLink.href = '#';
-        welcomeLink.style.cursor = 'pointer';
-        welcomeLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            const welcomeGuide = createWelcomeGuide();
-            welcomeGuide.show();
-        });
-        navLinks.appendChild(welcomeLink);
-    }
+    authContainer.appendChild(userNameEl);
+    authContainer.appendChild(logoutBtn);
+  } else {
+    // User is logged out
+    const loginBtn = document.createElement('button');
+    loginBtn.className = 'login-btn';
+    loginBtn.textContent = 'Login / Sign Up';
+    loginBtn.addEventListener('click', showAuthModal);
+    authContainer.appendChild(loginBtn);
+  }
+  
+  nav.appendChild(authContainer);
+  header.appendChild(nav);
 }
 
 // Try multiple initialization methods for better compatibility
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNavigation);
+    document.addEventListener('DOMContentLoaded', () => initNavigation(appState));
 } else {
-    initNavigation();
+    initNavigation(appState);
 }
 
 // Fallback initialization
-setTimeout(initNavigation, 100);
+setTimeout(() => initNavigation(appState), 100);
 
 // Add scroll effect to navigation
 window.addEventListener('scroll', function() {

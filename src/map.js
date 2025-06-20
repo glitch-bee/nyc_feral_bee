@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './map.css'
 import { getComments, addComment, updateMarkerStatus, deleteMarker, updateMarker, uploadPhoto } from './supabase.js'
+import { appState } from './main.js'
 
 console.log('map.js loaded, maplibregl:', maplibregl)
 
@@ -9,7 +10,8 @@ console.log('map.js loaded, maplibregl:', maplibregl)
 export let markerInstances = new Map()
 export let openPopup = null;
 
-export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url, status }) {
+export async function addMarkerToMap(map, markerData) {
+  const { id, lat, lng, type, notes, photo_url, status, user_id } = markerData;
   if (!map) return
 
   // Remove existing marker if it exists
@@ -20,7 +22,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
   // Create popup with comments (with fallback)
   let popupContent
   try {
-    popupContent = await createPopupContent(id, type, notes, photo_url, status, lat, lng)
+    popupContent = await createPopupContent(markerData)
   } catch (error) {
     console.warn('Using fallback popup for marker', id, ':', error)
     // Fallback to simple popup if comments fail
@@ -51,7 +53,7 @@ export async function addMarkerToMap(map, { id, lat, lng, type, notes, photo_url
     marker.getElement().addEventListener('click', async (e) => {
       e.stopPropagation()
       e.preventDefault()
-      await showMobileMarkerInfo(id, type, notes, photo_url, status)
+      await showMobileMarkerInfo(markerData)
     })
   } else {
     // Desktop: create and attach popup
@@ -141,7 +143,8 @@ function getStatusEmoji(status) {
 }
 
 // Create popup content with comments
-async function createPopupContent(markerId, type, notes, photo_url, status, lat, lng) {
+async function createPopupContent(markerData) {
+  const { id: markerId, type, notes, photo_url, status, lat, lng, user_id } = markerData;
   let comments = []
   
   // Try to get comments, but don't fail if there's an error
@@ -150,6 +153,19 @@ async function createPopupContent(markerId, type, notes, photo_url, status, lat,
   } catch (error) {
     console.warn('Could not fetch comments for marker', markerId, ':', error)
     comments = []
+  }
+  
+  // --- ACTIONS (DELETE/EDIT) ---
+  let actionsHtml = '';
+  const currentUser = appState.currentUser;
+  const userProfile = appState.userProfile;
+
+  if (currentUser && (currentUser.id === user_id || userProfile?.is_admin)) {
+    actionsHtml = `
+      <div class="comment-buttons">
+        <button onclick="window.deleteMarker('${markerId}')" class="btn-delete">Delete Pin</button>
+      </div>
+    `;
   }
   
   const commentsHtml = comments.length > 0 
@@ -222,7 +238,7 @@ async function createPopupContent(markerId, type, notes, photo_url, status, lat,
           <textarea id="comment-${markerId}" placeholder="Add a comment..." class="comment-input"></textarea>
           <div class="comment-buttons">
             <button onclick="window.addCommentToMarker('${markerId}')" class="btn-comment">Add Comment</button>
-            <button onclick="window.deleteMarker('${markerId}')" class="btn-delete">Delete Pin</button>
+            ${actionsHtml.replace('<div class="comment-buttons">', '').replace('</div>','')}
           </div>
         </div>
       </div>
@@ -620,60 +636,44 @@ function createMobileMarkerInfo() {
 }
 
 // Show marker info in mobile-friendly way
-async function showMobileMarkerInfo(markerId, type, notes, photo_url, status) {
-  console.log('Showing mobile marker info for:', markerId);
+async function showMobileMarkerInfo(markerData) {
+  const infoEl = createMobileMarkerInfo();
+  const contentEl = infoEl.querySelector('.mobile-marker-info-content');
+  const { id: markerId, type, notes, photo_url, status, user_id } = markerData;
+
+  // This function now generates the full content for the mobile view,
+  // including ownership checks.
+  const contentHTML = await createPopupContent(markerData);
+  contentEl.innerHTML = contentHTML;
   
-  // Remove any existing mobile modal
-  const existingModal = document.getElementById('mobile-marker-info');
-  if (existingModal) {
-    existingModal.remove();
+  document.body.appendChild(infoEl);
+  infoEl.style.display = 'flex';
+
+  // Add event listeners for the mobile view's buttons
+  const addCommentBtn = contentEl.querySelector('.btn-comment');
+  if (addCommentBtn) {
+    addCommentBtn.onclick = () => window.addCommentToMarker(markerId);
   }
 
-  // Create mobile modal container
-  const modalContainer = document.createElement('div');
-  modalContainer.id = 'mobile-marker-info';
-  modalContainer.className = 'mobile-marker-info';
-
-  try {
-    // Get marker data from global currentMarkers
-    let markerData = { id: markerId, type, notes, photo_url, status };
-    if (window.currentMarkers && Array.isArray(window.currentMarkers)) {
-      const found = window.currentMarkers.find(m => m.id === markerId);
-      if (found) markerData = found;
-    }
-    const content = await createPopupContent(markerId, markerData.type, markerData.notes, markerData.photo_url, markerData.status, markerData.lat, markerData.lng);
-    
-    modalContainer.innerHTML = `
-      <div class="mobile-marker-content-wrapper">
-        <div class="mobile-marker-header">
-          <h3>Marker Details</h3>
-          <button onclick="closeMobileMarkerInfo()" class="btn-close-mobile">✕</button>
-        </div>
-        <div class="mobile-marker-content">
-          ${content}
-        </div>
-      </div>
-    `;
-    
-    modalContainer.style.display = 'flex';
-    document.body.appendChild(modalContainer);
-    
-    // Prevent body scrolling when modal is open
-    document.body.style.overflow = 'hidden';
-    
-    // Close on backdrop click
-    modalContainer.addEventListener('click', (e) => {
-      if (e.target === modalContainer) {
-        closeMobileMarkerInfo();
-      }
-    });
-
-    // Add mobile-specific event listeners
-    addMobileEventListeners(markerId);
-    
-  } catch (error) {
-    console.error('Error showing mobile marker info:', error);
+  const deleteBtn = contentEl.querySelector('.btn-delete');
+  if (deleteBtn) {
+    deleteBtn.onclick = () => window.deleteMarker(markerId);
   }
+
+  const updateStatusBtn = contentEl.querySelector('.btn-update-status');
+  if (updateStatusBtn) {
+    updateStatusBtn.onclick = () => window.updateMarkerStatus(markerId);
+  }
+  
+  const closeModal = () => {
+    infoEl.remove();
+  };
+
+  const closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '&times;';
+  closeBtn.className = 'btn-close-mobile';
+  closeBtn.onclick = closeModal;
+  contentEl.prepend(closeBtn);
 }
 
 // Add mobile-specific event listeners

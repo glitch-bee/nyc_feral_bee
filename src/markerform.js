@@ -1,5 +1,7 @@
 import { addMarker, uploadPhoto } from './supabase.js'
 import { addMarkerToMap } from './map.js'
+import { appState } from './main.js'; // Import global state
+import { showAuthModal } from './auth.js'; // Import modal function
 
 export function createMarkerForm() {
   const formContainer = document.getElementById('marker-form')
@@ -89,6 +91,20 @@ export function createMarkerForm() {
     errorDiv.textContent = ''
     errorDiv.style.display = 'none'
     
+    // --- AUTHENTICATION CHECK ---
+    if (!appState.currentUser) {
+      errorDiv.textContent = 'You must be logged in to add a marker.';
+      errorDiv.style.display = 'block';
+      // Briefly show the login modal to prompt the user
+      showAuthModal();
+      setTimeout(() => {
+        if (document.getElementById('auth-modal')) {
+           document.getElementById('auth-modal').style.display = 'flex';
+        }
+      }, 100);
+      return;
+    }
+    
     const lat = parseFloat(latInput.value)
     const lng = parseFloat(lngInput.value)
     if (isNaN(lat) || isNaN(lng)) {
@@ -101,7 +117,8 @@ export function createMarkerForm() {
       status: statusSelect.value,
       notes: notesInput.value, 
       lat, 
-      lng 
+      lng,
+      user_id: appState.currentUser.id // Add user ID to marker data
     }
     
     try {

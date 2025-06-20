@@ -1,0 +1,130 @@
+/* Auth Modal Styles */
+.auth-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.auth-modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.auth-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #aaa;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.auth-close-btn:hover {
+    color: #333;
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.auth-tab-btn {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #888;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.auth-tab-btn.active {
+    color: #333;
+    border-bottom: 2px solid #007bff;
+}
+
+.auth-form-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+#auth-form div {
+    margin-bottom: 1rem;
+}
+
+#auth-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+}
+
+#auth-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.auth-submit-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.auth-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.auth-error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 
