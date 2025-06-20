@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">  <head>
+<html lang="en">
+  <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/cityhive2/cityhivenew.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,34 +8,20 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="/cityhive2/assets/index.css">
-    <base href="/cityhive2/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/cityhive2/assets/main.js"></script>
+    <link rel="stylesheet" crossorigin href="/cityhive2/assets/index.css">
   </head>
   <body>
-    <!-- Navigation Header -->
-    <nav class="main-nav">
-      <div class="nav-container">        <div class="nav-brand">
-          <img src="/cityhive2/cityhivenew.png" alt="City Hive Logo" class="nav-logo" style="width:40px;height:auto;">
-          <span class="brand-text">City Hive</span>
-        </div>
-        <div class="nav-links">
-          <a href="index.html" class="nav-link">Map</a>
-          <a href="about.html" class="nav-link">About</a>
-          <a href="resources.html" class="nav-link active">Resources</a>
-        </div>
-        <div class="nav-toggle" id="navToggle">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-    </nav>
+    <!-- Navigation will be injected here -->
+    <header></header>
 
     <!-- Main Content -->
     <main class="page-content">
       <div class="container">
         <header class="page-header">
-          <h1>Bee Resources</h1>          <p class="lead">Everything you need to know about urban beekeeping in NYC</p>
+          <h1>Bee Resources</h1>
+          <p class="lead">Everything you need to know about urban beekeeping in NYC</p>
         </header>
 
         <section class="content-section">
@@ -74,11 +61,13 @@
               </ul>
             </div>
           </div>
-        </section>        <section class="content-section" id="regulations">
+        </section>
+        <section class="content-section" id="regulations">
           <h2>🏛️ NYC Beekeeping Regulations</h2>
           
           <div class="resource-card">
-            <h3>Department of Health Guidelines</h3>            <p>Official NYC Department of Health beekeeping regulations and requirements for urban beekeepers.</p>
+            <h3>Department of Health Guidelines</h3>
+            <p>Official NYC Department of Health beekeeping regulations and requirements for urban beekeepers.</p>
             <a href="https://www1.nyc.gov/site/doh/health/health-topics/beekeeping.page" target="_blank" rel="noopener" class="resource-link">NYC Health Dept →</a>
           </div>
           
@@ -123,12 +112,14 @@
               <a href="https://www.extension.org/bee-health/" target="_blank" rel="noopener" class="resource-link">View Calendar →</a>
             </div>
           </div>
-        </section>        <section class="content-section" id="emergency">
+        </section>
+        <section class="content-section" id="emergency">
           <h2>🚨 Emergency Contacts & Services</h2>
           
           <div class="emergency-grid">
             <div class="emergency-card">
-              <h3>Swarm Removal Services</h3>              <p>Certified NYC beekeepers available for safe swarm removal and relocation services.</p>
+              <h3>Swarm Removal Services</h3>
+              <p>Certified NYC beekeepers available for safe swarm removal and relocation services.</p>
               <p class="phone">📞 Contact via New York Bee Club</p>
               <a href="https://nybeeclub.org" target="_blank" rel="noopener" class="contact-link">Get Help →</a>
             </div>
@@ -141,12 +132,15 @@
             </div>
 
             <div class="emergency-card">
-              <h3>Beekeeping Mentorship</h3>              <p>Connect with experienced NYC beekeepers for guidance and ongoing support.</p>
+              <h3>Beekeeping Mentorship</h3>
+              <p>Connect with experienced NYC beekeepers for guidance and ongoing support.</p>
               <p class="phone">📧 Contact New York Bee Club</p>
               <a href="https://nybeeclub.org" target="_blank" rel="noopener" class="contact-link">Find a Mentor →</a>
             </div>
           </div>
-        </section>        <section class="content-section" id="plants">          <h2>🌱 Bee-Friendly Plants for NYC</h2>
+        </section>
+        <section class="content-section" id="plants">
+          <h2>🌱 Bee-Friendly Plants for NYC</h2>
           <p>Help support NYC's bee population by planting these bee-friendly species that thrive in urban environments:</p>
           
           <div class="plant-categories">
@@ -213,7 +207,8 @@
             </div>
 
             <div class="external-link">
-              <h4>NYC Parks & Recreation</h4>              <p>Information about pollinator gardens in NYC parks and community gardening opportunities.</p>
+              <h4>NYC Parks & Recreation</h4>
+              <p>Information about pollinator gardens in NYC parks and community gardening opportunities.</p>
               <a href="https://www.nycgovparks.org/" target="_blank" rel="noopener">Visit Site →</a>
             </div>
           </div>
@@ -247,6 +242,6 @@
         <p>Built by Usher Gay (<a href="https://github.com/glitch-bee" target="_blank" rel="noopener noreferrer">glitch-bee</a>) for the New York Bee Club</p>
         <p>Open source project for bee conservation and community collaboration</p>
       </div>
-    </footer>    <script src="/cityhive2/assets/index.js"></script>
+    </footer>
   </body>
 </html>

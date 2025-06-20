@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">  <head>
+<html lang="en">
+  <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/cityhive2/cityhivenew.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,28 +8,13 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="/cityhive2/assets/index.css">
-    <base href="/cityhive2/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/cityhive2/assets/main.js"></script>
+    <link rel="stylesheet" crossorigin href="/cityhive2/assets/index.css">
   </head>
   <body>
-    <!-- Navigation Header -->
-    <nav class="main-nav">
-      <div class="nav-container">        <div class="nav-brand">
-          <img src="/cityhive2/cityhivenew.png" alt="City Hive Logo" class="nav-logo" style="width:40px;height:auto;">
-          <span class="brand-text">City Hive</span>
-        </div>
-        <div class="nav-links">
-          <a href="index.html" class="nav-link">Map</a>
-          <a href="about.html" class="nav-link active">About</a>
-          <a href="resources.html" class="nav-link">Resources</a>
-        </div>
-        <div class="nav-toggle" id="navToggle">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-    </nav>
+    <!-- Navigation will be injected here -->
+    <header></header>
 
     <!-- Main Content -->
     <main class="page-content">
@@ -38,7 +24,8 @@
           <p class="lead">Urban bee mapping for conservation and community</p>
         </header>
 
-        <section class="content-section">          <h2>🐝 What is City Hive?</h2>
+        <section class="content-section">
+          <h2>🐝 What is City Hive?</h2>
           <p>City Hive is a community-driven platform for tracking and documenting bee activity across New York City. Built specifically for beekeepers, citizen scientists, and conservationists, it provides real-time mapping of swarms, feral colonies, and bee-friendly structures throughout the urban environment.</p>
           
           <div class="feature-grid">
@@ -61,7 +48,8 @@
           </div>
         </section>
 
-        <section class="content-section">          <h2>🏙️ About the New York Bee Club</h2>
+        <section class="content-section">
+          <h2>🏙️ About the New York Bee Club</h2>
           <p>The New York Bee Club (NYBC) is a community of urban beekeepers dedicated to promoting sustainable beekeeping practices in New York City. Founded by passionate apiarists, we provide education, support, and resources for both new and experienced beekeepers.</p>
           
           <div class="nybc-info">
@@ -84,7 +72,8 @@
                 <li>Advocacy for bee-friendly policies</li>
               </ul>
             </div>
-          </div>          <div class="cta-section">
+          </div>
+          <div class="cta-section">
             <h3>Join the New York Bee Community</h3>
             <div class="nybc-partnership">
               <img src="NYBeeClub_main.png" alt="New York Bee Club Logo" class="nybc-logo">
@@ -190,7 +179,6 @@
         <p>Built by Usher Gay (<a href="https://github.com/glitch-bee" target="_blank" rel="noopener noreferrer">glitch-bee</a>) for the New York Bee Club</p>
         <p>Open source project for bee conservation and community collaboration</p>
       </div>
-    </footer>
-    <script src="/cityhive2/assets/index.js"></script>
+    </footer>
   </body>
 </html>
