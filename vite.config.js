@@ -13,12 +13,6 @@ export default defineConfig({
         about: resolve(__dirname, 'about.html'),
         resources: resolve(__dirname, 'resources.html')
       },
-      output: {
-        // Use consistent filenames instead of hashes
-        entryFileNames: 'assets/index.js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/index.css'
-      }
     }
   }
 })
