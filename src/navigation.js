@@ -1,5 +1,6 @@
-import { showAuthModal } from './auth.js';
-import { signOut } from './supabase.js';
+import { showAuthModal, hideAuthModal } from './auth.js';
+import { supabase, signOut, onAuthStateChange } from './supabase.js';
+import logoUrl from '/cityhivenew.png';
 
 export function initNavigation(appState) {
   const pages = [
@@ -29,11 +30,16 @@ export function initNavigation(appState) {
   brandLink.href = 'index.html';
   brandLink.className = 'nav-brand';
 
+  const logoLink = document.createElement('a');
+  logoLink.href = '/cityhive2/';
+  
   const logoImg = document.createElement('img');
-  logoImg.src = '/cityhivenew.png'; // Use absolute path for assets in public dir
+  logoImg.src = logoUrl;
   logoImg.alt = 'City Hive Logo';
-  logoImg.className = 'nav-logo';
-  brandLink.appendChild(logoImg);
+  logoImg.classList.add('nav-logo');
+  
+  logoLink.appendChild(logoImg);
+  brandLink.appendChild(logoLink);
   
   const brandText = document.createElement('span');
   brandText.className = 'brand-text';

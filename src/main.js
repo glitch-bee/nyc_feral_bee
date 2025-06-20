@@ -3,6 +3,8 @@ import './map.css';
 import './pages.css';
 import './auth.css';
 
+import favicon from '/cityhivenew.png';
+
 import { onAuthStateChange, getUserProfile } from './supabase.js';
 import { initNavigation } from './navigation.js';
 import { loadMarkers, initMap, setMap } from './map.js';
@@ -18,6 +20,12 @@ export const appState = {
 
 // --- Application Initialization ---
 async function main() {
+  // Set favicon programmatically to ensure correct path
+  const faviconLink = document.querySelector('link[rel="icon"]');
+  if (faviconLink) {
+    faviconLink.href = favicon;
+  }
+
   // Initialize navigation and marker form early
   initNavigation(appState);
   createMarkerForm();
