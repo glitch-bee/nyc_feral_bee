@@ -80,6 +80,24 @@ City Hive facilitates knowledge sharing and collective bee stewardship:
 - **✅ Community comments** for collaborative observations
 - **✅ User notifications** for new activity in their area
 
+## 🎨 UI/UX Enhancement Plan
+
+### **Unified Design System**
+- **Color Palette**: Establish a consistent and modern color palette for all interactive elements to unify the app's branding.
+- **Typography & Iconography**: Adopt a standard set of fonts and icons to create a professional and cohesive visual language.
+
+### **Cohesive Layout Structure**
+- **"App-like" Feel**: Transition from floating modals to integrated side panels for forms and information displays, creating a more structured application experience.
+- **Modernized Navigation**: Consolidate user-related links (e.g., "Welcome, User," "Logout") into a single profile menu to streamline the header.
+
+### **Component & Form Refinement**
+- **Marker Creation Form**: Improve usability by adding photo previews and creating a clearer visual distinction between primary and secondary actions.
+- **Marker Info Popup**: Enhance data readability through better information hierarchy and add confirmation steps for destructive actions like deleting a pin.
+
+### **Enhanced User Feedback & Interaction**
+- **Microinteractions**: Implement subtle animations and transitions to make the interface feel more responsive and dynamic.
+- **Notifications**: Add "toast" notifications or other non-intrusive alerts to provide clear feedback for actions like adding markers or comments.
+
 ---
 
 ## 🚀 Short Term Features (Next Phase)
