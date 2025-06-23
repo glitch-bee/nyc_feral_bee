@@ -21,7 +21,7 @@ export function initNavigation(appState) {
 
   const nav = document.createElement('nav');
   nav.className = 'main-nav';
-  
+
   const navContainer = document.createElement('div');
   navContainer.className = 'nav-container';
 
@@ -32,15 +32,19 @@ export function initNavigation(appState) {
 
   const logoLink = document.createElement('a');
   logoLink.href = '/cityhive2/';
-  
+  logoLink.style.display = 'flex';
+  logoLink.style.flexDirection = 'column';
+  logoLink.style.justifyContent = 'flex-start';
+  logoLink.style.alignItems = 'flex-start';
+
   const logoImg = document.createElement('img');
   logoImg.src = logoUrl;
   logoImg.alt = 'City Hive Logo';
   logoImg.classList.add('nav-logo');
-  
+
   logoLink.appendChild(logoImg);
   brandLink.appendChild(logoLink);
-  
+
   const brandText = document.createElement('span');
   brandText.className = 'brand-text';
   brandText.textContent = 'City Hive';
@@ -52,7 +56,7 @@ export function initNavigation(appState) {
   const navLinksDiv = document.createElement('div');
   navLinksDiv.className = 'nav-links';
 
-  pages.forEach(page => {
+  pages.forEach((page) => {
     const a = document.createElement('a');
     a.href = page.path;
     a.textContent = page.name;
@@ -68,7 +72,7 @@ export function initNavigation(appState) {
   rightSideContainer.style.display = 'flex';
   rightSideContainer.style.alignItems = 'center';
   rightSideContainer.style.gap = '2rem'; // Match gap from .nav-links
-  
+
   rightSideContainer.appendChild(navLinksDiv);
 
   // Auth section
@@ -80,7 +84,7 @@ export function initNavigation(appState) {
     const userNameEl = document.createElement('span');
     userNameEl.className = 'user-name';
     userNameEl.textContent = `Welcome, ${appState.userProfile.display_name || 'User'}`;
-    
+
     const logoutBtn = document.createElement('button');
     logoutBtn.className = 'logout-btn';
     logoutBtn.textContent = 'Logout';
@@ -102,14 +106,14 @@ export function initNavigation(appState) {
     loginBtn.addEventListener('click', showAuthModal);
     authContainer.appendChild(loginBtn);
   }
-  
+
   rightSideContainer.appendChild(authContainer);
   navContainer.appendChild(rightSideContainer);
   nav.appendChild(navContainer);
-  
+
   if (header) {
-      header.appendChild(nav);
+    header.appendChild(nav);
   } else {
-      document.body.prepend(nav);
+    document.body.prepend(nav);
   }
 }

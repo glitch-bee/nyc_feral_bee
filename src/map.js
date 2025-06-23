@@ -32,9 +32,13 @@ export function initMap(containerId = 'map', onMapClick) {
     ];
 
     try {
-        const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY;
+        const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY || 'mbriicWDtoa7yG1tmDK0';
         if (!mapTilerKey) {
-            throw new Error("VITE_MAPTILER_KEY is not set in the environment. Please add it to your .env file.");
+            const warning = "VITE_MAPTILER_KEY is not set. Please get a key from maptiler.com and add it to your .env file.";
+            console.warn(warning);
+            // Optionally, display this message on the map itself
+            mapContainer.innerHTML = `<div class="map-error-message">${warning}</div>`;
+            return null;
         }
         const map = new maplibregl.Map({
             container: mapContainer,
