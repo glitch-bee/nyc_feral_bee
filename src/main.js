@@ -26,13 +26,16 @@ async function main() {
     faviconLink.href = favicon;
   }
 
-  // Initialize navigation and marker form early
+  // Initialize navigation early
   initNavigation(appState);
-  createMarkerForm();
 
-  // Initialize the map and store the instance in the state
-  const mapInstance = initMap();
+  // Get marker form handlers
+  const { handleMapClick, setMap: setMarkerFormMap } = createMarkerForm();
+
+  // Initialize the map and wire up the click handler
+  const mapInstance = initMap('map', handleMapClick);
   setMap(mapInstance);
+  setMarkerFormMap(mapInstance);
   appState.map = mapInstance;
 
   // Listen for authentication state changes to keep the UI in sync
@@ -44,10 +47,8 @@ async function main() {
       appState.currentUser = null;
       appState.userProfile = null;
     }
-
     // Re-initialize navigation to show updated user state (login/logout buttons)
     initNavigation(appState);
-
     // Reload markers to apply correct ownership permissions on popups
     if (appState.map) {
       loadMarkers(appState);
