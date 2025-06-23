@@ -1,6 +1,6 @@
 import { showAuthModal, hideAuthModal } from './auth.js';
 import { supabase, signOut, onAuthStateChange } from './supabase.js';
-import logoUrl from '/cityhivenew.png';
+import logoUrl from '/public/cityhive.png';
 
 export function initNavigation(appState) {
   const pages = [

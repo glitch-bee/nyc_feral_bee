@@ -3,7 +3,7 @@ import './map.css';
 import './pages.css';
 import './auth.css';
 
-import favicon from '/cityhivenew.png';
+import favicon from '/public/cityhive.png';
 
 import { onAuthStateChange, getUserProfile } from './supabase.js';
 import { initNavigation } from './navigation.js';
@@ -44,13 +44,13 @@ async function main() {
       appState.currentUser = null;
       appState.userProfile = null;
     }
-    
+
     // Re-initialize navigation to show updated user state (login/logout buttons)
-    initNavigation(appState); 
-    
+    initNavigation(appState);
+
     // Reload markers to apply correct ownership permissions on popups
     if (appState.map) {
-      loadMarkers(appState); 
+      loadMarkers(appState);
     }
   });
 
