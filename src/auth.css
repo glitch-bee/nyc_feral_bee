@@ -1,130 +1,178 @@
 /* Auth Modal Styles */
 .auth-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 .auth-modal-content {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 400px;
-    position: relative;
-    animation: fadeIn 0.3s ease-out;
+  background: var(--surface-primary, #ffffff);
+  padding: 2.5rem;
+  border-radius: var(--border-radius-lg, 16px);
+  box-shadow: var(
+    --shadow-xl,
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1)
+  );
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  animation: fadeIn 0.4s ease-out;
+  border: 1px solid var(--gray-200, #e2e8f0);
 }
 
 .auth-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #aaa;
-    background: none;
-    border: none;
-    cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-muted, #64748b);
+  background: var(--surface-secondary, #f8fafc);
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .auth-close-btn:hover {
-    color: #333;
+  color: var(--text-primary, #0f172a);
+  background: var(--surface-hover, #f1f5f9);
+  transform: scale(1.1);
 }
 
 .auth-tabs {
-    display: flex;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #eee;
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--gray-200, #e2e8f0);
+  border-radius: var(--border-radius-sm, 8px) var(--border-radius-sm, 8px) 0 0;
+  background: var(--surface-secondary, #f8fafc);
 }
 
 .auth-tab-btn {
-    flex: 1;
-    padding: 0.8rem;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #888;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s ease;
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary, #475569);
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
 .auth-tab-btn.active {
-    color: #333;
-    border-bottom: 2px solid #007bff;
+  color: var(--primary-teal, #40e0d0);
+  border-bottom: 3px solid var(--primary-teal, #40e0d0);
+  background: var(--surface-primary, #ffffff);
 }
 
 .auth-form-title {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
 }
 
 #auth-form div {
-    margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 #auth-form label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #555;
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+  font-size: 0.95rem;
 }
 
 #auth-form input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid var(--gray-200, #e2e8f0);
+  border-radius: var(--border-radius-sm, 8px);
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--surface-primary, #ffffff);
+  transition: all 0.2s ease;
+}
+
+#auth-form input:focus {
+  outline: none;
+  border-color: var(--primary-teal, #40e0d0);
+  box-shadow: 0 0 0 3px rgba(64, 224, 208, 0.1);
 }
 
 .auth-submit-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary-teal, #40e0d0),
+    var(--primary-mint, #00d4aa)
+  );
+  color: var(--white, #ffffff);
+  border: none;
+  border-radius: var(--border-radius-sm, 8px);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1));
+  transition: all 0.2s ease;
 }
 
 .auth-submit-btn:hover {
-    background-color: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1));
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
 }
 
 .auth-error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    padding: 0.75rem;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-    text-align: center;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error, #ef4444);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-left: 3px solid var(--error, #ef4444);
+  padding: 1rem;
+  border-radius: var(--border-radius-sm, 8px);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 500;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-} 
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
