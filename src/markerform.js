@@ -179,6 +179,7 @@ export function createMarkerForm() {
   photoInput.addEventListener('change', handlePhotoSelection)
   removePhotoBtn.addEventListener('click', removePhoto)
   function handleMapClick({ lng, lat }) {
+    console.log('Map clicked', lat, lng);
     lngInput.value = lng
     latInput.value = lat
     locationPrompt.textContent = `Selected: ${lat.toFixed(4)}, ${lng.toFixed(4)}`
