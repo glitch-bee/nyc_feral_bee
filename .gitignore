@@ -32,3 +32,5 @@ notes_local.txt
 *.njsproj
 *.sln
 *.sw?
+
+.config/
