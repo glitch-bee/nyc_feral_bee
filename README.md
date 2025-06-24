@@ -1,4 +1,4 @@
-# City Hive - NYC Bee Sighting Map 🐝
+# City Hive - NYC Bee Sighting Map
 
 **Version:** 1.0.0  
 **Status:** Production Ready  
@@ -6,20 +6,20 @@
 
 A **production-ready** collaborative mapping platform for tracking bee sightings in New York City. Built for beekeepers, researchers, and citizen scientists to document and verify bee activity across the five boroughs.
 
-## ✨ Features
+## Features
 
-- **🗺️ Interactive Map** - Real-time collaborative bee sighting map with NYC boundaries
-- **🔐 User Authentication** - Secure login/registration system with user profiles
-- **📍 Location Tracking** - GPS-powered location detection and manual pin placement  
-- **💬 Community Comments** - Add comments and observations to any sighting
-- **📸 Photo Uploads** - Document sightings with cloud-stored photos
-- **🔄 Status System** - Track verification status (Unverified, Active, Checked, Gone, Removed)
-- **🎯 NYC-Focused** - Optimized boundaries for the five boroughs
-- **📱 Mobile-First** - Touch-optimized responsive design for field use
-- **⚡ Real-time Updates** - Instant synchronization across all users and devices
-- **👤 User Ownership** - Users can manage their own markers with admin oversight
+- **Interactive Map** - Real-time collaborative bee sighting map with NYC boundaries
+- **User Authentication** - Secure login/registration system with user profiles
+- **Location Tracking** - GPS-powered location detection and manual pin placement  
+- **Community Comments** - Add comments and observations to any sighting
+- **Photo Uploads** - Document sightings with cloud-stored photos
+- **Status System** - Track verification status (Unverified, Active, Checked, Gone, Removed)
+- **NYC-Focused** - Optimized boundaries for the five boroughs
+- **Mobile-First** - Touch-optimized responsive design for field use
+- **Real-time Updates** - Instant synchronization across all users and devices
+- **User Ownership** - Users can manage their own markers with admin oversight
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend:** Vite + Vanilla JavaScript + MapLibre GL JS
 - **Map:** MapTiler Streets v2 (vector tiles)
@@ -27,7 +27,7 @@ A **production-ready** collaborative mapping platform for tracking bee sightings
 - **Styling:** Modern CSS with Inter font
 - **Mobile:** Responsive design optimized for touch interfaces
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: Use with Default Keys (Demo)
 ```bash
@@ -54,7 +54,7 @@ cp .env.example .env
 npm run dev
 ```
 
-## 🔧 Setting Up Your Own Instance
+## Setting Up Your Own Instance
 
 ### 1. Supabase Setup
 1. Create a new project at [supabase.com](https://supabase.com)
@@ -78,7 +78,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_MAPTILER_KEY=your_maptiler_api_key
 ```
 
-## 📱 Mobile Experience
+## Mobile Experience
 
 City Hive is **optimized for mobile field use** with:
 - **Touch-friendly interface** with modal-based marker details
@@ -87,22 +87,22 @@ City Hive is **optimized for mobile field use** with:
 - **Instant updates** without page reloads
 - **Responsive design** that works on all screen sizes
 
-## 🗺️ Marker Types
+## Marker Types
 
-- **🟡 Hive** - Established bee colonies
-- **🔴 Swarm** - Mobile bee clusters  
-- **⚫ Structure** - Bees in buildings/man-made structures
-- **🟢 Tree** - Natural tree cavities with bees
+- **Hive** - Established bee colonies
+- **Swarm** - Mobile bee clusters  
+- **Structure** - Bees in buildings/man-made structures
+- **Tree** - Natural tree cavities with bees
 
-## 🔄 Status Tracking
+## Status Tracking
 
-- **⚪ Unverified** - New sighting, needs verification
-- **🟢 Active** - Confirmed active colony
-- **🟡 Checked** - Recently inspected
-- **🔴 Gone** - Colony has moved or died
-- **🗑️ Removed** - Professionally removed
+- **Unverified** - New sighting, needs verification
+- **Active** - Confirmed active colony
+- **Checked** - Recently inspected
+- **Gone** - Colony has moved or died
+- **Removed** - Professionally removed
 
-## 🌐 Deployment
+## Deployment
 
 ### GitHub Pages
 ```bash
@@ -116,7 +116,7 @@ npm run build
 # Upload dist/ folder to your hosting platform
 ```
 
-## 👩‍💻 Development
+## Development
 
 ```bash
 # Start development server
@@ -129,7 +129,7 @@ npm run build
 npm run preview
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -155,11 +155,11 @@ public/
 └── *.png            # Branding images
 ```
 
-## 📋 Version History
+## Version History
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history and recent changes.
 
-## 🤝 Contributing
+## Contributing
 
 This project is focused on the NYC bee community. If you'd like to contribute:
 
@@ -170,16 +170,16 @@ This project is focused on the NYC bee community. If you'd like to contribute:
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details
 
-## 📧 Contact
+## Contact
 
 For questions about the NYC bee community or this project, please open an issue.
 
 ---
 
-**Made with 🐝 for NYC beekeepers and citizen scientists**
+**Made with for NYC beekeepers and citizen scientists**
 
 *Built by Usher Gay for the New York Bee Club*
