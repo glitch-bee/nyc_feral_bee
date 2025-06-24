@@ -1,5 +1,9 @@
 # City Hive - NYC Bee Sighting Map 🐝
 
+**Version:** 1.0.0  
+**Status:** Production Ready  
+**Last Updated:** June 23 2025
+
 A **production-ready** collaborative mapping platform for tracking bee sightings in New York City. Built for beekeepers, researchers, and citizen scientists to document and verify bee activity across the five boroughs.
 
 ## ✨ Features
@@ -54,7 +58,7 @@ npm run dev
 
 ### 1. Supabase Setup
 1. Create a new project at [supabase.com](https://supabase.com)
-2. Run the SQL scripts in order:
+2. Run the SQL scripts in `docs/database/` in order:
    - `database_setup_comments.sql` - Comments system
    - `database_setup_photos.sql` - Photo storage
    - `database_setup_status.sql` - Status tracking
@@ -141,12 +145,19 @@ src/
 ├── auth.css         # Authentication modal styles
 └── pages.css        # Static page styles
 
+docs/
+├── README.md        # Documentation structure overview
+├── database/        # Database setup scripts and documentation
+└── internal/        # Private development notes (not tracked in git)
+
 public/
 ├── cityhive-logo.svg # Logo file
 └── *.png            # Branding images
-
-*.sql               # Database setup scripts
 ```
+
+## 📋 Version History
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history and recent changes.
 
 ## 🤝 Contributing
 

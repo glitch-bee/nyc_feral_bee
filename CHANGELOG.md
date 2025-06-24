@@ -2,41 +2,58 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2025-01-23
 
 ### Added
-- Comprehensive documentation overhaul and consolidation
-- Updated README with production-ready feature set and mobile optimization details
-- Enhanced project notes with complete authentication system documentation
-- Updated planned features roadmap to reflect current production state
-- Added detailed technical stack and architecture documentation
-
-### Changed
-- Updated branding from "CityHive2" to "City Hive" across all documentation
-- Consolidated project status to reflect production-ready mobile application
-- Reorganized feature roadmap to separate completed vs. planned features
-- Enhanced documentation with authentication, user management, and admin features
-
-## [2025-06-16]
-
-### Added
+- Comprehensive documentation organization and restructuring
+- New `docs/` folder structure with `internal/` and `database/` subdirectories
+- Enhanced security with proper environment variable validation
+- Updated `.env.example` with placeholder values for secure API key management
+- Added comprehensive documentation README explaining folder structure
 - Enhanced marker management with improved update logic and refresh interval adjustments
 - Added utility functions for better marker access and management
-- Updated project notes with branding changes and file references for consistency
 - Enhanced welcome guide modal styles and functionality
 
 ### Changed
+- **Security**: Removed all hardcoded API keys from source code
+- **Documentation**: Moved internal development files to `docs/internal/` (private)
+- **Database**: Organized SQL scripts into `docs/database/` folder
+- **Environment**: Enhanced environment variable handling with validation
+- **Structure**: Cleaned up root directory by removing development artifacts
 - Updated marker management system with new exports and popup handling
 - Improved marker instance handling and existing marker management
+- Updated project notes with branding changes and file references for consistency
 
-## [2025-06-15]
+### Removed
+- Hardcoded Supabase URL and API key fallbacks from `src/supabase.js`
+- Hardcoded MapTiler API key fallback from `src/map.js`
+- Development files from root directory (`mobile-welcome.md`, `counter.js`)
+- Database setup files from root directory (moved to `docs/database/`)
+- Internal documentation files from root directory (moved to `docs/internal/`)
+
+### Fixed
+- Environment variable validation to prevent silent failures
+- API key exposure in `.env.example` file
+- Repository structure for better organization and security
+
+## [0.9.0] - 2025-06-16
 
 ### Added
 - Enhanced marker management system
 - Updated project documentation and branding
 - Improved welcome guide modal
 
-## [2025-06-14]
+## [0.8.0] - 2025-06-15
+
+### Added
+- Enhanced marker management system
+- Updated project documentation and branding
+- Improved welcome guide modal
+
+## [0.7.0] - 2025-06-14
 
 ### Added
 - New features and improvements to the application
@@ -44,7 +61,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated various components and functionality
 
-## [2025-06-13]
+## [0.6.0] - 2025-06-13
 
 ### Added
 - New features and bug fixes
@@ -53,7 +70,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Enhanced user interface components
 
-## [2025-06-12]
+## [0.5.0] - 2025-06-12
 
 ### Added
 - New features
@@ -61,7 +78,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated project components
 
-## [2025-06-11]
+## [0.4.0] - 2025-06-11
 
 ### Added
 - Documentation
@@ -70,7 +87,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Various issues
 
-## [2025-06-10]
+## [0.3.0] - 2025-06-10
 
 ### Added
 - Map functionality
@@ -79,7 +96,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated project structure
 
-## [2025-06-09]
+## [0.2.0] - 2025-06-09
 
 ### Added
 - Initial project setup
