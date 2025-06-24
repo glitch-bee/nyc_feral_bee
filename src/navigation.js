@@ -67,6 +67,39 @@ export function initNavigation(appState) {
     navLinksDiv.appendChild(a);
   });
 
+  // Panel toggle button (only visible on desktop when not on main map page)
+  const panelToggleContainer = document.createElement('div');
+  panelToggleContainer.className = 'panel-toggle-container';
+
+  if (
+    window.location.pathname === '/' ||
+    window.location.pathname.endsWith('index.html') ||
+    window.location.pathname === '/cityhive2/' ||
+    window.location.pathname === '/cityhive2/index.html'
+  ) {
+    const panelToggleBtn = document.createElement('button');
+    panelToggleBtn.className = 'panel-toggle-btn';
+    panelToggleBtn.setAttribute('aria-label', 'Toggle marker form panel');
+    panelToggleBtn.innerHTML = '📍 Add Sighting';
+
+    panelToggleBtn.addEventListener('click', () => {
+      const markerForm = document.getElementById('marker-form');
+      if (markerForm) {
+        markerForm.classList.toggle('panel-collapsed');
+        const isCollapsed = markerForm.classList.contains('panel-collapsed');
+        panelToggleBtn.innerHTML = isCollapsed
+          ? '📍 Add Sighting'
+          : '✕ Close Panel';
+        panelToggleBtn.setAttribute('aria-expanded', !isCollapsed);
+
+        // Remember user preference
+        localStorage.setItem('panelCollapsed', isCollapsed.toString());
+      }
+    });
+
+    panelToggleContainer.appendChild(panelToggleBtn);
+  }
+
   // Combine nav links and auth section
   const rightSideContainer = document.createElement('div');
   rightSideContainer.style.display = 'flex';
@@ -74,6 +107,7 @@ export function initNavigation(appState) {
   rightSideContainer.style.gap = '2rem'; // Match gap from .nav-links
 
   rightSideContainer.appendChild(navLinksDiv);
+  rightSideContainer.appendChild(panelToggleContainer);
 
   // Auth section
   const authContainer = document.createElement('div');

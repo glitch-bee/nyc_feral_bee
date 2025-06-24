@@ -197,6 +197,101 @@ body {
   display: none;
 }
 
+/* Panel toggle button styles */
+.panel-toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+.panel-toggle-btn {
+  background: linear-gradient(135deg, var(--primary-teal), var(--primary-mint));
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: 0.75rem 1.25rem;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.panel-toggle-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.panel-toggle-btn:hover::before {
+  left: 100%;
+}
+
+.panel-toggle-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.panel-toggle-btn:active {
+  transform: translateY(0);
+}
+
+/* Floating panel hint when collapsed */
+.panel-hint {
+  position: fixed;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, var(--primary-teal), var(--primary-mint));
+  color: var(--white);
+  border: none;
+  border-radius: 50px 0 0 50px;
+  padding: 1rem 0.75rem;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.panel-hint.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panel-hint:hover {
+  transform: translateY(-50%) translateX(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Hide panel toggle on mobile */
+@media (max-width: 768px) {
+  .panel-toggle-container,
+  .panel-hint {
+    display: none;
+  }
+}
+
 /* Compact, modern Add Bee Sighting form styles */
 #marker-form {
   position: fixed;
@@ -215,7 +310,29 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Desktop collapsed state - default for desktop */
+@media (min-width: 769px) {
+  #marker-form {
+    transform: translateX(calc(100% + 20px));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #marker-form.panel-collapsed {
+    transform: translateX(calc(100% + 20px));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Expanded state when manually opened */
+  #marker-form:not(.panel-collapsed) {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 #marker-form .form-group {
