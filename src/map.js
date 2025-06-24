@@ -32,7 +32,7 @@ export function initMap(containerId = 'map', onMapClick) {
     ];
 
     try {
-        const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY || 'mbriicWDtoa7yG1tmDK0';
+        const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY;
         if (!mapTilerKey) {
             const warning = "VITE_MAPTILER_KEY is not set. Please get a key from maptiler.com and add it to your .env file.";
             console.warn(warning);
