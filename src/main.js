@@ -2,6 +2,7 @@ import './style.css';
 import './map.css';
 import './pages.css';
 import './auth.css';
+import './pwa.css'; // PWA-specific styles for install prompts and offline indicators
 
 import favicon from '/cityhive.png';
 

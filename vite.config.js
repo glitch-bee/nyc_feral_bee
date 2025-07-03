@@ -15,5 +15,12 @@ export default defineConfig(({ command }) => {
         },
       },
     },
+    
+    // PWA Configuration - TODO: Implement with @vite/plugin-pwa
+    // When ready to implement:
+    // 1. Install: npm install @vite/plugin-pwa
+    // 2. Import: import { VitePWA } from 'vite-plugin-pwa'
+    // 3. Add VitePWA plugin to plugins array
+    // 4. Configure with manifest and workbox settings
   }
 })
