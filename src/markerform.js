@@ -19,8 +19,7 @@ export function createMarkerForm() {
       formContainer.classList.remove('panel-collapsed');
     }
 
-    // Create floating hint button
-    createFloatingHint();
+    // Floating hint removed - using hamburger menu instead
 
     // Update toggle button state if it exists
     setTimeout(() => {
@@ -30,47 +29,10 @@ export function createMarkerForm() {
         toggleBtn.innerHTML = isCollapsed ? '📍 Add Sighting' : '✕ Close Panel';
         toggleBtn.setAttribute('aria-expanded', !isCollapsed);
       }
-      updateFloatingHint();
     }, 100);
   }
 
-  // Create floating hint button
-  function createFloatingHint() {
-    let hintBtn = document.getElementById('panel-hint');
-    if (!hintBtn) {
-      hintBtn = document.createElement('button');
-      hintBtn.id = 'panel-hint';
-      hintBtn.className = 'panel-hint';
-      hintBtn.innerHTML = 'Add';
-      hintBtn.setAttribute('aria-label', 'Open marker form panel');
-
-      hintBtn.addEventListener('click', () => {
-        formContainer.classList.remove('panel-collapsed');
-        const toggleBtn = document.querySelector('.panel-toggle-btn');
-        if (toggleBtn) {
-          toggleBtn.innerHTML = '✕ Close Panel';
-          toggleBtn.setAttribute('aria-expanded', 'true');
-        }
-        localStorage.setItem('panelCollapsed', 'false');
-        updateFloatingHint();
-      });
-
-      document.body.appendChild(hintBtn);
-    }
-  }
-
-  // Update floating hint visibility
-  function updateFloatingHint() {
-    const hintBtn = document.getElementById('panel-hint');
-    if (hintBtn && window.innerWidth > 768) {
-      const isCollapsed = formContainer.classList.contains('panel-collapsed');
-      if (isCollapsed) {
-        hintBtn.classList.add('show');
-      } else {
-        hintBtn.classList.remove('show');
-      }
-    }
-  }
+  // Panel hint functionality removed - using hamburger menu instead
 
   formContainer.innerHTML = `
     <!-- Mobile form header (only visible on mobile) -->
@@ -234,7 +196,7 @@ export function createMarkerForm() {
           toggleBtn.innerHTML = '📍 Add Sighting';
           toggleBtn.setAttribute('aria-expanded', 'false');
         }
-        updateFloatingHint();
+        // Floating hint removed
       }
 
       console.log('Marker added successfully:', newMarker);
@@ -270,7 +232,7 @@ export function createMarkerForm() {
         toggleBtn.innerHTML = '✕ Close Panel';
         toggleBtn.setAttribute('aria-expanded', 'true');
       }
-      updateFloatingHint();
+      // Floating hint removed
     }
   }
 

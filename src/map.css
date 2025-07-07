@@ -9,8 +9,9 @@
   outline: none;
 }
 
-/* Map Layer Controls */
+/* Map Layer Controls - hidden, using hamburger menu instead */
 .map-controls {
+  display: none !important;
   position: fixed;
   top: 90px;
   left: 20px;

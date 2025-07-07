@@ -110,8 +110,9 @@
 .nav-toggle span {
   width: 25px;
   height: 3px;
-  background: #ffffff;
+  background: var(--text-primary, #0f172a);
   transition: 0.3s;
+  border-radius: 2px;
 }
 
 .nav-toggle.nav-toggle-active span:nth-child(1) {
@@ -130,6 +131,16 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+/* Mobile auth container - hidden on desktop */
+.mobile-auth {
+  display: none;
+}
+
+/* Desktop auth container - shown on desktop */
+.desktop-auth {
+  display: flex;
 }
 
 .login-btn,
@@ -852,13 +863,16 @@
     left: -100%;
     width: 100%;
     height: calc(100vh - 70px);
-    background: rgba(74, 74, 74, 1);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding-top: 2rem;
     transition: left 0.3s ease;
     z-index: 10001;
+    box-shadow: var(--shadow-xl);
   }
 
   .nav-links.nav-active {
@@ -875,6 +889,64 @@
     text-align: center;
     margin: 0.5rem 0;
     padding: 1rem;
+  }
+
+  /* Show mobile auth, hide desktop auth */
+  .mobile-auth {
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-200);
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .desktop-auth {
+    display: none;
+  }
+
+  .mobile-auth .login-btn,
+  .mobile-auth .logout-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+  }
+
+  .mobile-auth .user-name {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--primary-teal);
+  }
+
+  /* Navigation sections in mobile menu */
+  .nav-section {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .nav-section-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    padding: 0 1rem;
+  }
+
+  .nav-map-layers {
+    background: rgba(64, 224, 208, 0.1);
+    border: 1px solid rgba(64, 224, 208, 0.2);
+    cursor: pointer;
+  }
+
+  .nav-map-layers:hover {
+    background: var(--primary-teal);
+    color: var(--white);
   }
 
   /* Mobile page content adjustments */
