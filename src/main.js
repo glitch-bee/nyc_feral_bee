@@ -17,7 +17,7 @@ import { initWelcomePopup } from './welcome.js';
 import { createMarkerForm } from './markerform.js';
 import { toast } from './toast.js';
 import { MapLayerControls } from './map-controls.js';
-import { FormEnhancements } from './form-enhancements.js';
+import './crosshair.js'; // Import crosshair functionality
 
 // --- Global Application State ---
 export const appState = {
@@ -25,7 +25,6 @@ export const appState = {
   userProfile: null,
   map: null,
   mapControls: null,
-  formEnhancements: null,
 };
 
 // --- Application Initialization ---
@@ -82,19 +81,7 @@ async function main() {
       }, 500);
     });
 
-    // Initialize form enhancements
-    const formContainer = document.getElementById('marker-form');
-    if (formContainer) {
-      try {
-        appState.formEnhancements = new FormEnhancements(formContainer);
-        console.log('Form enhancements initialized successfully');
-      } catch (error) {
-        console.error('Failed to initialize form enhancements:', error);
-        toast.warning('Advanced form features unavailable', 3000);
-      }
-    } else {
-      console.warn('Marker form container not found');
-    }
+    // Form enhancements removed for cleaner UI
 
     // Set up event listeners for enhanced features
     setupEnhancedEventListeners();
@@ -135,19 +122,12 @@ function setupEnhancedEventListeners() {
     handleQuickAction(e.detail.action);
   });
 
-  // Form submission with enhanced feedback
+  // Basic form submission feedback
   const form = document.getElementById('markerForm');
   if (form) {
     form.addEventListener('submit', (e) => {
-      if (appState.formEnhancements) {
-        const shouldProceed = appState.formEnhancements.handleSubmit(e);
-        if (!shouldProceed) return;
-      }
-
       // Show loading state
-      const submitBtn = form.querySelector(
-        'button[type="submit"], .step-submit'
-      );
+      const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) {
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<div class="spinner"></div> Adding...';

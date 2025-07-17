@@ -2,6 +2,7 @@ import { addMarker, uploadPhoto } from './supabase.js';
 import { addMarkerToMap } from './map.js';
 import { appState } from './main.js'; // Import global state
 import { showAuthModal } from './auth.js'; // Import modal function
+import { hideCrosshair, isCrosshairVisible } from './crosshair.js';
 
 export function createMarkerForm() {
   const formContainer = document.getElementById('marker-form');
@@ -96,7 +97,38 @@ export function createMarkerForm() {
   `;
   // Add mobile toggle functionality to global scope
   window.toggleMobileForm = function () {
+    const wasExpanded = formContainer.classList.contains('expanded');
     formContainer.classList.toggle('expanded');
+
+    console.log(
+      'Toggling mobile form. Was expanded:',
+      wasExpanded,
+      'Now expanded:',
+      formContainer.classList.contains('expanded')
+    );
+
+    // Show/hide crosshair based on form state
+    if (!wasExpanded) {
+      // Form is being expanded - import and show crosshair
+      import('./crosshair.js')
+        .then(({ showCrosshair }) => {
+          showCrosshair();
+        })
+        .catch(console.error);
+    } else {
+      // Form is being collapsed
+      hideCrosshair();
+
+      // Clear any inline styles that might override CSS
+      formContainer.style.transform = '';
+      formContainer.style.display = '';
+
+      console.log('Mobile form collapsed. Current state:', {
+        hasExpandedClass: formContainer.classList.contains('expanded'),
+        computedTransform: getComputedStyle(formContainer).transform,
+        inlineTransform: formContainer.style.transform,
+      });
+    }
   };
   const form = formContainer.querySelector('#markerForm');
   const typeSelect = form.querySelector('select[name="type"]');
@@ -199,6 +231,9 @@ export function createMarkerForm() {
         // Floating hint removed
       }
 
+      // Hide crosshair after successful submission
+      hideCrosshair();
+
       console.log('Marker added successfully:', newMarker);
     } catch (err) {
       // Reset button
@@ -216,9 +251,30 @@ export function createMarkerForm() {
   removePhotoBtn.addEventListener('click', removePhoto);
   function handleMapClick({ lng, lat }) {
     console.log('Map clicked', lat, lng);
-    lngInput.value = lng;
-    latInput.value = lat;
-    locationPrompt.textContent = `Selected: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+
+    // If crosshair is visible, use map center instead of click coordinates
+    let finalLng = lng;
+    let finalLat = lat;
+
+    if (isCrosshairVisible() && mapRef) {
+      const center = mapRef.getCenter();
+      finalLng = center.lng;
+      finalLat = center.lat;
+      console.log('Using crosshair center coordinates:', finalLat, finalLng);
+
+      // Add visual feedback by briefly showing success state
+      const crosshair = document.querySelector('.map-crosshair');
+      if (crosshair) {
+        crosshair.classList.add('success');
+        setTimeout(() => {
+          crosshair.classList.remove('success');
+        }, 500);
+      }
+    }
+
+    lngInput.value = finalLng;
+    latInput.value = finalLat;
+    locationPrompt.textContent = `Selected: ${finalLat.toFixed(4)}, ${finalLng.toFixed(4)}`;
     locationPrompt.classList.add('picked');
 
     // Auto-expand form when location is selected
@@ -391,8 +447,31 @@ export function createMarkerForm() {
 
       if (shouldCollapse) {
         formContainer.classList.add('panel-collapsed');
+        hideCrosshair();
       } else {
         formContainer.classList.remove('panel-collapsed');
+      }
+    }
+  });
+
+  // Handle escape key to close form and crosshair
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (window.innerWidth <= 768) {
+        if (formContainer.classList.contains('expanded')) {
+          formContainer.classList.remove('expanded');
+          hideCrosshair();
+        }
+      } else {
+        if (!formContainer.classList.contains('panel-collapsed')) {
+          formContainer.classList.add('panel-collapsed');
+          const toggleBtn = document.querySelector('.panel-toggle-btn');
+          if (toggleBtn) {
+            toggleBtn.innerHTML = '📍 Add Sighting';
+            toggleBtn.setAttribute('aria-expanded', 'false');
+          }
+          hideCrosshair();
+        }
       }
     }
   });

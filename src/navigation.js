@@ -1,5 +1,6 @@
 import { showAuthModal, hideAuthModal } from './auth.js';
 import { supabase, signOut, onAuthStateChange } from './supabase.js';
+import { showCrosshair, hideCrosshair } from './crosshair.js';
 import logoUrl from '/cityhive.png';
 
 export function initNavigation(appState) {
@@ -131,6 +132,8 @@ export function initNavigation(appState) {
     if (markerForm && markerForm.classList.contains('expanded')) {
       markerForm.classList.remove('expanded');
       markerForm.style.display = 'none';
+      // Hide crosshair when form is closed
+      hideCrosshair();
     }
 
     // Close Map Controls if they're open
@@ -159,23 +162,44 @@ export function initNavigation(appState) {
     ) {
       // Handle Add Sighting click
       if (e.target.id === 'nav-add-sighting') {
+        console.log('Add Sighting clicked, window width:', window.innerWidth);
         closeMenu(); // Close menu first
 
         setTimeout(() => {
           const markerForm = document.getElementById('marker-form');
           if (markerForm) {
+            console.log(
+              'Opening marker form, current classes:',
+              markerForm.className
+            );
+            console.log('Current form styles:', {
+              display: getComputedStyle(markerForm).display,
+              transform: getComputedStyle(markerForm).transform,
+              position: getComputedStyle(markerForm).position,
+            });
+
             // Show the mobile form drawer
             markerForm.style.display = 'block';
             markerForm.classList.remove('panel-collapsed');
             markerForm.classList.add('expanded');
 
-            // Trigger the mobile form header click to expand it if on mobile
-            const mobileHeader = markerForm.querySelector(
-              '.mobile-form-header'
-            );
-            if (mobileHeader && window.innerWidth <= 768) {
-              mobileHeader.click();
+            // Show crosshair for location selection
+            showCrosshair();
+
+            // For mobile, ensure form is visible and expanded
+            if (window.innerWidth <= 768) {
+              // Don't set inline styles that conflict with CSS classes
+              // The CSS handles the transform based on .expanded class
+              console.log('Mobile form should use CSS class-based styling');
+
+              console.log('Mobile form should now be visible with styles:', {
+                display: markerForm.style.display,
+                transform: markerForm.style.transform,
+                classes: markerForm.className,
+              });
             }
+          } else {
+            console.error('Marker form element not found!');
           }
         }, 300); // Wait for menu to close
         return;
@@ -256,6 +280,13 @@ export function initNavigation(appState) {
           ? '📍 Add Sighting'
           : '✕ Close Panel';
         panelToggleBtn.setAttribute('aria-expanded', !isCollapsed);
+
+        // Show/hide crosshair based on panel state
+        if (isCollapsed) {
+          hideCrosshair();
+        } else {
+          showCrosshair();
+        }
 
         // Remember user preference
         localStorage.setItem('panelCollapsed', isCollapsed.toString());

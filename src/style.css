@@ -311,11 +311,6 @@ body {
   .panel-toggle-container {
     display: none;
   }
-
-  /* Show mobile form drawer on all screen sizes */
-  #marker-form {
-    display: block;
-  }
 }
 
 /* Desktop and Mobile Add Bee Sighting form */
@@ -330,6 +325,8 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: none;
 }
+
+/* Mobile form display now handled in consolidated mobile CSS rule above */
 
 /* Desktop form - right side panel */
 @media (min-width: 769px) {
@@ -349,23 +346,30 @@ body {
   }
 }
 
-/* Mobile form - bottom drawer */
+/* Mobile form - bottom drawer - CONSOLIDATED RULE */
 @media (max-width: 768px) {
   #marker-form {
     bottom: 0;
     left: 0;
     right: 0;
+    top: auto;
     width: 100vw;
-    max-height: 60vh;
+    height: auto;
+    max-height: 40vh;
     border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
     padding: 0;
     border-bottom: none;
-    transform: translateY(100%);
+    transform: translateY(calc(100% - 40px));
+    display: block !important;
+    position: fixed;
+    z-index: 1001;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
   }
 
   #marker-form.expanded {
     transform: translateY(0);
-    display: block;
   }
 }
 
@@ -612,7 +616,7 @@ body {
     top: auto;
     width: 100vw;
     height: auto;
-    max-height: 60vh;
+    max-height: 40vh;
     border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
     padding: 0;
     box-shadow: var(--shadow-xl);
@@ -637,15 +641,15 @@ body {
     border-bottom: 1px solid var(--gray-200);
   }
   .mobile-form-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
   }
   .mobile-form-toggle {
-    font-size: 20px;
+    font-size: 16px;
     color: var(--primary-teal);
-    margin-left: 8px;
+    margin-left: 6px;
     transition: transform 0.2s ease;
   }
   .mobile-form-content {
@@ -657,6 +661,18 @@ body {
     max-height: 98vh;
     border-radius: 0;
   }
+}
+
+/* Base map positioning */
+#map {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(100vh - 70px);
+  z-index: 1;
 }
 
 /* Mobile responsive */
@@ -694,31 +710,27 @@ body {
 
   /* Show mobile form header */
   .mobile-form-header {
-    display: flex;
+    display: flex !important;
+    position: relative;
+    z-index: 1002;
+    background: var(--surface-primary);
+    cursor: pointer;
+    min-height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
   }
 
-  /* Mobile form as bottom drawer */
-  #marker-form {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto;
-    width: 100%;
-    height: auto;
-    max-height: 60vh;
-    border-radius: 20px 20px 0 0;
-    padding: 0;
-    transform: translateY(calc(100% - 60px));
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    z-index: 1001;
+  .mobile-form-header:active {
+    background: var(--surface-hover);
   }
 
-  #marker-form.expanded {
-    transform: translateY(0);
-  }
+  /* Mobile form styles moved to consolidated rule above */
 
   /* Mobile form header/handle */
   #marker-form::before {
@@ -766,13 +778,15 @@ body {
   }
 
   .mobile-form-content {
-    padding: 0 20px 20px;
-    max-height: calc(60vh - 80px);
+    padding: 0 14px 20px;
+    max-height: calc(40vh - 50px);
     overflow-y: auto;
+    overflow-x: hidden;
     background: rgba(255, 255, 255, 0.98);
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     transition: opacity 0.3s ease;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
 
   #marker-form:not(.expanded) .mobile-form-content {
@@ -786,409 +800,85 @@ body {
   }
   /* Adjust form elements for mobile */
   .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .form-select,
   .form-textarea,
   .form-input {
-    padding: 16px 18px;
+    padding: 12px 14px;
     font-size: 16px; /* Prevents zoom on iOS */
-    border-radius: 12px;
-    height: 52px; /* Slightly larger for mobile touch */
+    border-radius: 10px;
+    height: 40px; /* Reduced for smaller popup */
   }
 
   .form-textarea {
     height: auto;
-    min-height: 104px; /* 2x mobile button height */
+    min-height: 76px; /* Reduced proportionally */
   }
 
   .btn {
-    padding: 16px 24px;
-    font-size: 16px;
+    padding: 12px 18px;
+    font-size: 15px;
     width: 100%;
-    border-radius: 12px;
-    height: 52px; /* Larger touch target for mobile */
+    border-radius: 10px;
+    height: 40px; /* Reduced for smaller popup */
   }
 
   .btn-locate,
   .btn-comment,
   .btn-delete,
   .btn-update-status {
-    height: 52px;
-    padding: 16px 20px;
-    font-size: 16px;
+    height: 40px;
+    padding: 12px 16px;
+    font-size: 15px;
   }
 
   .comment-author-input,
   .comment-input {
-    padding: 16px 18px;
-    font-size: 16px;
+    padding: 12px 14px;
+    font-size: 15px;
   }
 
   .comment-author-input {
-    height: 52px;
+    height: 40px;
   }
 
   .comment-input {
-    min-height: 104px;
+    min-height: 76px;
   }
 
   .status-select {
-    height: 52px;
-    padding: 16px 18px;
-    font-size: 16px;
+    height: 40px;
+    padding: 12px 14px;
+    font-size: 15px;
   }
 
   .form-file {
-    height: 52px;
-    padding: 16px 18px;
-    font-size: 16px;
+    height: 40px;
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+
+  /* Ensure submit button is always visible on mobile */
+  #marker-form .btn-primary {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    height: 44px; /* Slightly larger for important action */
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
   }
   .location-prompt {
-    padding: 16px;
-    font-size: 15px;
-    margin-bottom: 16px;
+    padding: 12px;
+    font-size: 14px;
+    margin-bottom: 12px;
   }
 }
 
-/* Progressive Form Styles */
-.form-progress {
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--gray-200);
-}
+/* Progressive form styles removed for cleaner UI */
 
-.progress-steps {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--space-4);
-  position: relative;
-}
-
-.progress-steps::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  left: 10%;
-  right: 10%;
-  height: 2px;
-  background: var(--gray-200);
-  z-index: 0;
-}
-
-.step-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  position: relative;
-  z-index: 1;
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-.step-number {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--border-radius-full);
-  background: var(--gray-200);
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-size-sm);
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-.step-label {
-  font-size: var(--font-size-xs);
-  color: var(--text-muted);
-  font-weight: var(--font-weight-medium);
-  transition: color var(--duration-normal) var(--ease-out);
-}
-
-.step-indicator.active .step-number {
-  background: var(--primary-teal);
-  color: var(--white);
-  transform: scale(1.1);
-}
-
-.step-indicator.active .step-label {
-  color: var(--primary-teal);
-  font-weight: var(--font-weight-semibold);
-}
-
-.step-indicator.completed .step-number {
-  background: var(--success);
-  color: var(--white);
-}
-
-.step-indicator.completed .step-label {
-  color: var(--success);
-}
-
-/* Step Navigation */
-.step-navigation {
-  display: flex;
-  gap: var(--space-3);
-  justify-content: space-between;
-  margin-top: var(--space-6);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--gray-200);
-}
-
-.step-btn {
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--border-radius-sm);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-out);
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.step-prev {
-  background: var(--surface-secondary);
-  color: var(--text-secondary);
-  border: 1px solid var(--gray-200);
-}
-
-.step-prev:not(:disabled):hover {
-  background: var(--surface-hover);
-  border-color: var(--gray-300);
-  transform: translateX(-2px);
-}
-
-.step-prev:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.step-next,
-.step-submit {
-  background: linear-gradient(135deg, var(--primary-teal), var(--primary-mint));
-  color: var(--white);
-  margin-left: auto;
-}
-
-.step-next:hover,
-.step-submit:hover {
-  transform: translateX(2px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Form Step Animations */
-.form-step {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-.form-step.active-step {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Form Preview Panel */
-.form-preview {
-  position: fixed;
-  bottom: 24px;
-  right: 360px;
-  width: 260px;
-  background: var(--surface-primary);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--gray-200);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 998;
-  overflow: hidden;
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-.preview-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4);
-  background: var(--surface-secondary);
-  border-bottom: 1px solid var(--gray-200);
-}
-
-.preview-header h4 {
-  margin: 0;
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-}
-
-.preview-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: var(--font-size-lg);
-  padding: var(--space-1);
-  border-radius: var(--border-radius-sm);
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.preview-toggle:hover {
-  background: var(--surface-hover);
-}
-
-.preview-content {
-  padding: var(--space-4);
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-.preview-content.collapsed {
-  max-height: 0;
-  padding: 0 var(--space-4);
-  opacity: 0;
-}
-
-.marker-preview {
-  display: flex;
-  gap: var(--space-3);
-  align-items: flex-start;
-}
-
-.marker-preview-icon {
-  font-size: var(--font-size-3xl);
-  transition: all var(--duration-normal) var(--ease-bounce);
-}
-
-.marker-preview-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.preview-type {
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  font-size: var(--font-size-base);
-}
-
-.preview-status,
-.preview-location {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
-.preview-notes {
-  font-size: var(--font-size-sm);
-  color: var(--text-muted);
-  font-style: italic;
-  line-height: var(--line-height-normal);
-}
-
-.preview-photo {
-  margin-top: var(--space-3);
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
-}
-
-.preview-photo img {
-  width: 100%;
-  height: 80px;
-  object-fit: cover;
-  border-radius: var(--border-radius-sm);
-}
-
-.photo-label {
-  font-size: var(--font-size-xs);
-  color: var(--text-muted);
-  margin-top: var(--space-1);
-  display: block;
-}
-
-/* Mobile adjustments for progressive form */
-@media (max-width: 768px) {
-  .form-preview {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-    z-index: 997;
-  }
-
-  .progress-steps {
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .step-indicator {
-    flex: 1;
-    min-width: 60px;
-  }
-
-  .step-number {
-    width: 32px;
-    height: 32px;
-    font-size: var(--font-size-xs);
-  }
-
-  .step-label {
-    font-size: 10px;
-  }
-
-  .step-navigation {
-    flex-direction: column;
-    gap: var(--space-2);
-    margin-bottom: 200px; /* Account for mobile preview panel */
-  }
-
-  .step-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* Desktop-specific adjustments */
-@media (min-width: 1200px) {
-  .form-preview {
-    right: 380px;
-    width: 280px;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1199px) {
-  .form-preview {
-    right: 340px;
-    width: 240px;
-  }
-}
-
-/* Add some bee-inspired touches */
-.form-group::before {
-  content: '';
-  position: absolute;
-  left: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 20px;
-  background: linear-gradient(
-    to bottom,
-    var(--gradient-start),
-    var(--gradient-end)
-  );
-  border-radius: 2px;
-  opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-out);
-}
-
-.form-group:focus-within::before {
-  opacity: 1;
-}
+/* Form decorations removed for cleaner UI */
 
 /* Compact, modern marker popup styles */
 .marker-popup {
@@ -1679,8 +1369,122 @@ body {
   }
 }
 
+/* Crosshair for Add Sighting Mode */
+.map-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+/* Mobile crosshair positioning - center on visible map area */
+@media (max-width: 768px) {
+  .map-crosshair {
+    /* Position at center of visible map area when mobile form is open */
+    /* Visible area: from nav (70px) to form start (60vh from top) */
+    /* Center of visible area should be around 30vh for optimal positioning */
+    top: 30vh;
+    transition: all 0.3s ease;
+  }
+}
+
+.map-crosshair.visible {
+  opacity: 1;
+}
+
+.map-crosshair::before,
+.map-crosshair::after {
+  content: '';
+  position: absolute;
+  background: var(--primary-teal);
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 8px rgba(64, 224, 208, 0.6);
+  border-radius: 1px;
+}
+
+.map-crosshair::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.map-crosshair::after {
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.map-crosshair .crosshair-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-teal);
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(64, 224, 208, 0.6);
+}
+
+/* Crosshair animation */
+@keyframes crosshair-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.map-crosshair.active .crosshair-center {
+  animation: crosshair-pulse 2s infinite;
+}
+
+.map-crosshair.success {
+  transform: translate(-50%, -50%) scale(1.1) !important;
+}
+
+.map-crosshair.success::before,
+.map-crosshair.success::after {
+  background: var(--success);
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 12px rgba(34, 197, 94, 0.8);
+}
+
+.map-crosshair.success .crosshair-center {
+  background: var(--success);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+  animation: none;
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
+  .map-crosshair {
+    width: 48px;
+    height: 48px;
+  }
+
+  .map-crosshair .crosshair-center {
+    width: 10px;
+    height: 10px;
+  }
+
   .toast-container {
     top: var(--space-4);
     left: var(--space-4);
