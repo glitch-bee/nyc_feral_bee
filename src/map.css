@@ -9,50 +9,48 @@
   outline: none;
 }
 
-/* Map Layer Controls - hidden, using hamburger menu instead */
+/* Professional Map Layer Controls */
 .map-controls {
   display: none !important;
   position: fixed;
-  top: 90px;
-  left: 20px;
+  top: 80px;
+  left: var(--space-4);
   background: var(--surface-primary);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--gray-200);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
   z-index: 1000;
-  min-width: 260px;
-  max-width: 280px;
-  font-size: 14px;
+  min-width: 280px;
+  max-width: 320px;
+  font-size: var(--font-size-sm);
   overflow: hidden;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
-/* Make map controls more accessible when collapsed */
+/* Professional controls styling */
 .map-controls.collapsed {
-  box-shadow: var(--shadow-lg);
-  border: 2px solid var(--primary-teal);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-focus);
 }
 
 .map-controls.collapsed .map-controls-header {
-  background: linear-gradient(135deg, var(--primary-teal), var(--primary-mint));
-  color: var(--white);
+  background: var(--primary-sage);
+  color: var(--text-inverse);
 }
 
 .map-controls.collapsed .map-controls-header h3 {
-  color: var(--white);
+  color: var(--text-inverse);
 }
 
 .map-controls-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: var(--space-4);
   background: var(--surface-secondary);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--border-light);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--duration-fast) var(--ease-out);
   user-select: none;
   position: relative;
 }
@@ -61,40 +59,15 @@
   background: var(--surface-hover);
 }
 
-.map-controls-header.clicked {
-  transform: scale(0.98);
-}
-
-.map-controls-header::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(64, 224, 208, 0.1) 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  pointer-events: none;
-}
-
-.map-controls-header:active::after {
-  opacity: 1;
-}
-
 .map-controls-header:focus {
-  outline: 2px solid var(--primary-teal);
+  outline: 2px solid var(--border-focus);
   outline-offset: -2px;
 }
 
 .map-controls-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -102,51 +75,36 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 8px;
-  transition: all 0.15s ease;
-  font-size: 18px;
+  padding: var(--space-1);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
 }
 
 .map-controls-toggle:hover {
   background: var(--surface-hover);
-}
-
-.map-controls-toggle.collapsed .toggle-icon {
-  transform: rotate(180deg);
-}
-
-.toggle-icon {
-  transition: transform 0.25s ease;
+  color: var(--text-primary);
 }
 
 .map-controls-content {
-  padding: 16px;
+  padding: var(--space-4);
   max-height: calc(100vh - 200px);
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--duration-normal) var(--ease-out);
   opacity: 1;
   transform: translateY(0);
 }
 
 .map-controls-content.collapsed {
   max-height: 0;
-  padding: 0 16px;
+  padding: 0 var(--space-4);
   opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* Add a subtle indicator when collapsed */
-.map-controls.collapsed {
-  box-shadow: var(--shadow-md);
-}
-
-.map-controls:not(.collapsed) {
-  box-shadow: var(--shadow-xl);
+  transform: translateY(-8px);
 }
 
 .control-section {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .control-section:last-child {
@@ -154,12 +112,12 @@
 }
 
 .control-section h4 {
-  margin: 0 0 12px 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  margin: 0 0 var(--space-3) 0;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
 }
 
 /* Basemap Options */
@@ -199,8 +157,8 @@
 }
 
 .basemap-option input:checked + .option-preview {
-  border-color: var(--primary-teal);
-  box-shadow: 0 0 0 2px rgba(64, 224, 208, 0.2);
+  border-color: var(--reseda-500);
+  box-shadow: 0 0 0 2px rgba(124, 144, 130, 0.2);
 }
 
 .streets-preview {
@@ -261,14 +219,14 @@
   left: 2px;
   width: 16px;
   height: 16px;
-  background: var(--white);
+  background: var(--surface-primary);
   border-radius: 50%;
   transition: all 0.25s ease;
   box-shadow: var(--shadow-sm);
 }
 
 input:checked + .toggle-switch {
-  background: var(--primary-teal);
+  background: var(--primary-sage);
 }
 
 input:checked + .toggle-switch::after {

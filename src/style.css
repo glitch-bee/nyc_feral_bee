@@ -1,65 +1,131 @@
 :root {
-  /* Modern Mapping UI Colors - Inspired by Clean Design */
-  --primary-teal: #40e0d0;
-  --primary-mint: #00d4aa;
-  --accent-blue: #0ea5e9;
-  --gradient-start: #40e0d0;
-  --gradient-end: #00d4aa;
+  /* Earth-tone Scientific Palette - Organized by Function */
 
-  /* UI Colors - Clean & Modern */
-  --white: #ffffff;
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-900: #0f172a;
+  /* Primary Brand Colors */
+  --primary-reseda: #7c9082; /* Reseda green - primary actions, branding */
+  --primary-sage: #a7a284; /* Sage - secondary actions */
+  --accent-sage-warm: #d0c88e; /* Warm sage - highlights, selected states */
+  --neutral-cream: #edeec0; /* Cream - light backgrounds */
+  --neutral-brown: #433e0e; /* Drab dark brown - text, strong contrast */
 
-  /* Surface Colors */
-  --surface-primary: #ffffff;
-  --surface-secondary: #f8fafc;
-  --surface-hover: #f1f5f9;
+  /* Reseda Green Scale (Primary Brand Color) */
+  --reseda-50: #f4f6f5; /* Very light tint */
+  --reseda-100: #e5e9e6; /* Light tint */
+  --reseda-200: #cbd3ce; /* Light */
+  --reseda-300: #b1bdb5; /* Medium light */
+  --reseda-400: #97a79c; /* Medium */
+  --reseda-500: #7c9082; /* Base color */
+  --reseda-600: #637569; /* Medium dark */
+  --reseda-700: #4b584e; /* Dark */
+  --reseda-800: #323a34; /* Very dark */
+  --reseda-900: #191d1a; /* Nearly black */
 
-  /* Semantic Colors */
-  --success: #22c55e;
-  --error: #ef4444;
-  --warning: #f59e0b;
-  --info: #06b6d4;
+  /* Sage Scale (Secondary) */
+  --sage-50: #f6f4e9; /* From your palette data */
+  --sage-100: #eeede7;
+  --sage-200: #dcdace;
+  --sage-300: #cbc8b6;
+  --sage-400: #bab59d;
+  --sage-500: #a7a284; /* Base sage */
+  --sage-600: #8d8764;
+  --sage-700: #6a654b;
+  --sage-800: #464332;
+  --sage-900: #232219;
 
-  /* Text Colors */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
+  /* Warm Sage Scale (Accent) */
+  --warm-sage-50: #f6f4e9;
+  --warm-sage-100: #ece9d2;
+  --warm-sage-200: #e3debc;
+  --warm-sage-300: #dad4a6;
+  --warm-sage-400: #d0c88e; /* Base warm sage */
+  --warm-sage-500: #bcb15e;
+  --warm-sage-600: #958b3e;
+  --warm-sage-700: #635d2a;
+  --warm-sage-800: #322e15;
 
-  /* Marker Colors (keeping your existing ones) */
-  --marker-hive: #ffaa00;
-  --marker-swarm: #ff6600;
-  --marker-structure: #666666;
-  --marker-tree: #00aa00;
+  /* Brown Scale (Text/Contrast) */
+  --brown-50: #f0eab8; /* From your palette data */
+  --brown-100: #e1d672;
+  --brown-200: #d1c02c;
+  --brown-300: #8a7f1d;
+  --brown-400: #433e0e; /* Base brown */
+  --brown-500: #36320b;
+  --brown-600: #282509;
+  --brown-700: #1b1906;
+  --brown-800: #0d0c03;
 
-  /* Enhanced Typography Scale */
-  --font-size-xs: 0.75rem; /* 12px */
-  --font-size-sm: 0.875rem; /* 14px */
-  --font-size-base: 1rem; /* 16px */
-  --font-size-lg: 1.125rem; /* 18px */
-  --font-size-xl: 1.25rem; /* 20px */
-  --font-size-2xl: 1.5rem; /* 24px */
-  --font-size-3xl: 1.875rem; /* 30px */
-  --font-size-4xl: 2.25rem; /* 36px */
+  /* Cream Scale (Backgrounds) */
+  --cream-50: #fbfcf2; /* From your palette data */
+  --cream-100: #f8f8e5;
+  --cream-200: #f4f5d8;
+  --cream-300: #f1f1cb;
+  --cream-400: #edeec0; /* Base cream */
+  --cream-500: #dadc7b;
+  --cream-600: #c7ca37;
+  --cream-700: #868724;
+  --cream-800: #434412;
 
-  /* Line Heights */
+  /* Semantic Surface Colors */
+  --surface-primary: var(--cream-50); /* Pure backgrounds */
+  --surface-secondary: var(--cream-400); /* Content backgrounds */
+  --surface-tertiary: var(--cream-300); /* Subtle contrast */
+  --surface-hover: var(--reseda-100); /* Interactive hover */
+  --surface-selected: var(--warm-sage-400); /* Selected state */
+  --surface-accent: var(--warm-sage-100); /* Accent backgrounds */
+  --surface-muted: var(--sage-50); /* Muted backgrounds */
+
+  /* Semantic Colors - Earth-tone appropriate */
+  --success: var(--reseda-500);
+  --warning: var(--warm-sage-500);
+  --error: var(--brown-300);
+  --info: var(--sage-500);
+
+  /* Legacy color mappings for compatibility */
+  --primary-teal: var(--reseda-500); /* Map old teal to reseda green */
+  --primary-mint: var(--reseda-400); /* Map old mint to lighter reseda */
+  --primary-purple: var(--sage-600); /* Map old purple to sage */
+
+  /* Text Color Hierarchy */
+  --text-primary: var(--neutral-brown); /* High contrast text */
+  --text-secondary: var(--reseda-700); /* Medium contrast */
+  --text-tertiary: var(--reseda-600); /* Lower contrast */
+  --text-muted: var(--sage-400); /* Subtle text */
+  --text-inverse: var(--cream-50); /* Light text on dark */
+  --text-accent: var(--primary-reseda); /* Brand accent text */
+  --text-link: var(--reseda-600); /* Links */
+
+  /* Scientific Data Marker Colors */
+  --marker-hive: var(--brown-300); /* Brown for hives */
+  --marker-swarm: var(--warm-sage-600); /* Warm sage for swarms */
+  --marker-structure: var(--sage-600); /* Cool sage for structures */
+  --marker-tree: var(--reseda-500); /* Reseda green for trees */
+  --marker-active: var(--reseda-600); /* Active state */
+  --marker-verified: var(--success); /* Verified state */
+
+  /* Professional Typography - Focus on readability */
+  --font-family-mono:
+    'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  --font-size-xs: 0.75rem; /* 12px - for data labels */
+  --font-size-sm: 0.875rem; /* 14px - for UI text */
+  --font-size-base: 1rem; /* 16px - for body text */
+  --font-size-lg: 1.125rem; /* 18px - for headings */
+  --font-size-xl: 1.25rem; /* 20px - for section titles */
+  --font-size-2xl: 1.5rem; /* 24px - for page titles */
+  --font-size-3xl: 1.875rem; /* 30px - for hero text */
+
+  /* Professional Line Heights - Improved readability */
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
-  --line-height-relaxed: 1.75;
+  --line-height-relaxed: 1.625;
 
-  /* Font Weights */
+  /* Font Weights - Professional hierarchy */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Spacing Scale */
+  /* Precise Spacing Scale - Data-focused */
+  --space-0-5: 0.125rem; /* 2px */
   --space-1: 0.25rem; /* 4px */
   --space-2: 0.5rem; /* 8px */
   --space-3: 0.75rem; /* 12px */
@@ -69,33 +135,79 @@
   --space-8: 2rem; /* 32px */
   --space-10: 2.5rem; /* 40px */
   --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
 
-  /* Enhanced Shadows for depth */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  /* Subtle Professional Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.08);
+  --shadow-md:
+    0 4px 6px -1px rgb(0 0 0 / 0.12), 0 2px 4px -2px rgb(0 0 0 / 0.08);
   --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    0 10px 15px -3px rgb(0 0 0 / 0.12), 0 4px 6px -4px rgb(0 0 0 / 0.08);
   --shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+    0 20px 25px -5px rgb(0 0 0 / 0.12), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.06);
 
-  /* Animation Variables */
-  --duration-fast: 0.15s;
-  --duration-normal: 0.25s;
-  --duration-slow: 0.4s;
-  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Reduced Animation - Professional feel */
+  --duration-fast: 0.1s;
+  --duration-normal: 0.2s;
+  --duration-slow: 0.3s;
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-out: cubic-bezier(0.445, 0.05, 0.55, 0.95);
 
-  /* Border Radius */
-  --border-radius-xs: 4px;
-  --border-radius-sm: 8px;
-  --border-radius: 12px;
-  --border-radius-lg: 16px;
-  --border-radius-xl: 24px;
-  --border-radius-full: 9999px;
+  /* Minimal Border Radius - Clean, functional */
+  --border-radius-none: 0px;
+  --border-radius-xs: 2px;
+  --border-radius-sm: 4px;
+  --border-radius: 6px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 12px;
+
+  /* Border Colors */
+  --border-light: var(--reseda-100); /* Subtle borders */
+  --border-medium: var(--reseda-200); /* Standard borders */
+  --border-strong: var(--reseda-300); /* Emphasized borders */
+  --border-focus: var(--primary-reseda); /* Focus states */
+  --border-accent: var(--accent-sage-warm); /* Accent borders */
+  --border-error: var(--error); /* Error states */
+
+  /* Legacy gray system for compatibility - now earth-tone based */
+  --gray-25: #f8f9f7; /* Warm very light sage */
+  --gray-50: #f2f4f1; /* Warm light sage */
+  --gray-100: #e8ebe7; /* Sage 100 with warmth */
+  --gray-200: #d4d8d3; /* Sage 200 with warmth */
+  --gray-300: #bcc4be; /* Sage 300 with warmth */
+  --gray-400: #a2ada6; /* Sage 400 with warmth */
+  --gray-500: #7c9082; /* Primary sage */
+  --gray-600: #697a6f; /* Sage 600 with warmth */
+  --gray-700: #546356; /* Sage 700 with warmth */
+  --gray-800: #434a45; /* Sage 800 with warmth */
+  --gray-900: #2a2f2b; /* Sage 900 with warmth */
+
+  /* Map container background */
+  --map-background: var(--surface-muted);
+
+  /* White replacement */
+  --white: var(--cream-50); /* Warm off-white instead of pure white */
+}
+
+/* Professional Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', sans-serif;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background-color: var(--surface-secondary);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* NYBC Partnership Styles */
@@ -156,7 +268,7 @@
 .nybc-logo {
   max-width: 180px;
   height: auto;
-  background: white;
+  background: var(--surface-primary);
   padding: 1rem;
   border-radius: 8px;
   transition: transform 0.2s ease;
@@ -313,30 +425,30 @@ body {
   }
 }
 
-/* Desktop and Mobile Add Bee Sighting form */
+/* Professional Survey Data Collection Form */
 #marker-form {
   position: fixed;
   background: var(--surface-primary);
-  border: 1px solid var(--gray-200);
-  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
   overflow-y: auto;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   z-index: 1001;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--duration-normal) var(--ease-out);
   display: none;
 }
 
 /* Mobile form display now handled in consolidated mobile CSS rule above */
 
-/* Desktop form - right side panel */
+/* Desktop form - professional data panel */
 @media (min-width: 769px) {
   #marker-form {
-    top: 90px;
-    right: 20px;
-    width: 360px;
-    max-height: calc(100vh - 110px);
-    border-radius: var(--border-radius-lg);
-    padding: 20px;
+    top: 80px;
+    right: var(--space-4);
+    width: 380px;
+    max-height: calc(100vh - 100px);
+    border-radius: var(--border-radius-sm);
+    padding: var(--space-5);
     transform: translateX(100%);
   }
 
@@ -346,7 +458,7 @@ body {
   }
 }
 
-/* Mobile form - bottom drawer - CONSOLIDATED RULE */
+/* Mobile form - data collection drawer */
 @media (max-width: 768px) {
   #marker-form {
     bottom: 0;
@@ -355,16 +467,16 @@ body {
     top: auto;
     width: 100vw;
     height: auto;
-    max-height: 40vh;
-    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    max-height: 45vh;
+    border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
     padding: 0;
     border-bottom: none;
     transform: translateY(calc(100% - 40px));
     display: block !important;
     position: fixed;
     z-index: 1001;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+    transition: transform var(--duration-normal) var(--ease-out);
+    box-shadow: var(--shadow-xl);
     overflow: hidden;
   }
 
@@ -373,19 +485,16 @@ body {
   }
 }
 
-/* Add subtle glow effect when panel is active */
+/* Professional form focus state */
 #marker-form:not(.panel-collapsed) {
-  box-shadow:
-    var(--shadow-xl),
-    0 0 0 1px rgba(64, 224, 208, 0.1),
-    0 0 20px rgba(64, 224, 208, 0.05);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-focus);
 }
 
-/* Add keyboard focus styles */
+/* Professional keyboard focus */
 #marker-form:focus-within {
-  box-shadow:
-    var(--shadow-xl),
-    0 0 0 2px rgba(64, 224, 208, 0.2);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--border-focus);
 }
 
 /* Desktop collapsed state - default for desktop */
@@ -411,44 +520,46 @@ body {
 }
 
 #marker-form .form-group {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
+
 #marker-form .form-label {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   display: block;
 }
+
 #marker-form .form-select,
 #marker-form .form-textarea,
 #marker-form .form-file {
   font-size: var(--font-size-sm);
   border-radius: var(--border-radius-sm);
-  border: 1.5px solid var(--gray-200);
+  border: 1px solid var(--border-light);
   padding: var(--space-3) var(--space-4);
   width: 100%;
   box-sizing: border-box;
   background: var(--surface-primary);
   transition: all var(--duration-normal) var(--ease-out);
   font-family: inherit;
-  position: relative;
+  color: var(--text-primary);
 }
 
 #marker-form .form-select:focus,
 #marker-form .form-textarea:focus,
 #marker-form .form-file:focus {
   outline: none;
-  border-color: var(--primary-teal);
-  box-shadow: 0 0 0 3px rgba(64, 224, 208, 0.1);
-  transform: translateY(-1px);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+  background: var(--surface-primary);
 }
 
 #marker-form .form-select:hover:not(:focus),
 #marker-form .form-textarea:hover:not(:focus),
 #marker-form .form-file:hover:not(:focus) {
-  border-color: var(--gray-300);
-  transform: translateY(-0.5px);
+  border-color: var(--border-medium);
+  background: var(--surface-secondary);
 }
 
 /* Add subtle animations to form groups */
@@ -592,9 +703,9 @@ body {
   gap: 8px;
 }
 #marker-form .location-prompt.picked {
-  background: rgba(64, 224, 208, 0.1);
-  color: var(--primary-teal);
-  border-left-color: var(--primary-teal);
+  background: rgba(124, 144, 130, 0.1); /* Reseda green with opacity */
+  color: var(--reseda-500);
+  border-left-color: var(--reseda-500);
 }
 #marker-form .error {
   color: var(--error);
@@ -673,6 +784,7 @@ body {
   width: 100%;
   height: calc(100vh - 70px);
   z-index: 1;
+  background-color: var(--surface-muted);
 }
 
 /* Mobile responsive */
@@ -982,8 +1094,8 @@ body {
 }
 .status-select:focus {
   outline: none;
-  border-color: var(--primary-teal);
-  box-shadow: 0 0 0 3px rgba(64, 224, 208, 0.1);
+  border-color: var(--reseda-500);
+  box-shadow: 0 0 0 3px rgba(124, 144, 130, 0.1);
 }
 .btn-update-status {
   padding: 6px 14px;
@@ -1062,8 +1174,8 @@ body {
 .comment-author-input:focus,
 .comment-input:focus {
   outline: none;
-  border-color: var(--primary-teal);
-  box-shadow: 0 0 0 3px rgba(64, 224, 208, 0.1);
+  border-color: var(--reseda-500);
+  box-shadow: 0 0 0 3px rgba(124, 144, 130, 0.1);
 }
 .comment-input {
   min-height: 60px;
@@ -1402,10 +1514,10 @@ body {
 .map-crosshair::after {
   content: '';
   position: absolute;
-  background: var(--primary-teal);
+  background: var(--reseda-500);
   box-shadow:
     0 0 0 2px var(--white),
-    0 0 8px rgba(64, 224, 208, 0.6);
+    0 0 8px rgba(124, 144, 130, 0.6);
   border-radius: 1px;
 }
 
@@ -1431,11 +1543,11 @@ body {
   left: 50%;
   width: 8px;
   height: 8px;
-  background: var(--primary-teal);
+  background: var(--reseda-500);
   border: 2px solid var(--white);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 8px rgba(64, 224, 208, 0.6);
+  box-shadow: 0 0 8px rgba(124, 144, 130, 0.6);
 }
 
 /* Crosshair animation */
@@ -1661,7 +1773,7 @@ body {
     right: 1rem;
     font-size: 2rem;
     z-index: 100001; /* Higher than modal */
-    background: white;
+    background: var(--surface-primary);
     padding: 0.5rem;
     border-radius: 50%;
     width: 3rem;
@@ -1831,26 +1943,24 @@ body.welcome-open {
   }
 }
 
-/* Core Navigation Styles */
+/* Professional Navigation Styles */
 .main-nav {
   background: var(--surface-primary);
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10002;
-  box-shadow: var(--shadow-md);
-  border-bottom: 1px solid var(--gray-200);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border-light);
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 var(--space-4);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1859,26 +1969,27 @@ body.welcome-open {
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  color: var(--primary-teal);
-  font-weight: 700;
-  font-size: 1.25rem;
+  gap: var(--space-3);
+  color: var(--reseda-600);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--duration-normal) var(--ease-out);
 }
 
 .nav-logo {
-  width: 68px;
-  height: 68px;
+  width: 48px;
+  height: 48px;
 }
 
 .brand-text {
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .nav-links {
   display: none; /* Hidden by default, shown only when hamburger is active */
-  gap: 2rem;
+  gap: var(--space-6);
   align-items: center;
 }
 
@@ -1886,23 +1997,26 @@ body.welcome-open {
   color: var(--text-secondary);
   background: transparent;
   text-decoration: none;
-  padding: 0.75rem 1.5rem;
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--border-radius-sm);
-  transition: all 0.2s ease;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  transition: all var(--duration-normal) var(--ease-out);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  border: 1px solid transparent;
   position: relative;
 }
 
 .nav-link:hover {
   background: var(--surface-hover);
-  color: var(--primary-teal);
+  color: var(--text-primary);
+  border-color: var(--border-light);
 }
 
 .nav-link.active {
-  background: rgba(64, 224, 208, 0.1);
-  color: var(--primary-teal);
-  font-weight: 600;
+  background: var(--surface-selected);
+  color: var(--reseda-600);
+  font-weight: var(--font-weight-semibold);
+  border-color: var(--border-focus);
 }
 
 /* Navigation Toggle - shown on all screen sizes */
@@ -1917,7 +2031,7 @@ body.welcome-open {
 .nav-toggle span {
   width: 25px;
   height: 3px;
-  background: var(--text-primary);
+  background: var(--reseda-600); /* Use reseda green for better visibility */
   transition: 0.3s;
   border-radius: 2px;
 }
@@ -2026,45 +2140,41 @@ body.welcome-open {
 
   /* Simple clean layout - no sections needed */
 
-  /* Clean button styles */
+  /* Professional navigation button styles */
   .nav-link,
   .nav-map-layers,
   .nav-add-sighting {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1.5rem;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
     margin: 0;
     width: 100%;
-    background: none;
-    border: none;
+    background: transparent;
+    border: 1px solid var(--border-light);
     color: var(--text-primary);
-    font-size: 0.95rem;
-    font-weight: 500;
-    font-family: 'Inter', sans-serif;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
     text-decoration: none;
     text-align: left;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border-radius: 0;
+    transition: all var(--duration-normal) var(--ease-out);
+    border-radius: var(--border-radius-sm);
   }
 
   .nav-link:hover {
     background: var(--surface-hover);
-    color: var(--primary-teal);
-    transform: none;
+    color: var(--text-primary);
+    border-color: var(--border-medium);
   }
-
-  /* Action buttons use different styling - handled below */
 
   .nav-link.active {
-    background: rgba(64, 224, 208, 0.1);
-    color: var(--primary-teal);
-    font-weight: 600;
-    border-left: 3px solid var(--primary-teal);
-  }
-
-  /* Conflicting rules removed - buttons styled at root level */
+    background: var(--surface-selected);
+    color: var(--primary-sage);
+    font-weight: var(--font-weight-semibold);
+    border-color: var(--border-focus);
+    border-left: 3px solid var(--primary-sage);
+  } /* Conflicting rules removed - buttons styled at root level */
 
   .nav-links .nav-add-sighting:hover,
   .nav-links .nav-map-layers:hover {
@@ -2221,18 +2331,13 @@ body.welcome-open {
 .nav-links .nav-map-layers,
 button.nav-add-sighting,
 button.nav-map-layers {
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 600 !important;
-  background: linear-gradient(
-    135deg,
-    var(--primary-teal),
-    var(--primary-mint)
-  ) !important;
-  border-radius: var(--border-radius) !important;
-  color: var(--white) !important;
-  transition: all 0.2s ease !important;
-  padding: 14px 24px !important;
-  border: none !important;
+  font-weight: var(--font-weight-semibold) !important;
+  background: var(--primary-sage) !important;
+  border-radius: var(--border-radius-sm) !important;
+  color: var(--text-inverse) !important;
+  transition: all var(--duration-normal) var(--ease-out) !important;
+  padding: var(--space-3) var(--space-5) !important;
+  border: 1px solid var(--primary-sage) !important;
   cursor: pointer !important;
   box-shadow: var(--shadow-sm) !important;
   text-align: center !important;
@@ -2240,8 +2345,8 @@ button.nav-map-layers {
   align-items: center !important;
   justify-content: center !important;
   width: auto !important;
-  margin: 0 auto !important;
-  font-size: 0.95rem !important;
+  margin: var(--space-2) auto !important;
+  font-size: var(--font-size-sm) !important;
 }
 
 .login-btn:hover,
@@ -2252,11 +2357,8 @@ button.nav-add-sighting:hover,
 button.nav-map-layers:hover {
   transform: translateY(-1px) !important;
   box-shadow: var(--shadow-md) !important;
-  background: linear-gradient(
-    135deg,
-    var(--primary-mint),
-    var(--primary-teal)
-  ) !important;
+  background: var(--sage-600) !important;
+  border-color: var(--sage-600) !important;
 }
 
 .user-name {

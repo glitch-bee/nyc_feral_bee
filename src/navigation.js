@@ -5,9 +5,9 @@ import logoUrl from '/cityhive.png';
 
 export function initNavigation(appState) {
   const pages = [
-    { name: 'Map', path: 'index.html' },
-    { name: 'About', path: 'about.html' },
-    { name: 'Resources', path: 'resources.html' },
+    { name: 'Survey Map', path: 'index.html' },
+    { name: 'Data Analysis', path: 'about.html' },
+    { name: 'Research Resources', path: 'resources.html' },
   ];
 
   const header = document.querySelector('header');
@@ -48,7 +48,7 @@ export function initNavigation(appState) {
 
   const brandText = document.createElement('span');
   brandText.className = 'brand-text';
-  brandText.textContent = 'City Hive';
+  brandText.textContent = 'NYC Bee Survey';
   brandLink.appendChild(brandText);
 
   navContainer.appendChild(brandLink);
@@ -57,9 +57,9 @@ export function initNavigation(appState) {
   const navLinksDiv = document.createElement('div');
   navLinksDiv.className = 'nav-links';
 
-  // Simple header - just text
+  // Simple header - professional branding
   const sidebarHeader = document.createElement('div');
-  sidebarHeader.innerHTML = 'City Hive';
+  sidebarHeader.innerHTML = 'NYC Bee Survey Platform';
   navLinksDiv.appendChild(sidebarHeader);
 
   // Navigation Links first
@@ -84,7 +84,7 @@ export function initNavigation(appState) {
     const addBtn = document.createElement('button');
     addBtn.className = 'nav-add-sighting';
     addBtn.id = 'nav-add-sighting';
-    addBtn.innerHTML = 'Add Sighting';
+    addBtn.innerHTML = '+ Add Survey Point';
     navLinksDiv.appendChild(addBtn);
   }
 
@@ -98,7 +98,7 @@ export function initNavigation(appState) {
     const mapBtn = document.createElement('button');
     mapBtn.className = 'nav-map-layers';
     mapBtn.id = 'mobile-map-layers';
-    mapBtn.innerHTML = 'Map Layers';
+    mapBtn.innerHTML = 'Layer Controls';
     navLinksDiv.appendChild(mapBtn);
   }
 

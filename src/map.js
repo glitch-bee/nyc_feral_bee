@@ -30,6 +30,7 @@ export function initMap(containerId = 'map', onMapClick) {
     console.error('Map container not found!');
     return null;
   }
+
   mapContainer.textContent = ''; // Clear placeholder
   mapContainer.style.width = '100%';
   mapContainer.style.height = '100%';

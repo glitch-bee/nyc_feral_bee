@@ -84,8 +84,8 @@
 }
 
 .auth-tab-btn.active {
-  color: var(--primary-teal, #40e0d0);
-  border-bottom: 3px solid var(--primary-teal, #40e0d0);
+  color: var(--primary-sage, #7c9082);
+  border-bottom: 3px solid var(--primary-sage, #7c9082);
   background: var(--surface-primary, #ffffff);
 }
 
@@ -145,15 +145,15 @@
   opacity: 1 !important;
   visibility: visible !important;
   display: block !important;
-  background: #ffffff !important;
-  color: #0f172a !important;
+  background: var(--surface-primary) !important;
+  color: var(--text-primary) !important;
 }
 
 #auth-form input[type='email']:focus,
 #auth-form input[type='password']:focus,
 #auth-form input[type='text']:focus {
-  border-color: var(--primary-teal, #40e0d0);
-  box-shadow: 0 0 0 3px rgba(64, 224, 208, 0.1);
+  border-color: var(--primary-sage, #7c9082);
+  box-shadow: 0 0 0 3px rgba(124, 144, 130, 0.1);
   outline: none;
 }
 
@@ -166,11 +166,7 @@
 .auth-submit-btn {
   width: 100%;
   padding: 1rem 1.5rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary-teal, #40e0d0),
-    var(--primary-mint, #00d4aa)
-  );
+  background: var(--primary-sage, #7c9082);
   color: var(--white, #ffffff);
   border: none;
   border-radius: var(--border-radius-sm, 8px);

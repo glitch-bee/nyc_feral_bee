@@ -55,7 +55,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--primary-teal);
+  color: var(--primary-sage);
   font-weight: 700;
   font-size: 1.25rem;
   text-decoration: none;
@@ -95,8 +95,8 @@
 }
 
 .nav-link.active {
-  background: rgba(64, 224, 208, 0.1);
-  color: var(--primary-teal);
+  background: rgba(124, 144, 130, 0.1);
+  color: var(--reseda-500);
   font-weight: 600;
 }
 
@@ -110,7 +110,7 @@
 .nav-toggle span {
   width: 25px;
   height: 3px;
-  background: var(--text-primary, #0f172a);
+  background: var(--reseda-600, #637569); /* Use reseda green with fallback */
   transition: 0.3s;
   border-radius: 2px;
 }
@@ -232,10 +232,10 @@
 }
 
 .content-section h2 {
-  color: var(--primary-teal, #40e0d0);
+  color: var(--reseda-600);
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
-  border-left: 4px solid var(--primary-teal, #40e0d0);
+  border-left: 4px solid var(--reseda-600);
   padding-left: 1rem;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -259,7 +259,7 @@
   background: var(--surface-secondary, #f8fafc);
   padding: 1.5rem;
   border-radius: var(--border-radius, 12px);
-  border-left: 4px solid var(--primary-teal, #40e0d0);
+  border-left: 4px solid var(--reseda-600);
   border: 1px solid var(--gray-200, #e2e8f0);
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(0 0 0 / 0.05));
@@ -302,7 +302,7 @@
 
 .nybc-mission h3,
 .nybc-activities h3 {
-  color: var(--primary-teal, #40e0d0);
+  color: var(--reseda-600);
   margin-bottom: 1rem;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -339,11 +339,7 @@
 /* CTA Section */
 .cta-section {
   text-align: center;
-  background: linear-gradient(
-    135deg,
-    var(--primary-teal, #40e0d0),
-    var(--primary-mint, #00d4aa)
-  );
+  background: linear-gradient(135deg, var(--reseda-500), var(--reseda-400));
   color: var(--white, #ffffff);
   padding: 3rem 2rem;
   border-radius: var(--border-radius-lg, 16px);
@@ -364,7 +360,7 @@
 .cta-button {
   display: inline-block;
   background: var(--surface-primary, #ffffff);
-  color: var(--primary-teal, #40e0d0);
+  color: var(--reseda-600);
   padding: 1rem 2rem;
   text-decoration: none;
   border-radius: var(--border-radius-sm, 8px);
@@ -394,17 +390,13 @@
   padding: 1.5rem;
   background: var(--surface-primary, #ffffff);
   border-radius: var(--border-radius, 12px);
-  border-left: 4px solid var(--primary-teal, #40e0d0);
+  border-left: 4px solid var(--reseda-600);
   border: 1px solid var(--gray-200, #e2e8f0);
   box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(0 0 0 / 0.05));
 }
 
 .step-number {
-  background: linear-gradient(
-    135deg,
-    var(--primary-teal, #40e0d0),
-    var(--primary-mint, #00d4aa)
-  );
+  background: linear-gradient(135deg, var(--reseda-500), var(--reseda-400));
   color: var(--white, #ffffff);
   width: 40px;
   height: 40px;
@@ -489,7 +481,7 @@
 
 .resource-card:hover {
   box-shadow: var(--shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1));
-  border-color: var(--primary-teal, #40e0d0);
+  border-color: var(--reseda-500);
   transform: translateY(-1px);
 }
 
@@ -506,16 +498,16 @@
 }
 
 .resource-link {
-  color: var(--primary-teal, #40e0d0);
+  color: var(--reseda-600);
   text-decoration: none;
   font-weight: 600;
-  border-bottom: 2px solid var(--primary-teal, #40e0d0);
+  border-bottom: 2px solid var(--reseda-600);
   transition: all 0.3s ease;
 }
 
 .resource-link:hover {
   color: var(--white, #ffffff);
-  background: var(--primary-teal, #40e0d0);
+  background: var(--reseda-600);
   padding: 0.25rem 0.5rem;
   border-radius: var(--border-radius-sm, 8px);
 }
@@ -564,16 +556,16 @@
 }
 
 .contact-link {
-  color: var(--primary-teal, #40e0d0);
+  color: var(--reseda-600);
   text-decoration: none;
   font-weight: 600;
-  border-bottom: 2px solid var(--primary-teal, #40e0d0);
+  border-bottom: 2px solid var(--reseda-600);
   transition: all 0.3s ease;
 }
 
 .contact-link:hover {
   color: var(--white, #ffffff);
-  background: var(--primary-teal, #40e0d0);
+  background: var(--reseda-600);
   padding: 0.25rem 0.5rem;
   border-radius: var(--border-radius-sm, 8px);
 }
@@ -595,7 +587,7 @@
 }
 
 .plant-category h3 {
-  color: var(--primary-teal, #40e0d0);
+  color: var(--reseda-600);
   margin-bottom: 1rem;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -665,7 +657,7 @@
 
 .external-link:hover {
   box-shadow: var(--shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1));
-  border-color: var(--primary-teal, #40e0d0);
+  border-color: var(--reseda-500);
   transform: translateY(-1px);
 }
 
@@ -682,16 +674,16 @@
 }
 
 .external-link a {
-  color: var(--primary-teal, #40e0d0);
+  color: var(--reseda-600);
   text-decoration: none;
   font-weight: 600;
-  border-bottom: 2px solid var(--primary-teal, #40e0d0);
+  border-bottom: 2px solid var(--reseda-600);
   transition: all 0.3s ease;
 }
 
 .external-link a:hover {
   color: var(--white, #ffffff);
-  background: var(--primary-teal, #40e0d0);
+  background: var(--reseda-600);
   padding: 0.25rem 0.5rem;
   border-radius: var(--border-radius-sm, 8px);
 }
@@ -797,7 +789,7 @@
 }
 
 .featured-resource:hover {
-  border-color: var(--primary-teal, #40e0d0);
+  border-color: var(--reseda-500);
   box-shadow: var(--shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1));
   transform: translateY(-2px);
 }
@@ -816,11 +808,7 @@
 
 .resource-button {
   display: inline-block;
-  background: linear-gradient(
-    135deg,
-    var(--primary-teal, #40e0d0),
-    var(--primary-mint, #00d4aa)
-  );
+  background: linear-gradient(135deg, var(--reseda-500), var(--reseda-400));
   color: var(--white, #ffffff);
   padding: 0.75rem 1.5rem;
   text-decoration: none;
@@ -939,13 +927,13 @@
   }
 
   .nav-map-layers {
-    background: rgba(64, 224, 208, 0.1);
-    border: 1px solid rgba(64, 224, 208, 0.2);
+    background: rgba(124, 144, 130, 0.1);
+    border: 1px solid rgba(124, 144, 130, 0.2);
     cursor: pointer;
   }
 
   .nav-map-layers:hover {
-    background: var(--primary-teal);
+    background: var(--reseda-500);
     color: var(--white);
   }
 
