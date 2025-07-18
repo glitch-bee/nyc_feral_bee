@@ -15,7 +15,7 @@ export class MapLayerControls {
           tree: true,
         },
       },
-      basemap: 'streets', // streets, satellite, hybrid
+      basemap: 'satellite', // streets, satellite, hybrid
     };
     this.createControls();
   }
@@ -35,12 +35,12 @@ export class MapLayerControls {
           <h4>Base Map</h4>
           <div class="basemap-options">
             <label class="basemap-option">
-              <input type="radio" name="basemap" value="streets" checked>
+              <input type="radio" name="basemap" value="streets">
               <span class="option-preview streets-preview"></span>
               <span class="option-label">Streets</span>
             </label>
             <label class="basemap-option">
-              <input type="radio" name="basemap" value="satellite">
+              <input type="radio" name="basemap" value="satellite" checked>
               <span class="option-preview satellite-preview"></span>
               <span class="option-label">Satellite</span>
             </label>

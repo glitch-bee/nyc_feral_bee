@@ -43,11 +43,11 @@ function createAuthModal() {
                 </div>
                 <div class="form-field">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" style="opacity: 1; visibility: visible; display: block; background: #ffffff; color: #0f172a;" />
+                    <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" style="opacity: 1; visibility: visible; display: block; background: var(--white); color: var(--text-primary);" />
                 </div>
                 <div class="form-field">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="••••••••" autocomplete="current-password" style="opacity: 1; visibility: visible; display: block; background: #ffffff; color: #0f172a;" />
+                    <input type="password" id="password" name="password" required placeholder="••••••••" autocomplete="current-password" style="opacity: 1; visibility: visible; display: block; background: var(--white); color: var(--text-primary);" />
                 </div>
                 <button type="submit" id="auth-submit-btn" class="auth-submit-btn">Sign In</button>
             </form>
@@ -218,8 +218,8 @@ export function showAuthModal() {
         targetInput.style.opacity = '1';
         targetInput.style.visibility = 'visible';
         targetInput.style.display = 'block';
-        targetInput.style.background = '#ffffff';
-        targetInput.style.color = '#0f172a';
+        targetInput.style.background = 'var(--white)';
+        targetInput.style.color = 'var(--text-primary)';
       }
     }, 100);
   } else {
