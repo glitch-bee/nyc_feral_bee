@@ -243,7 +243,7 @@ body {
 }
 
 .cta-section h3 {
-  color: #ffd700;
+  color: var(--accent-sage-warm);
   margin-bottom: 1rem;
   font-size: 1.5rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -281,7 +281,7 @@ body {
 
 .cta-button {
   display: inline-block;
-  background: #ffd700;
+  background: var(--accent-sage-warm);
   color: var(--gray-900);
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
@@ -292,7 +292,7 @@ body {
 }
 
 .cta-button:hover {
-  background: #ffc800;
+  background: var(--warm-sage-600);
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
@@ -1212,7 +1212,7 @@ body {
   box-shadow: var(--shadow-sm);
 }
 .btn-delete:hover {
-  background: #dc2626;
+  background: var(--brown-400);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -1222,7 +1222,7 @@ body {
   box-shadow: var(--shadow-sm);
 }
 .btn-update-status:hover {
-  background: #0891b2;
+  background: var(--reseda-700);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -1707,7 +1707,7 @@ body {
 }
 
 .welcome-content footer a:hover {
-  color: #ffd700;
+  color: var(--accent-sage-warm);
   text-decoration: underline;
 }
 
@@ -1782,8 +1782,8 @@ body {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-    border: 2px solid #2d4a22;
-    color: #2d4a22;
+    border: 2px solid var(--reseda-800);
+    color: var(--reseda-800);
     font-weight: bold;
   }
   .got-it-button {
@@ -2362,7 +2362,7 @@ button.nav-map-layers:hover {
 }
 
 .user-name {
-  color: #ffd700;
+  color: var(--accent-sage-warm);
   font-weight: 500;
   font-family: 'Inter', sans-serif;
 }
@@ -2412,7 +2412,7 @@ button.nav-map-layers:hover {
 }
 
 .welcome-content footer a:hover {
-  color: #ffd700;
+  color: var(--accent-sage-warm);
   text-decoration: underline;
 }
 

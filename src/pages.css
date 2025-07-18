@@ -430,7 +430,7 @@
 
 .science-list li {
   padding: 0.75rem 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--gray-200);
   position: relative;
   padding-left: 2rem;
 }
@@ -455,14 +455,14 @@
 }
 
 .usage-item {
-  background: #f0f7ed;
+  background: var(--cream-100);
   padding: 1.5rem;
   border-radius: 8px;
-  border: 1px solid #e0e7dd;
+  border: 1px solid var(--gray-200);
 }
 
 .usage-item h4 {
-  color: #2d4a22;
+  color: var(--reseda-800);
   margin-bottom: 0.75rem;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -551,7 +551,7 @@
 
 .phone {
   font-weight: 600;
-  color: #d63031;
+  color: var(--error);
   margin: 0.5rem 0;
 }
 
@@ -696,14 +696,14 @@
 }
 
 .book-item {
-  background: #f9f9f9;
+  background: var(--surface-primary);
   padding: 1.5rem;
   border-radius: 8px;
-  border-left: 4px solid #ffd700;
+  border-left: 4px solid var(--accent-sage-warm);
 }
 
 .book-item h4 {
-  color: #2d4a22;
+  color: var(--reseda-800);
   margin-bottom: 0.75rem;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -756,18 +756,18 @@
 
 .quick-start-card li {
   margin-bottom: 0.5rem;
-  color: #444;
+  color: var(--reseda-700);
 }
 
 .quick-start-card a {
-  color: #2d4a22;
+  color: var(--reseda-800);
   font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid #ffd700;
+  border-bottom: 1px solid var(--accent-sage-warm);
 }
 
 .quick-start-card a:hover {
-  color: #ffd700;
+  color: var(--accent-sage-warm);
 }
 
 /* Featured Resources */
