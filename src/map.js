@@ -18,6 +18,7 @@ console.log('map.js loaded');
 let mapInstance = null;
 export let markerInstances = new Map();
 export let openPopup = null;
+let mapEventListeners = new Map(); // Track event listeners for cleanup
 
 export function setMap(map) {
   mapInstance = map;
@@ -65,9 +66,27 @@ export function initMap(containerId = 'map', onMapClick) {
       setTimeout(() => map.resize(), 100);
     });
 
-    map.on('error', (e) => console.error('Map error:', e));
+    map.on('error', (e) => {
+      // Handle AbortErrors gracefully - these are normal during tile loading
+      if (e.error && e.error.name === 'AbortError') {
+        console.debug(
+          'Tile request aborted (normal behavior):',
+          e.error.message
+        );
+        return;
+      }
+      console.error('Map error:', e);
+    });
 
-    window.addEventListener('resize', () => map?.resize());
+    // Handle aborted source data requests gracefully
+    map.on('sourcedataabort', (e) => {
+      console.debug('Source data request aborted:', e.sourceId);
+    });
+
+    // Store resize handler for cleanup
+    const resizeHandler = () => map?.resize();
+    window.addEventListener('resize', resizeHandler);
+    mapEventListeners.set('resize', resizeHandler);
 
     if (onMapClick) {
       map.on('click', (e) => {
@@ -81,6 +100,8 @@ export function initMap(containerId = 'map', onMapClick) {
     window.addCommentToMarker = handleAddComment;
     window.openPhotoModal = openPhotoModal;
 
+    // Store map instance for cleanup
+    mapInstance = map;
     return map;
   } catch (error) {
     console.error('Error creating map:', error);
@@ -172,6 +193,36 @@ export function removeMarkerFromMap(id) {
 export function clearAllMarkers() {
   markerInstances.forEach((marker) => marker.remove());
   markerInstances.clear();
+}
+
+// --- CLEANUP FUNCTIONS ---
+export function cleanupMap() {
+  console.log('Cleaning up map resources...');
+
+  // Clear all markers
+  clearAllMarkers();
+
+  // Close any open popups
+  if (openPopup && openPopup.isOpen()) {
+    openPopup.remove();
+    openPopup = null;
+  }
+
+  // Remove event listeners
+  mapEventListeners.forEach((handler, event) => {
+    if (event === 'resize') {
+      window.removeEventListener('resize', handler);
+    }
+  });
+  mapEventListeners.clear();
+
+  // Remove map instance
+  if (mapInstance) {
+    mapInstance.remove();
+    mapInstance = null;
+  }
+
+  console.log('Map cleanup completed');
 }
 
 // --- POPUP AND MOBILE VIEW CONTENT ---
@@ -383,7 +434,7 @@ function getStatusEmoji(status) {
   const emojis = {
     Unverified: '⚪',
     Active: '🟢',
-    Checked: '🟡',
+    Checked: '���',
     Gone: '🔴',
     Removed: '🗑️',
   };

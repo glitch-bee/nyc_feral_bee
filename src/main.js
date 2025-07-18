@@ -12,7 +12,7 @@ import {
   getAllMarkers,
 } from './supabase.js';
 import { initNavigation } from './navigation.js';
-import { loadMarkers, initMap, setMap } from './map.js';
+import { loadMarkers, initMap, setMap, cleanupMap } from './map.js';
 import { initWelcomePopup } from './welcome.js';
 import { createMarkerForm } from './markerform.js';
 import { toast } from './toast.js';
@@ -109,6 +109,30 @@ async function main() {
     initWelcomePopup();
     localStorage.setItem('visited', 'true');
   }
+
+  // Add cleanup on page unload to prevent memory leaks
+  window.addEventListener('beforeunload', () => {
+    console.log('Page unloading, cleaning up resources...');
+    cleanupMap();
+  });
+
+  // Also cleanup on visibility change (when tab becomes hidden)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      console.log('Page hidden, performing light cleanup...');
+      // Don't fully cleanup on visibility change, just close popups
+      if (appState.map) {
+        // Close any open popups to prevent memory leaks
+        const popups = document.querySelectorAll('.maplibregl-popup');
+        popups.forEach((popup) => {
+          const closeBtn = popup.querySelector(
+            '.maplibregl-popup-close-button'
+          );
+          if (closeBtn) closeBtn.click();
+        });
+      }
+    }
+  });
 }
 
 // --- Enhanced Event Listeners ---
@@ -183,6 +207,20 @@ function handleQuickAction(action) {
       break;
   }
 }
+
+// --- Global Error Handlers ---
+// Handle uncaught AbortErrors from MapLibre GL JS
+window.addEventListener('unhandledrejection', (event) => {
+  if (event.reason && event.reason.name === 'AbortError') {
+    console.debug(
+      'Uncaught AbortError (normal MapLibre behavior):',
+      event.reason.message
+    );
+    event.preventDefault(); // Prevent the error from being logged as unhandled
+    return;
+  }
+  // Let other errors bubble up normally
+});
 
 // --- Run the Application ---
 main().catch((error) => {
