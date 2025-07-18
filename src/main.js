@@ -214,6 +214,18 @@ window.addEventListener('unhandledrejection', (event) => {
   // Let other errors bubble up normally
 });
 
+// Additional error handler for any errors that might slip through
+window.addEventListener('error', (event) => {
+  if (event.error && event.error.name === 'AbortError') {
+    console.debug(
+      'AbortError caught in global error handler (normal MapLibre behavior):',
+      event.error.message
+    );
+    event.preventDefault();
+    return;
+  }
+});
+
 // --- Run the Application ---
 main().catch((error) => {
   console.error('Application failed to start:', error);
