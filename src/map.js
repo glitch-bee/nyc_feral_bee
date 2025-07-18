@@ -53,7 +53,7 @@ export function initMap(containerId = 'map', onMapClick) {
     }
     const map = new maplibregl.Map({
       container: mapContainer,
-      style: `https://api.maptiler.com/maps/satellite/style.json?key=${mapTilerKey}`,
+      style: `https://api.maptiler.com/maps/hybrid/style.json?key=${mapTilerKey}`,
       center: [-73.935242, 40.73061],
       zoom: 11,
       minZoom: 9,

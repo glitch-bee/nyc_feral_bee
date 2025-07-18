@@ -15,7 +15,7 @@ export class MapLayerControls {
           tree: true,
         },
       },
-      basemap: 'satellite', // streets, satellite, hybrid
+      basemap: 'hybrid', // fixed to hybrid only
     };
     this.createControls();
   }
@@ -31,24 +31,10 @@ export class MapLayerControls {
         </button>
       </div>
       <div class="map-controls-content">
-        <div class="control-section">
-          <h4>Base Map</h4>
-          <div class="basemap-options">
-            <label class="basemap-option">
-              <input type="radio" name="basemap" value="streets">
-              <span class="option-preview streets-preview"></span>
-              <span class="option-label">Streets</span>
-            </label>
-            <label class="basemap-option">
-              <input type="radio" name="basemap" value="satellite" checked>
-              <span class="option-preview satellite-preview"></span>
-              <span class="option-label">Satellite</span>
-            </label>
-            <label class="basemap-option">
-              <input type="radio" name="basemap" value="hybrid">
-              <span class="option-preview hybrid-preview"></span>
-              <span class="option-label">Hybrid</span>
-            </label>
+                <div class="control-section">
+          <div class="basemap-info">
+            <h4>🗺️ Hybrid Satellite + Roads View</h4>
+            <p>Map shows satellite imagery with road labels and boundaries overlay.</p>
           </div>
         </div>
 
@@ -197,17 +183,7 @@ export class MapLayerControls {
       header.setAttribute('aria-expanded', 'true');
     }
 
-    // Basemap changes
-    const basemapInputs = this.controls.querySelectorAll(
-      'input[name="basemap"]'
-    );
-    basemapInputs.forEach((input) => {
-      input.addEventListener('change', (e) => {
-        if (e.target.checked) {
-          this.changeBasemap(e.target.value);
-        }
-      });
-    });
+    // Basemap is fixed to hybrid - no controls needed
 
     // Marker layer toggles
     const markerToggle = this.controls.querySelector(
@@ -247,37 +223,7 @@ export class MapLayerControls {
     });
   }
 
-  changeBasemap(type) {
-    this.layers.basemap = type;
-
-    const mapTilerKey = import.meta.env.VITE_MAPTILER_KEY;
-    if (!mapTilerKey) return;
-
-    let styleUrl;
-    switch (type) {
-      case 'satellite':
-        styleUrl = `https://api.maptiler.com/maps/satellite/style.json?key=${mapTilerKey}`;
-        break;
-      case 'hybrid':
-        styleUrl = `https://api.maptiler.com/maps/hybrid/style.json?key=${mapTilerKey}`;
-        break;
-      case 'streets':
-      default:
-        styleUrl = `https://api.maptiler.com/maps/streets-v2/style.json?key=${mapTilerKey}`;
-        break;
-    }
-
-    if (this.map.setStyle) {
-      this.map.setStyle(styleUrl);
-    }
-
-    // Dispatch custom event for other components to listen
-    document.dispatchEvent(
-      new CustomEvent('basemapChanged', {
-        detail: { type, styleUrl },
-      })
-    );
-  }
+  // Basemap is fixed to hybrid - no changeBasemap method needed
 
   updateMarkerVisibility() {
     // Dispatch event for marker management

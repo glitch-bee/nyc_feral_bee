@@ -71,14 +71,6 @@ async function main() {
 
       // Initialize map layer controls
       appState.mapControls = new MapLayerControls(mapInstance);
-
-      // Show success message
-      setTimeout(() => {
-        toast.success(
-          'Map loaded successfully! Use the layer controls to customize your view.',
-          3000
-        );
-      }, 500);
     });
 
     // Form enhancements removed for cleaner UI
