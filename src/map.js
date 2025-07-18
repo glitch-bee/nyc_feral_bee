@@ -52,7 +52,7 @@ export function initMap(containerId = 'map', onMapClick) {
     }
     const map = new maplibregl.Map({
       container: mapContainer,
-      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${mapTilerKey}`,
+      style: `https://api.maptiler.com/maps/satellite/style.json?key=${mapTilerKey}`,
       center: [-73.935242, 40.73061],
       zoom: 11,
       minZoom: 9,
@@ -357,10 +357,10 @@ function openPhotoModal(photoUrl) {
 // --- UTILITY FUNCTIONS ---
 function getMarkerColor(type, status) {
   const baseColors = {
-    Hive: '#ffaa00',
-    Swarm: '#ff6600',
-    Structure: '#666666',
-    Tree: '#00aa00',
+    Hive: '#8a7f1d', // brown-300
+    Swarm: '#958b3e', // warm-sage-600
+    Structure: '#8d8764', // sage-600
+    Tree: '#7c9082', // reseda-500
   };
   const statusModifiers = {
     Active: 1.0,
@@ -369,7 +369,7 @@ function getMarkerColor(type, status) {
     Gone: 0.3,
     Removed: 0.2,
   };
-  const baseColor = baseColors[type] || '#333333';
+  const baseColor = baseColors[type] || '#433e0e';
   const modifier = statusModifiers[status] || 0.6;
   if (modifier === 1.0) return baseColor;
   const hex = baseColor.replace('#', '');
