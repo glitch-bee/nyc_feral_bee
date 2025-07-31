@@ -4,7 +4,7 @@
 **Status:** Production Ready  
 **Last Updated:** June 23 2025
 
-A **production-ready** collaborative mapping platform for tracking bee sightings in New York City. Built for beekeepers, researchers, and citizen scientists to document and verify bee activity across the five boroughs.
+A **professional-grade** collaborative mapping platform for tracking bee sightings in New York City. Built specifically for researchers, beekeepers, and citizen scientists to systematically document and verify bee activity across the five boroughs.
 
 ## Features
 
@@ -31,7 +31,7 @@ A **production-ready** collaborative mapping platform for tracking bee sightings
 
 ### Option 1: Use with Default Keys (Demo)
 ```bash
-git clone https://github.com/yourusername/cityhive2.git
+git clone https://github.com/glitch-bee/cityhive2.git
 cd cityhive2
 npm install
 npm run dev
@@ -39,7 +39,7 @@ npm run dev
 
 ### Option 2: Use Your Own API Keys (Recommended)
 ```bash
-git clone https://github.com/yourusername/cityhive2.git
+git clone https://github.com/glitch-bee/cityhive2.git
 cd cityhive2
 npm install
 
@@ -80,12 +80,12 @@ VITE_MAPTILER_KEY=your_maptiler_api_key
 
 ## Mobile Experience
 
-NYC Feral Bee Survey is **optimized for mobile field use** with:
-- **Touch-friendly interface** with modal-based marker details
-- **GPS integration** for easy location capture
-- **Photo uploads** directly from mobile cameras
-- **Instant updates** without page reloads
-- **Responsive design** that works on all screen sizes
+NYC Feral Bee Survey is **optimized for scientific field work** with:
+- **Professional data collection** with standardized forms and validation
+- **GPS integration** for precise location capture
+- **Photo documentation** with cloud storage for research purposes
+- **Real-time collaboration** across research teams and citizen scientists
+- **Responsive design** that works reliably in field conditions
 
 ## Marker Types
 
@@ -180,6 +180,6 @@ For questions about the NYC bee community or this project, please open an issue.
 
 ---
 
-**Made with for NYC beekeepers and citizen scientists**
+**Made with 🐝 for NYC beekeepers and citizen scientists**
 
 *Built by Usher Gay for the New York Bee Club*
