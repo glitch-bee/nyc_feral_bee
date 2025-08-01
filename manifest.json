@@ -1,14 +1,14 @@
 {
-  "name": "CityHive - NYC Bee Sighting Map",
-  "short_name": "CityHive",
-  "description": "Collaborative mapping platform for tracking bee sightings in New York City",
+  "name": "NYC Feral Bee Survey - Scientific Data Collection",
+  "short_name": "NYC Feral Bee Survey",
+  "description": "Professional platform for scientific bee survey data collection and analysis in New York City",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#f59e0b",
+  "theme_color": "#7c9082",
   "orientation": "portrait-primary",
   "scope": "/",
-  "categories": ["productivity", "utilities", "lifestyle"],
+  "categories": ["productivity", "utilities", "education", "science"],
   "lang": "en-US",
   "dir": "ltr",
   
@@ -59,7 +59,7 @@
     {
       "name": "About",
       "short_name": "About", 
-      "description": "Learn about CityHive",
+      "description": "Learn about NYC Feral Bee Survey",
       "url": "/about.html",
       "icons": [
         {
