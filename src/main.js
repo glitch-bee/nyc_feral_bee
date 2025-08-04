@@ -18,6 +18,7 @@ import { createMarkerForm } from './markerform.js';
 import { toast } from './toast.js';
 import { MapLayerControls } from './map-controls.js';
 import './crosshair.js'; // Import crosshair functionality
+import { PWAInstaller } from './pwa-installer.js';
 
 // --- Global Application State ---
 export const appState = {
@@ -231,3 +232,9 @@ main().catch((error) => {
   console.error('Application failed to start:', error);
   toast.error('Failed to load the application. Please refresh the page.', 0);
 });
+
+// Initialize PWA functionality
+if ('serviceWorker' in navigator) {
+  // PWA installer will handle service worker registration
+  // This ensures PWA features are available
+}

@@ -24,11 +24,18 @@ const STATIC_CACHE_URLS = [
 self.addEventListener('install', (event) => {
   console.log('[Service Worker] Installing NYC Feral Bee Survey SW...');
   
-  // TODO: Implement cache preloading
-  // event.waitUntil(
-  //   caches.open(CACHE_NAME)
-  //     .then(cache => cache.addAll(STATIC_CACHE_URLS))
-  // );
+  // Cache static assets
+  event.waitUntil(
+    caches.open('nyc-bee-survey-v1').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/manifest.json',
+        '/cityhive.png',
+        '/cityhive-logo.svg'
+      ]);
+    })
+  );
   
   // Force activation of new service worker
   self.skipWaiting();
@@ -57,16 +64,12 @@ self.addEventListener('activate', (event) => {
 
 // Network Request Interception
 self.addEventListener('fetch', (event) => {
-  // TODO: Implement fetch event handling for offline functionality
-  // For now, just let all requests go through normally
-  
-  // Example cache-first strategy (commented out):
-  // event.respondWith(
-  //   caches.match(event.request)
-  //     .then(response => {
-  //       return response || fetch(event.request);
-  //     })
-  // );
+  // Serve cached content when offline
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
 
 // Background Sync Event (for offline form submissions)

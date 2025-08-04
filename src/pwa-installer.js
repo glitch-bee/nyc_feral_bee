@@ -58,8 +58,8 @@ class PWAInstaller {
       // this.hideInstallButton();
     }
 
-    // TODO: Register service worker
-    // this.registerServiceWorker();
+    // Register service worker
+    this.registerServiceWorker();
   }
 
   // TODO: Implement custom install button creation
@@ -108,26 +108,26 @@ class PWAInstaller {
   //   this.hideInstallButton();
   // }
 
-  // TODO: Implement service worker registration
-  // async registerServiceWorker() {
-  //   if ('serviceWorker' in navigator) {
-  //     try {
-  //       const registration = await navigator.serviceWorker.register('/sw.js');
-  //       console.log('[PWA Installer] Service Worker registered:', registration);
-  //       
-  //       // Listen for service worker updates
-  //       registration.addEventListener('updatefound', () => {
-  //         console.log('[PWA Installer] New service worker version available');
-  //         // TODO: Show update notification to user
-  //       });
-  //       
-  //     } catch (error) {
-  //       console.error('[PWA Installer] Service Worker registration failed:', error);
-  //     }
-  //   } else {
-  //     console.log('[PWA Installer] Service Workers not supported');
-  //   }
-  // }
+  // Register service worker
+  async registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js');
+        console.log('[PWA Installer] Service Worker registered:', registration);
+        
+        // Listen for service worker updates
+        registration.addEventListener('updatefound', () => {
+          console.log('[PWA Installer] New service worker version available');
+          // TODO: Show update notification to user
+        });
+        
+      } catch (error) {
+        console.error('[PWA Installer] Service Worker registration failed:', error);
+      }
+    } else {
+      console.log('[PWA Installer] Service Workers not supported');
+    }
+  }
 
   // TODO: Implement update notification UI
   // showUpdateNotification() {
@@ -136,10 +136,10 @@ class PWAInstaller {
   // }
 }
 
-// TODO: Initialize PWA installer when DOM is ready
-// document.addEventListener('DOMContentLoaded', () => {
-//   new PWAInstaller();
-// });
+// Initialize PWA installer when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  new PWAInstaller();
+});
 
 console.log('[PWA Installer] PWA installation handler script loaded - ready for implementation');
 
