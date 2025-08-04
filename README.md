@@ -180,6 +180,6 @@ For questions about the NYC bee community or this project, please open an issue.
 
 ---
 
-**Made with 🐝 for NYC beekeepers and citizen scientists**
+**Made for NYC beekeepers and citizen scientists**
 
 *Built by Usher Gay for the New York Bee Club*
