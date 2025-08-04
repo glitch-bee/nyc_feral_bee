@@ -31,7 +31,8 @@ self.addEventListener('install', (event) => {
         '/',
         '/index.html',
         '/manifest.json',
-        // Add other critical assets
+        '/cityhive.png',
+        '/cityhive-logo.svg'
       ]);
     })
   );
