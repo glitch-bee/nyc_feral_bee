@@ -31,16 +31,16 @@ A **professional-grade** collaborative mapping platform for tracking bee sightin
 
 ### Option 1: Use with Default Keys (Demo)
 ```bash
-git clone https://github.com/glitch-bee/cityhive2.git
-cd cityhive2
+git clone https://github.com/glitch-bee/nyc_feral_bee.git
+cd nyc_feral_bee
 npm install
 npm run dev
 ```
 
 ### Option 2: Use Your Own API Keys (Recommended)
 ```bash
-git clone https://github.com/glitch-bee/cityhive2.git
-cd cityhive2
+git clone https://github.com/glitch-bee/nyc_feral_bee.git
+cd nyc_feral_bee
 npm install
 
 # Copy example environment file

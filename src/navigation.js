@@ -63,8 +63,8 @@ export function initNavigation(appState) {
   if (
     window.location.pathname === '/' ||
     window.location.pathname.endsWith('index.html') ||
-    window.location.pathname === '/cityhive2/' ||
-    window.location.pathname === '/cityhive2/index.html'
+    window.location.pathname === '/nyc_feral_bee/' ||
+    window.location.pathname === '/nyc_feral_bee/index.html'
   ) {
     const addBtn = document.createElement('button');
     addBtn.className = 'nav-add-sighting';
@@ -77,8 +77,8 @@ export function initNavigation(appState) {
   if (
     window.location.pathname === '/' ||
     window.location.pathname.endsWith('index.html') ||
-    window.location.pathname === '/cityhive2/' ||
-    window.location.pathname === '/cityhive2/index.html'
+    window.location.pathname === '/nyc_feral_bee/' ||
+    window.location.pathname === '/nyc_feral_bee/index.html'
   ) {
     const mapBtn = document.createElement('button');
     mapBtn.className = 'nav-map-layers';
@@ -248,8 +248,8 @@ export function initNavigation(appState) {
   if (
     window.location.pathname === '/' ||
     window.location.pathname.endsWith('index.html') ||
-    window.location.pathname === '/cityhive2/' ||
-    window.location.pathname === '/cityhive2/index.html'
+    window.location.pathname === '/nyc_feral_bee/' ||
+    window.location.pathname === '/nyc_feral_bee/index.html'
   ) {
     const panelToggleBtn = document.createElement('button');
     panelToggleBtn.className = 'panel-toggle-btn';

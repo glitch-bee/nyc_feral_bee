@@ -37,8 +37,8 @@ City Hive is a **production-ready, mobile-first bee mapping platform** built for
 ### Running the App Locally
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cityhive2.git
-cd cityhive2
+git clone https://github.com/yourusername/nyc_feral_bee.git
+cd nyc_feral_bee
 
 # Install dependencies
 npm install

@@ -226,7 +226,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('/cityhive2/skyline.png');
+  background-image: url('/nyc_feral_bee/skyline.png');
   background-size: cover;
   background-position: center;
   filter: blur(8px) brightness(0.9);

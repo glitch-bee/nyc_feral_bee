@@ -3,7 +3,7 @@ import { resolve } from 'path'
 
 export default defineConfig(({ command }) => {
   return {
-    base: command === 'serve' ? '/' : '/cityhive2/',
+    base: command === 'serve' ? '/' : '/nyc_feral_bee/',
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
