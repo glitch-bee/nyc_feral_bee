@@ -24,8 +24,10 @@ A **professional-grade** collaborative mapping platform for tracking bee sightin
 - **Frontend:** Vite + Vanilla JavaScript + MapLibre GL JS
 - **Map:** MapTiler Streets v2 (vector tiles)
 - **Backend:** Supabase (PostgreSQL + Realtime + Storage + Auth)
-- **Styling:** Modern CSS with Inter font
+- **Styling:** Modern CSS with system font stack (Apple/Segoe/Roboto)
+- **PWA:** Progressive Web App with service worker and offline capabilities
 - **Mobile:** Responsive design optimized for touch interfaces
+- **Deployment:** GitHub Pages with automated builds
 
 ## Quick Start
 
