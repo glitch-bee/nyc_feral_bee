@@ -140,19 +140,45 @@ src/
 ├── auth.js          # Authentication modal & user management
 ├── navigation.js    # Site navigation & user interface
 ├── welcome.js       # Welcome guide for new users
+├── map-controls.js  # Layer controls accessible via hamburger menu
+├── crosshair.js     # Crosshair functionality for precise location selection
+├── form-enhancements.js # Enhanced form interactions and validation
+├── pwa-installer.js # PWA installation and service worker management
+├── toast.js         # Toast notification system
 ├── style.css        # Main styles
 ├── map.css          # Map-specific styles
 ├── auth.css         # Authentication modal styles
-└── pages.css        # Static page styles
+├── pages.css        # Static page styles
+├── pwa.css          # PWA-specific styles
+└── javascript.svg   # JavaScript icon asset
 
 docs/
 ├── README.md        # Documentation structure overview
-├── database/        # Database setup scripts and documentation
-└── internal/        # Private development notes (not tracked in git)
+├── PWA_IMPLEMENTATION.md # PWA activation guide
+└── database/        # Database setup scripts and documentation
+    ├── database_setup_comments.sql      # Comments system setup
+    ├── database_setup_photos.sql        # Photo storage setup
+    ├── database_setup_status.sql        # Status tracking setup
+    ├── database_setup_user_management.sql # User management setup
+    └── database_fix_uuid.sql            # UUID fixes
 
 public/
-├── cityhive-logo.svg # Logo file
-└── *.png            # Branding images
+├── cityhive-logo.svg # Primary logo file
+├── manifest.json    # PWA app manifest
+├── sw.js           # Service worker for offline functionality
+├── vite.svg        # Vite framework icon
+└── *.png           # Branding images (NYBeeClub_main, cityhive, skyline, etc.)
+
+Root Configuration:
+├── .env.example     # Environment variables template
+├── vite.config.js   # Vite build configuration
+├── package.json     # Project dependencies and scripts
+├── index.html       # Main application page
+├── about.html       # About page
+├── resources.html   # Resources page
+├── CHANGELOG.md     # Version history
+├── CONTRIBUTING.md  # Contribution guidelines
+└── AGENTS.md        # AI development context
 ```
 
 ## Version History
