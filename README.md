@@ -1,37 +1,35 @@
 # NYC Feral Bee Survey
 
-**Version:** 1.0.0  
-**Status:** Production Ready  
-**Last Updated:** August 6 2025
+Version: 1.0.0 · Status: Production Ready · Last Updated: August 8, 2025
 
-A **professional-grade** collaborative mapping platform for tracking bee sightings in New York City. Built specifically for researchers, beekeepers, and citizen scientists to systematically document and verify bee activity across the five boroughs.
+A practical, mobile‑first web app to log and verify feral bee sightings across NYC. Built for field use by researchers, beekeepers, and citizen scientists.
+
+- Live site: https://glitch-bee.github.io/nyc_feral_bee/
+- Stack: Vite + Vanilla JS + MapLibre GL + Supabase + PWA
 
 ## Features
 
-- **Interactive Map** - Real-time collaborative bee sighting map with NYC boundaries
-- **User Authentication** - Secure login/registration system with user profiles
-- **Location Tracking** - GPS-powered location detection and manual pin placement  
-- **Community Comments** - Add comments and observations to any sighting
-- **Photo Uploads** - Document sightings with cloud-stored photos
-- **Status System** - Track verification status (Unverified, Active, Checked, Gone, Removed)
-- **NYC-Focused** - Optimized boundaries for the five boroughs
-- **Mobile-First** - Touch-optimized responsive design for field use
-- **Real-time Updates** - Instant synchronization across all users and devices
-- **User Ownership** - Users can manage their own markers with admin oversight
+- Interactive map with NYC bounds
+- Auth, profiles, and ownership controls
+- GPS location + manual pin drop
+- Comments and photo uploads
+- Sighting status lifecycle: Unverified → Active → Checked → Gone → Removed
+- Real‑time updates across clients
+- Mobile‑first UX with hamburger navigation
 
 ## Tech Stack
 
-- **Frontend:** Vite + Vanilla JavaScript + MapLibre GL JS
-- **Map:** MapTiler Streets v2 (vector tiles)
-- **Backend:** Supabase (PostgreSQL + Realtime + Storage + Auth)
-- **Styling:** Modern CSS with system font stack (Apple/Segoe/Roboto)
-- **PWA:** Progressive Web App with service worker and offline capabilities
-- **Mobile:** Responsive design optimized for touch interfaces
-- **Deployment:** GitHub Pages with automated builds
+- Frontend: Vite + Vanilla JavaScript + MapLibre GL JS
+- Map: MapTiler Streets v2 (vector tiles)
+- Backend: Supabase (PostgreSQL + Realtime + Storage + Auth)
+- Styling: Modern CSS with system font stack (Apple/Segoe/Roboto)
+- PWA: Service worker, install prompt, offline basics
+- Deployment: GitHub Pages (gh-pages) via npm script
 
 ## Quick Start
 
-### Option 1: Use with Default Keys (Demo)
+If you just want to run it locally with placeholders:
+
 ```bash
 git clone https://github.com/glitch-bee/nyc_feral_bee.git
 cd nyc_feral_bee
@@ -39,41 +37,65 @@ npm install
 npm run dev
 ```
 
-### Option 2: Use Your Own API Keys (Recommended)
+Use your own API keys (recommended):
+
 ```bash
 git clone https://github.com/glitch-bee/nyc_feral_bee.git
 cd nyc_feral_bee
 npm install
 
-# Copy example environment file
+# Copy example env and fill in your keys
 cp .env.example .env
 
-# Edit .env with your own API keys:
+# Edit .env
 # VITE_SUPABASE_URL=your_supabase_project_url
-# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key  
+# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 # VITE_MAPTILER_KEY=your_maptiler_api_key
 
 npm run dev
 ```
 
+Notes:
+- All env vars must be prefixed with VITE_ (Vite requirement).
+- Missing keys degrade gracefully, but maps and auth need real keys.
+
+## Scripts
+
+```bash
+npm run dev       # Start Vite dev server
+npm run build     # Production build (dist/)
+npm run preview   # Preview production build
+npm run deploy    # Build and push dist/ to gh-pages branch
+```
+
+## Deployment
+
+- GitHub Pages serves from the gh-pages branch.
+- The deploy script builds from your current branch (main) and publishes dist/.
+
+Manual steps (optional):
+```bash
+npm run build
+npm run deploy
+```
+
 ## Setting Up Your Own Instance
 
-### 1. Supabase Setup
-1. Create a new project at [supabase.com](https://supabase.com)
-2. Run the SQL scripts in `docs/database/` in order:
-   - `database_setup_comments.sql` - Comments system
-   - `database_setup_photos.sql` - Photo storage
-   - `database_setup_status.sql` - Status tracking
-3. Enable Authentication in the Supabase dashboard
-4. Get your project URL and anon key from Settings > API
+1) Supabase
+- Create a project at https://supabase.com
+- Run SQL scripts in `docs/database/` in this order:
+  - database_setup_user_management.sql
+  - database_setup_status.sql
+  - database_setup_photos.sql
+  - database_setup_comments.sql
+  - database_fix_uuid.sql (if needed)
+- Enable Auth and grab URL + anon key (Settings → API)
 
-### 2. MapTiler Setup  
-1. Sign up at [maptiler.com](https://maptiler.com)
-2. Get your API key from the dashboard
-3. Free tier includes 100,000 map loads/month
+2) MapTiler
+- Get a free API key at https://maptiler.com (100k loads/mo on free tier)
+- Put the key in your .env as VITE_MAPTILER_KEY
 
-### 3. Environment Configuration
-Create a `.env` file with your keys:
+3) Environment
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
@@ -82,132 +104,84 @@ VITE_MAPTILER_KEY=your_maptiler_api_key
 
 ## Mobile Experience
 
-NYC Feral Bee Survey is **optimized for scientific field work** with:
-- **Professional data collection** with standardized forms and validation
-- **GPS integration** for precise location capture
-- **Photo documentation** with cloud storage for research purposes
-- **Real-time collaboration** across research teams and citizen scientists
-- **Responsive design** that works reliably in field conditions
+- Standardized data collection forms
+- Accurate GPS capture + manual adjustments
+- Photo documentation to cloud storage
+- Real‑time collaboration for teams
+- Fast, touch‑friendly UI
 
 ## Marker Types
 
-- **Hive** - Established bee colonies
-- **Swarm** - Mobile bee clusters  
-- **Structure** - Bees in buildings/man-made structures
-- **Tree** - Natural tree cavities with bees
+- Hive, Swarm, Structure, Tree
 
 ## Status Tracking
 
-- **Unverified** - New sighting, needs verification
-- **Active** - Confirmed active colony
-- **Checked** - Recently inspected
-- **Gone** - Colony has moved or died
-- **Removed** - Professionally removed
-
-## Deployment
-
-### GitHub Pages
-```bash
-npm run build
-npm run deploy
-```
-
-### Other Platforms
-```bash
-npm run build
-# Upload dist/ folder to your hosting platform
-```
-
-## Development
-
-```bash
-# Start development server
-npm run dev
-
-# Build for production  
-npm run build
-
-# Preview production build
-npm run preview
-```
+- Unverified, Active, Checked, Gone, Removed
 
 ## Project Structure
 
 ```
 src/
-├── main.js          # Application entry point & state management
-├── supabase.js      # Database & authentication functions
-├── map.js           # Map and marker logic with mobile optimization
-├── markerform.js    # Form handling & photo uploads
-├── auth.js          # Authentication modal & user management
-├── navigation.js    # Site navigation & user interface
-├── welcome.js       # Welcome guide for new users
-├── map-controls.js  # Layer controls accessible via hamburger menu
-├── crosshair.js     # Crosshair functionality for precise location selection
-├── form-enhancements.js # Enhanced form interactions and validation
-├── pwa-installer.js # PWA installation and service worker management
-├── toast.js         # Toast notification system
-├── style.css        # Main styles
-├── map.css          # Map-specific styles
-├── auth.css         # Authentication modal styles
-├── pages.css        # Static page styles
-├── pwa.css          # PWA-specific styles
-└── javascript.svg   # JavaScript icon asset
+├── main.js               # App entry & global state
+├── supabase.js           # DB, auth, storage helpers
+├── map.js                # Map + markers + popups
+├── markerform.js         # Form handling & uploads
+├── auth.js               # Auth modal + user flows
+├── navigation.js         # Hamburger nav (mobile-first)
+├── map-controls.js       # Layer controls via nav
+├── crosshair.js          # Precise location selection
+├── form-enhancements.js  # UX helpers for forms
+├── pwa-installer.js      # PWA install + SW registration
+├── toast.js              # Toast notifications
+├── style.css             # Main styles
+├── map.css               # Map-specific styles
+├── auth.css              # Auth styles
+├── pages.css             # Static page styles
+├── pwa.css               # PWA-specific styles
+└── javascript.svg        # Asset
 
 docs/
-├── README.md        # Documentation structure overview
-├── PWA_IMPLEMENTATION.md # PWA activation guide
-└── database/        # Database setup scripts and documentation
-    ├── database_setup_comments.sql      # Comments system setup
-    ├── database_setup_photos.sql        # Photo storage setup
-    ├── database_setup_status.sql        # Status tracking setup
-    ├── database_setup_user_management.sql # User management setup
-    └── database_fix_uuid.sql            # UUID fixes
+├── README.md
+├── PWA_IMPLEMENTATION.md
+└── database/
+    ├── database_setup_user_management.sql
+    ├── database_setup_status.sql
+    ├── database_setup_photos.sql
+    ├── database_setup_comments.sql
+    └── database_fix_uuid.sql
 
 public/
-├── cityhive-logo.svg # Primary logo file
-├── manifest.json    # PWA app manifest
-├── sw.js           # Service worker for offline functionality
-├── vite.svg        # Vite framework icon
-└── *.png           # Branding images (NYBeeClub_main, cityhive, skyline, etc.)
+├── manifest.json         # PWA manifest
+├── sw.js                 # Service worker
+├── cityhive-logo.svg     # Logo
+├── vite.svg              # Vite icon
+└── *.png                 # Images (NYBeeClub_main, cityhive, skyline, ...)
 
-Root Configuration:
-├── .env.example     # Environment variables template
-├── vite.config.js   # Vite build configuration
-├── package.json     # Project dependencies and scripts
-├── index.html       # Main application page
-├── about.html       # About page
-├── resources.html   # Resources page
-├── CHANGELOG.md     # Version history
-├── CONTRIBUTING.md  # Contribution guidelines
-└── AGENTS.md        # AI development context
+Root
+├── .env.example          # Env template
+├── vite.config.js        # Vite config (GitHub Pages base)
+├── package.json          # Scripts & deps
+├── index.html            # App entry page
+├── about.html            # About page
+├── resources.html        # Resources page
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── AGENTS.md
 ```
-
-## Version History
-
-See [CHANGELOG.md](CHANGELOG.md) for detailed version history and recent changes.
 
 ## Contributing
 
-This project is focused on the NYC bee community. If you'd like to contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+- Fork, branch, PR. Keep commits small and descriptive.
+- Open a discussion for larger changes.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details
+MIT — see LICENSE.
 
 ## Contact
 
-For questions about the NYC bee community or this project, please open an issue.
+Open an issue for questions or bugs.
 
----
 
-**Made for NYC beekeepers and citizen scientists**
 
-*Built by Usher Gay for the New York Bee Club*
+
